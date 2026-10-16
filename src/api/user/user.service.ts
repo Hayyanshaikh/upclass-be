@@ -12,12 +12,14 @@ import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   // CREATE USER
+
   async create(dto: CreateUserDto) {
     try {
       const errors: string[] = [];
@@ -32,11 +34,14 @@ export class UserService {
         errors.push('Please enter a valid email address.');
       }
 
+      if (!dto.password?.trim()) {
+        errors.push('Password is required.');
+      } else if (dto.password.length < 8) {
+        errors.push('Password must be at least 8 characters.');
+      }
+
       if (errors.length > 0) {
-        throw new BadRequestException({
-          message: 'Validation failed.',
-          errors,
-        });
+        throw new BadRequestException(errors);
       }
 
       const existingUser = await this.prisma.user.findUnique({
@@ -44,20 +49,25 @@ export class UserService {
       });
 
       if (existingUser) {
-        throw new ConflictException({
-          message: 'User already exists.',
-          errors: ['Email already exists.'],
-        });
+        throw new ConflictException('Email already exists.');
       }
+
+      // Hash password before saving
+      const hashedPassword = await bcrypt.hash(dto.password, 12);
 
       const user = await this.prisma.user.create({
         data: {
           name: dto.name,
           email: dto.email,
+          password: hashedPassword,
           age: dto.age,
           gender: dto.gender,
           role: dto.role,
           isActive: dto.isActive,
+        },
+        // Never return password hash in API response
+        omit: {
+          password: true,
         },
       });
 
@@ -75,18 +85,12 @@ export class UserService {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
-        throw new ConflictException({
-          message: 'User already exists.',
-          errors: ['Email already exists.'],
-        });
+        throw new ConflictException('Email already exists.');
       }
 
       console.error('CREATE USER ERROR:', error);
 
-      throw new InternalServerErrorException({
-        message: 'Failed to create user.',
-        errors: ['An unexpected error occurred.'],
-      });
+      throw new InternalServerErrorException('Failed to create user.');
     }
   }
 

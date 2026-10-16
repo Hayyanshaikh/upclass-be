@@ -20,37 +20,30 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const exceptionResponse =
       exception instanceof HttpException ? exception.getResponse() : null;
 
-    let message =
-      statusCode >= 500 ? 'Internal server error' : 'Request failed';
-
-    let errors: string[] = [];
+    let data: string[] = [];
 
     if (typeof exceptionResponse === 'string') {
-      message = exceptionResponse;
+      data = [exceptionResponse];
     } else if (exceptionResponse && typeof exceptionResponse === 'object') {
       const body = exceptionResponse as {
         message?: string | string[];
         errors?: string[];
       };
 
-      if (Array.isArray(body.message)) {
-        message = 'Validation failed.';
-        errors = body.message;
-      } else if (typeof body.message === 'string') {
-        message = body.message;
-      }
-
       if (Array.isArray(body.errors)) {
-        errors = body.errors;
+        data = body.errors;
+      } else if (Array.isArray(body.message)) {
+        data = body.message;
+      } else if (typeof body.message === 'string') {
+        data = [body.message];
       }
+    } else {
+      data = ['An unexpected error occurred.'];
     }
 
     response.status(statusCode).json({
       statusCode,
-      message,
-      data: {
-        errors,
-      },
+      data,
     });
   }
 }

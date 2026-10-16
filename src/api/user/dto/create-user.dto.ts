@@ -7,6 +7,8 @@ import {
   Min,
   IsEnum,
   IsBoolean,
+  IsNotEmpty,
+  MinLength,
 } from 'class-validator';
 
 import { Gendar, Role } from '../../../generated/prisma/enums';
@@ -19,6 +21,12 @@ export class CreateUserDto {
   @ApiProperty()
   @IsEmail()
   email: string;
+
+  @ApiProperty({ example: 'StrongPass123!' })
+  @IsString()
+  @IsNotEmpty({ message: 'Password is required.' })
+  @MinLength(8, { message: 'Password must be at least 8 characters.' })
+  password: string;
 
   @ApiPropertyOptional()
   @IsOptional()
