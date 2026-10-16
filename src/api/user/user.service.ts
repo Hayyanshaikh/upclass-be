@@ -1,0 +1,245 @@
+import {
+  BadRequestException,
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { Prisma } from '../../generated/prisma/client';
+import { PrismaService } from '../../database/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+@Injectable()
+export class UserService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  // CREATE USER
+  async create(dto: CreateUserDto) {
+    try {
+      const errors: string[] = [];
+
+      if (!dto.name?.trim()) {
+        errors.push('Name is required.');
+      }
+
+      if (!dto.email?.trim()) {
+        errors.push('Email is required.');
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email)) {
+        errors.push('Please enter a valid email address.');
+      }
+
+      if (errors.length > 0) {
+        throw new BadRequestException({
+          message: 'Validation failed.',
+          errors,
+        });
+      }
+
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: dto.email },
+      });
+
+      if (existingUser) {
+        throw new ConflictException({
+          message: 'User already exists.',
+          errors: ['Email already exists.'],
+        });
+      }
+
+      const user = await this.prisma.user.create({
+        data: {
+          name: dto.name,
+          email: dto.email,
+          age: dto.age,
+          gender: dto.gender,
+          role: dto.role,
+          isActive: dto.isActive,
+        },
+      });
+
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'User created successfully.',
+        data: user,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException({
+          message: 'User already exists.',
+          errors: ['Email already exists.'],
+        });
+      }
+
+      console.error('CREATE USER ERROR:', error);
+
+      throw new InternalServerErrorException({
+        message: 'Failed to create user.',
+        errors: ['An unexpected error occurred.'],
+      });
+    }
+  }
+
+  // GET ALL USERS
+  async findAll() {
+    try {
+      const users = await this.prisma.user.findMany();
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Users retrieved successfully.',
+        data: users,
+      };
+    } catch (error) {
+      console.error('GET USERS ERROR:', error);
+
+      throw new InternalServerErrorException({
+        message: 'Failed to retrieve users.',
+        errors: ['An unexpected error occurred.'],
+      });
+    }
+  }
+
+  // GET USER BY ID
+  async findOne(id: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+
+      if (!user) {
+        throw new NotFoundException({
+          message: 'User not found.',
+          errors: [`User with ID ${id} was not found.`],
+        });
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User retrieved successfully.',
+        data: user,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      console.error('GET USER ERROR:', error);
+
+      throw new InternalServerErrorException({
+        message: 'Failed to retrieve user.',
+        errors: ['An unexpected error occurred.'],
+      });
+    }
+  }
+
+  // UPDATE USER
+  async update(id: string, dto: UpdateUserDto) {
+    try {
+      const errors: string[] = [];
+
+      if (dto.name !== undefined && !dto.name.trim()) {
+        errors.push('Name cannot be empty.');
+      }
+
+      if (dto.email !== undefined) {
+        if (!dto.email.trim()) {
+          errors.push('Email cannot be empty.');
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email)) {
+          errors.push('Please enter a valid email address.');
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new BadRequestException({
+          message: 'Validation failed.',
+          errors,
+        });
+      }
+
+      const user = await this.prisma.user.update({
+        where: { id },
+        data: dto,
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User updated successfully.',
+        data: user,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException({
+            message: 'User not found.',
+            errors: [`User with ID ${id} was not found.`],
+          });
+        }
+
+        if (error.code === 'P2002') {
+          throw new ConflictException({
+            message: 'User already exists.',
+            errors: ['Email already exists.'],
+          });
+        }
+      }
+
+      console.error('UPDATE USER ERROR:', error);
+
+      throw new InternalServerErrorException({
+        message: 'Failed to update user.',
+        errors: ['An unexpected error occurred.'],
+      });
+    }
+  }
+
+  // DELETE USER
+  async remove(id: string) {
+    try {
+      await this.prisma.user.delete({
+        where: { id },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User deleted successfully.',
+        data: null,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundException({
+          message: 'User not found.',
+          errors: [`User with ID ${id} was not found.`],
+        });
+      }
+
+      console.error('DELETE USER ERROR:', error);
+
+      throw new InternalServerErrorException({
+        message: 'Failed to delete user.',
+        errors: ['An unexpected error occurred.'],
+      });
+    }
+  }
+}
