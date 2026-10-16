@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from '../user/dto/user-response.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -11,10 +12,10 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'User login' })
-  @ApiResponse({ status: 200, description: 'Login successful' })
+  @ApiResponse({ status: 200, type: LoginResponseDto })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 401, description: 'Invalid email or password' })
-  login(@Body() loginDto: LoginDto) {
+  login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
     return this.authService.login(loginDto);
   }
 }

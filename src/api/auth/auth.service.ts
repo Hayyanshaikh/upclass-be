@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '../../database/prisma.service';
 import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from '../user/dto/user-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto): Promise<LoginResponseDto> {
     try {
       const { email, password } = loginDto;
       const errors: string[] = [];
@@ -67,10 +68,8 @@ export class AuthService {
       const { password: removedPassword, ...userReturn } = user;
 
       return {
-        statusCode: HttpStatus.OK,
-        message: 'Login successful.',
         accessToken,
-        data: userReturn,
+        user: userReturn,
       };
     } catch (error) {
       if (error instanceof HttpException) {
