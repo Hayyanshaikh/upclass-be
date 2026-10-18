@@ -14,7 +14,7 @@ export async function seedUsers(superAdminRoleId: string) {
 
   await prisma.user.upsert({
     where: { email },
-    update: { roleId: superAdminRoleId },
+    update: { roleId: superAdminRoleId, isSystem: true },
     create: {
       name: 'Super Admin',
       email,
@@ -22,6 +22,7 @@ export async function seedUsers(superAdminRoleId: string) {
       roleId: superAdminRoleId,
       gender: Gendar.MALE,
       isActive: true,
+      isSystem: true,
     },
   });
 

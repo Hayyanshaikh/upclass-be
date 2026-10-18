@@ -71,6 +71,7 @@ export class UserController {
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 403, description: 'System users cannot be deleted' })
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

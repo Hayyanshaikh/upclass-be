@@ -25,6 +25,7 @@ model User {
   age       Int?
   gender    Gendar   @default(FEMALE)
   isActive  Boolean  @default(true)
+  isSystem  Boolean  @default(false)
   roleId    String
   role      Role     @relation(fields: [roleId], references: [id])
   createdAt DateTime @default(now())

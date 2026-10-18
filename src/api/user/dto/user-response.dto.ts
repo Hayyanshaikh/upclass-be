@@ -30,6 +30,9 @@ export class LoginResponseUserDto {
   @ApiProperty()
   isActive: boolean;
 
+  @ApiProperty()
+  isSystem: boolean;
+
   @ApiProperty({ enum: Gendar })
   gender: Gendar;
 }

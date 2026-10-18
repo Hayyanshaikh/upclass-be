@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -114,6 +115,7 @@ export class UserService {
             },
           },
           isActive: true,
+          isSystem: true,
           gender: true,
         },
       });
@@ -151,6 +153,7 @@ export class UserService {
             },
           },
           isActive: true,
+          isSystem: true,
           gender: true,
         },
       });
@@ -235,6 +238,7 @@ export class UserService {
             },
           },
           isActive: true,
+          isSystem: true,
           gender: true,
         },
       });
@@ -277,28 +281,31 @@ export class UserService {
   // DELETE USER
   async remove(id: string) {
     try {
-      await this.prisma.user.delete({
-        where: { id },
+      const result = await this.prisma.user.deleteMany({
+        where: { id, isSystem: false },
       });
+
+      if (result.count === 0) {
+        const user = await this.prisma.user.findUnique({
+          where: { id },
+          select: { isSystem: true },
+        });
+
+        if (user?.isSystem) {
+          throw new ForbiddenException('System users cannot be deleted.');
+        }
+
+        throw new NotFoundException('User not found.');
+      }
 
       return {
         statusCode: HttpStatus.OK,
         message: 'User deleted successfully.',
-        data: null,
+        data: { id },
       };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
-      }
-
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2025'
-      ) {
-        throw new NotFoundException({
-          message: 'User not found.',
-          errors: [`User with ID ${id} was not found.`],
-        });
       }
 
       console.error('DELETE USER ERROR:', error);
