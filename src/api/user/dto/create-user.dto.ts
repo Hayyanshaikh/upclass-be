@@ -39,6 +39,8 @@ export class CreateUserDto {
   gender?: Gendar;
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty({ message: 'Role is required.' })
   roleId: string;
 
   @ApiPropertyOptional()

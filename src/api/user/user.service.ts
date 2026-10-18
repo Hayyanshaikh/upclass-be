@@ -198,6 +198,14 @@ export class UserService {
         }
       }
 
+      if (dto.password !== undefined) {
+        if (!dto.password.trim()) {
+          errors.push('Password cannot be empty.');
+        } else if (dto.password.length < 8) {
+          errors.push('Password must be at least 8 characters.');
+        }
+      }
+
       if (errors.length > 0) {
         throw new BadRequestException({
           message: 'Validation failed.',
@@ -205,9 +213,30 @@ export class UserService {
         });
       }
 
+      const { password, ...changes } = dto;
       const user = await this.prisma.user.update({
         where: { id },
-        data: dto,
+        data: {
+          ...changes,
+          ...(password !== undefined
+            ? { password: await bcrypt.hash(password, 12) }
+            : {}),
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roleId: true,
+          role: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          isActive: true,
+          gender: true,
+        },
       });
 
       return {
