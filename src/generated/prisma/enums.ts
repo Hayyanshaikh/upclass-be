@@ -15,14 +15,3 @@ export const Gendar = {
 } as const
 
 export type Gendar = (typeof Gendar)[keyof typeof Gendar]
-
-
-export const Role = {
-  SUPERADMIN: 'SUPERADMIN',
-  ADMIN: 'ADMIN',
-  TEACHER: 'TEACHER',
-  STUDENT: 'STUDENT',
-  PARENT: 'PARENT'
-} as const
-
-export type Role = (typeof Role)[keyof typeof Role]

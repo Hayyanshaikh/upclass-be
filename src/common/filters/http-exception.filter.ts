@@ -20,10 +20,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const exceptionResponse =
       exception instanceof HttpException ? exception.getResponse() : null;
 
-    let data: string[] = [];
+    let message = 'Request failed.';
+    let errors: string[] = [];
 
     if (typeof exceptionResponse === 'string') {
-      data = [exceptionResponse];
+      message = exceptionResponse;
     } else if (exceptionResponse && typeof exceptionResponse === 'object') {
       const body = exceptionResponse as {
         message?: string | string[];
@@ -31,19 +32,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
       };
 
       if (Array.isArray(body.errors)) {
-        data = body.errors;
-      } else if (Array.isArray(body.message)) {
-        data = body.message;
-      } else if (typeof body.message === 'string') {
-        data = [body.message];
+        errors = body.errors;
       }
+      if (Array.isArray(body.message)) message = body.message.join('; ');
+      else if (typeof body.message === 'string') message = body.message;
     } else {
-      data = ['An unexpected error occurred.'];
+      message = 'An unexpected error occurred.';
     }
 
     response.status(statusCode).json({
       statusCode,
-      data,
+      message,
+      data: errors.length ? { errors } : {},
     });
   }
 }

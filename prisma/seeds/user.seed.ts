@@ -1,8 +1,8 @@
-import { Role, Gendar } from '../../src/generated/prisma/client';
+import { Gendar } from '../../src/generated/prisma/client';
 import { prisma } from '../prisma-client';
 import * as bcrypt from 'bcrypt';
 
-export async function seedUsers() {
+export async function seedUsers(superAdminRoleId: string) {
   const email = process.env.SUPER_ADMIN_EMAIL;
   const password = process.env.SUPER_ADMIN_PASSWORD;
 
@@ -14,12 +14,12 @@ export async function seedUsers() {
 
   await prisma.user.upsert({
     where: { email },
-    update: {},
+    update: { roleId: superAdminRoleId },
     create: {
       name: 'Super Admin',
       email,
       password: hashedPassword,
-      role: Role.SUPERADMIN,
+      roleId: superAdminRoleId,
       gender: Gendar.MALE,
       isActive: true,
     },

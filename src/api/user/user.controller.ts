@@ -8,11 +8,20 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiResponse,
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  UserFindOneResponseDto,
+  UserResponseDto,
+} from './dto/user-response.dto';
 
 @ApiTags('Users')
 @Controller('user')
@@ -30,16 +39,22 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, description: 'Users retrieved successfully' })
-  findAll() {
+  @ApiOkResponse({
+    description: 'Users retrieved successfully',
+    type: UserResponseDto,
+  })
+  findAll(): Promise<UserResponseDto> {
     return this.userService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a user by ID' })
-  @ApiResponse({ status: 200, description: 'User retrieved successfully' })
+  @ApiOkResponse({
+    description: 'User retrieved successfully',
+    type: UserFindOneResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'User not found' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<UserFindOneResponseDto> {
     return this.userService.findOne(id);
   }
 

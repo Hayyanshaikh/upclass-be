@@ -13,6 +13,10 @@ import { PrismaService } from '../../database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import {
+  UserFindOneResponseDto,
+  UserResponseDto,
+} from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -62,7 +66,7 @@ export class UserService {
           password: hashedPassword,
           age: dto.age,
           gender: dto.gender,
-          role: dto.role,
+          roleId: dto.roleId,
           isActive: dto.isActive,
         },
         // Never return password hash in API response
@@ -94,15 +98,30 @@ export class UserService {
     }
   }
 
-  // GET ALL USERS
-  async findAll() {
+  async findAll(): Promise<UserResponseDto> {
     try {
-      const users = await this.prisma.user.findMany();
+      const users = await this.prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roleId: true,
+          role: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          isActive: true,
+          gender: true,
+        },
+      });
 
       return {
-        statusCode: HttpStatus.OK,
-        message: 'Users retrieved successfully.',
         data: users,
+        message: 'Users retrieved successfully',
+        statusCode: 200,
       };
     } catch (error) {
       console.error('GET USERS ERROR:', error);
@@ -115,10 +134,25 @@ export class UserService {
   }
 
   // GET USER BY ID
-  async findOne(id: string) {
+  async findOne(id: string): Promise<UserFindOneResponseDto> {
     try {
       const user = await this.prisma.user.findUnique({
         where: { id },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roleId: true,
+          role: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          isActive: true,
+          gender: true,
+        },
       });
 
       if (!user) {

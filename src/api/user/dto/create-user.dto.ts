@@ -11,7 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { Gendar, Role } from '../../../generated/prisma/enums';
+import { Gendar } from '../../../generated/prisma/enums';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -38,9 +38,8 @@ export class CreateUserDto {
   @IsEnum(Gendar)
   gender?: Gendar;
 
-  @ApiProperty({ enum: Role })
-  @IsEnum(Role)
-  role: Role;
+  @ApiProperty()
+  roleId: string;
 
   @ApiPropertyOptional()
   @IsOptional()
