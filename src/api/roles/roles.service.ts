@@ -4,15 +4,15 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '../../generated/prisma/client';
-import { PrismaService } from '../../database/prisma.service';
-import { CreateRoleDto } from './dto/create-role.dto';
+import { Prisma } from '../../generated/prisma/client.ts';
+import { PrismaService } from '../../database/prisma.service.ts';
+import { CreateRoleDto } from './dto/create-role.dto.ts';
 import {
   RoleResponseDto,
   RolesResponseDto,
-} from './dto/role-response.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { Role } from './entities/role.entity';
+} from './dto/role-response.dto.ts';
+import { UpdateRoleDto } from './dto/update-role.dto.ts';
+import { Role } from './entities/role.entity.ts';
 
 export interface RoleApiResponse<T extends object | object[]> {
   data: T;

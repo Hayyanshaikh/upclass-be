@@ -14,13 +14,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { RolesService } from './roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
+import { RolesService } from './roles.service.ts';
+import { CreateRoleDto } from './dto/create-role.dto.ts';
 import {
   RoleResponseDto,
   RolesResponseDto,
-} from './dto/role-response.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
+} from './dto/role-response.dto.ts';
+import { UpdateRoleDto } from './dto/update-role.dto.ts';
 
 @ApiTags('Roles')
 @Controller('roles')

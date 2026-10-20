@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace.ts"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.10.1",
   "engineVersion": "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum Gendar {\n  MALE\n  FEMALE\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String\n  password  String\n  email     String   @unique()\n  age       Int?\n  gender    Gendar   @default(FEMALE)\n  isActive  Boolean  @default(true)\n  isSystem  Boolean  @default(false)\n  roleId    String\n  role      Role     @relation(fields: [roleId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Role {\n  id          String           @id @default(cuid())\n  name        String           @unique\n  slug        String           @unique\n  description String?\n  users       User[]\n  permissions RolePermission[]\n  createdAt   DateTime         @default(now())\n  updatedAt   DateTime         @updatedAt\n}\n\nmodel Permission {\n  id          String           @id @default(cuid())\n  key         String           @unique\n  description String?\n  roles       RolePermission[]\n  createdAt   DateTime         @default(now())\n}\n\nmodel RolePermission {\n  roleId       String\n  permissionId String\n  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)\n  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([roleId, permissionId])\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider            = \"prisma-client\"\n  output              = \"../src/generated/prisma\"\n  moduleFormat        = \"esm\"\n  importFileExtension = \"ts\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum Gendar {\n  MALE\n  FEMALE\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String\n  password  String\n  email     String   @unique()\n  age       Int?\n  gender    Gendar   @default(FEMALE)\n  isActive  Boolean  @default(true)\n  isSystem  Boolean  @default(false)\n  roleId    String\n  role      Role     @relation(fields: [roleId], references: [id])\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Role {\n  id          String           @id @default(cuid())\n  name        String           @unique\n  slug        String           @unique\n  description String?\n  users       User[]\n  permissions RolePermission[]\n  createdAt   DateTime         @default(now())\n  updatedAt   DateTime         @updatedAt\n}\n\nmodel Permission {\n  id          String           @id @default(cuid())\n  key         String           @unique\n  description String?\n  roles       RolePermission[]\n  createdAt   DateTime         @default(now())\n}\n\nmodel RolePermission {\n  roleId       String\n  permissionId String\n  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)\n  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)\n\n  @@id([roleId, permissionId])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -45,10 +45,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.js"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.js")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
   },
 

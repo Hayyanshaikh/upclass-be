@@ -4,15 +4,16 @@
   "description": "",
   "author": "",
   "private": true,
+  "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "prisma generate && nest build",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/main.js",
     "lint": "oxlint --type-aware src/ test/",
     "prisma": "npx prisma db push && npx prisma generate",
     "seed": "tsx prisma/seed.ts"

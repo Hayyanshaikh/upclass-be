@@ -8,8 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js'
-export type * from './models/Role.js'
-export type * from './models/Permission.js'
-export type * from './models/RolePermission.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User.ts'
+export type * from './models/Role.ts'
+export type * from './models/Permission.ts'
+export type * from './models/RolePermission.ts'
+export type * from './commonInputTypes.ts'

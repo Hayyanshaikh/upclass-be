@@ -9,15 +9,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { Prisma } from '../../generated/prisma/client';
-import { PrismaService } from '../../database/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Prisma } from '../../generated/prisma/client.ts';
+import { PrismaService } from '../../database/prisma.service.ts';
+import { CreateUserDto } from './dto/create-user.dto.ts';
+import { UpdateUserDto } from './dto/update-user.dto.ts';
 import * as bcrypt from 'bcrypt';
 import {
   UserFindOneResponseDto,
   UserResponseDto,
-} from './dto/user-response.dto';
+} from './dto/user-response.dto.ts';
 
 @Injectable()
 export class UserService {

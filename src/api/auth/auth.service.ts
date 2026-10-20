@@ -2,9 +2,9 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { PrismaService } from '../../database/prisma.service';
-import { LoginDto } from './dto/login.dto';
-import { LoginResponseDto } from '../user/dto/user-response.dto';
+import { PrismaService } from '../../database/prisma.service.ts';
+import { LoginDto } from './dto/login.dto.ts';
+import { LoginResponseDto } from '../user/dto/user-response.dto.ts';
 
 @Injectable()
 export class AuthService {

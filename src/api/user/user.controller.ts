@@ -15,13 +15,13 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service.ts';
+import { CreateUserDto } from './dto/create-user.dto.ts';
+import { UpdateUserDto } from './dto/update-user.dto.ts';
 import {
   UserFindOneResponseDto,
   UserResponseDto,
-} from './dto/user-response.dto';
+} from './dto/user-response.dto.ts';
 
 @ApiTags('Users')
 @Controller('user')

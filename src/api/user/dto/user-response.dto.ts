@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Gendar } from '../../../generated/prisma/enums';
+import { Gendar } from '../../../generated/prisma/enums.ts';
 
 export class RoleSummaryDto {
   @ApiProperty()

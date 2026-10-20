@@ -11,7 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { Gendar } from '../../../generated/prisma/enums';
+import { Gendar } from '../../../generated/prisma/enums.ts';
 
 export class CreateUserDto {
   @ApiProperty()
