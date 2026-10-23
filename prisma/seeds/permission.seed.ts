@@ -141,5 +141,9 @@ export async function seedPermissions() {
         create: permission,
       }),
     ),
+    {
+      maxWait: 10000,
+      timeout: 60000,
+    },
   );
 }
