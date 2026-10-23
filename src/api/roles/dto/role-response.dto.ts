@@ -11,7 +11,7 @@ export class RoleDataDto {
   @ApiProperty({ example: 'super_admin' })
   slug!: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   description!: string | null;
 
   @ApiProperty({ enum: RoleType })

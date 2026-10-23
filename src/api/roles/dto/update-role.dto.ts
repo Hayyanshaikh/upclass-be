@@ -26,7 +26,7 @@ export class UpdateRoleDto {
   })
   slug?: string;
 
-  @ApiPropertyOptional({ nullable: true, maxLength: 500 })
+  @ApiPropertyOptional({ type: String, nullable: true, maxLength: 500 })
   @IsOptional()
   @IsString()
   @MaxLength(500)
