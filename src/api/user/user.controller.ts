@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import {
   ApiResponse,
@@ -18,6 +18,7 @@ import {
 import { UserService } from './user.service.ts';
 import { CreateUserDto } from './dto/create-user.dto.ts';
 import { UpdateUserDto } from './dto/update-user.dto.ts';
+import { FindUsersQueryDto } from './dto/find-users-query.dto.ts';
 import {
   UserFindOneResponseDto,
   UserResponseDto,
@@ -43,8 +44,8 @@ export class UserController {
     description: 'Users retrieved successfully',
     type: UserResponseDto,
   })
-  findAll(): Promise<UserResponseDto> {
-    return this.userService.findAll();
+  findAll(@Query() query: FindUsersQueryDto): Promise<UserResponseDto> {
+    return this.userService.findAll(query);
   }
 
   @Get(':id')

@@ -49,6 +49,9 @@ export class UserResponseDto {
   @ApiProperty({ type: [LoginResponseUserDto] })
   data: LoginResponseUserDto[];
 
+  @ApiProperty({ description: 'Total users matching the filters' })
+  total: number;
+
   @ApiProperty()
   message: string;
 

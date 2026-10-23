@@ -13,6 +13,7 @@ import { Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { CreateUserDto } from './dto/create-user.dto.ts';
 import { UpdateUserDto } from './dto/update-user.dto.ts';
+import { FindUsersQueryDto } from './dto/find-users-query.dto.ts';
 import * as bcrypt from 'bcrypt';
 import {
   UserFindOneResponseDto,
@@ -99,29 +100,48 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserResponseDto> {
+  async findAll(query: FindUsersQueryDto): Promise<UserResponseDto> {
     try {
-      const users = await this.prisma.user.findMany({
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          roleId: true,
-          role: {
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-            },
+      const where: Prisma.UserWhereInput = {
+        ...(query.role && {
+          OR: [{ roleId: query.role }, { role: { slug: query.role } }],
+        }),
+        ...(query.searchKey && {
+          name: {
+            contains: query.searchKey,
+            mode: 'insensitive',
           },
-          isActive: true,
-          isSystem: true,
-          gender: true,
-        },
-      });
+        }),
+      };
+      const [users, total] = await Promise.all([
+        this.prisma.user.findMany({
+          where,
+          take: query.limit,
+          skip: query.offset ?? 0,
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            roleId: true,
+            role: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
+            isActive: true,
+            isSystem: true,
+            gender: true,
+          },
+        }),
+        this.prisma.user.count({ where }),
+      ]);
 
       return {
         data: users,
+        total,
         message: 'Users retrieved successfully',
         statusCode: 200,
       };
