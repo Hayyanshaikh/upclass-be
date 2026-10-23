@@ -5,9 +5,16 @@ import { AuthModule } from './api/auth/auth.module.ts';
 import { UserModule } from './api/user/user.module.ts';
 import { PrismaModule } from './database/prisma.module.ts';
 import { RolesModule } from './api/roles/roles.module.ts';
+import { PermissionsModule } from './api/permissions/permissions.module.ts';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, RolesModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UserModule,
+    RolesModule,
+    PermissionsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -24,9 +24,14 @@ export class RoleDataDto {
   updatedAt!: Date;
 }
 
+export class RoleDetailDataDto extends RoleDataDto {
+  @ApiProperty({ type: [String], example: ['students.view', 'roles.edit'] })
+  permissionKeys!: string[];
+}
+
 export class RoleResponseDto {
-  @ApiProperty({ type: RoleDataDto })
-  data!: RoleDataDto;
+  @ApiProperty({ type: RoleDetailDataDto })
+  data!: RoleDetailDataDto;
 
   @ApiProperty()
   message!: string;

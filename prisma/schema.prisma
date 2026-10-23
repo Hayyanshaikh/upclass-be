@@ -55,6 +55,10 @@ model Permission {
   id          String           @id @default(cuid())
   key         String           @unique
   description String?
+  group       String           @default("System")
+  module      String           @default("Unknown")
+  action      String           @default("View")
+  sortOrder   Int              @default(0)
   roles       RolePermission[]
   createdAt   DateTime         @default(now())
 }

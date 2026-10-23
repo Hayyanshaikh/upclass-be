@@ -789,6 +789,10 @@ export const PermissionScalarFieldEnum = {
   id: 'id',
   key: 'key',
   description: 'description',
+  group: 'group',
+  module: 'module',
+  action: 'action',
+  sortOrder: 'sortOrder',
   createdAt: 'createdAt'
 } as const
 

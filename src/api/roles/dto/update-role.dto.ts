@@ -1,5 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayUnique,
+  IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -31,4 +33,15 @@ export class UpdateRoleDto {
   @IsString()
   @MaxLength(500)
   description?: string | null;
+
+  @ApiPropertyOptional({
+    type: [String],
+    example: ['students.view', 'roles.edit'],
+  })
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  permissionKeys?: string[];
 }
