@@ -16,6 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto.ts';
 import { FindUsersQueryDto } from './dto/find-users-query.dto.ts';
 import * as bcrypt from 'bcrypt';
 import {
+  LoginResponseUserDto,
   UserFindOneResponseDto,
   UserResponseDto,
 } from './dto/user-response.dto.ts';
@@ -170,6 +171,15 @@ export class UserService {
               id: true,
               name: true,
               slug: true,
+              permissions: {
+                select: {
+                  permission: {
+                    select: {
+                      key: true,
+                    },
+                  },
+                },
+              },
             },
           },
           isActive: true,
@@ -185,10 +195,30 @@ export class UserService {
         });
       }
 
+      const returnUser: LoginResponseUserDto = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roleId: user.roleId,
+        isActive: user.isActive,
+        isSystem: user.isSystem,
+        gender: user.gender,
+        role: user.role
+          ? {
+              id: user.role.id,
+              name: user.role.name,
+              slug: user.role.slug,
+              permissions: user.role.permissions.map(({ permission }) => ({
+                key: permission.key,
+              })),
+            }
+          : undefined,
+      };
+
       return {
         statusCode: HttpStatus.OK,
         message: 'User retrieved successfully.',
-        data: user,
+        data: returnUser,
       };
     } catch (error) {
       if (error instanceof HttpException) {

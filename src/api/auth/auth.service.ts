@@ -4,7 +4,10 @@ import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '../../database/prisma.service.ts';
 import { LoginDto } from './dto/login.dto.ts';
-import { LoginResponseDto } from '../user/dto/user-response.dto.ts';
+import {
+  LoginResponseDto,
+  LoginResponseUserDto,
+} from '../user/dto/user-response.dto.ts';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +38,33 @@ export class AuthService {
       // Find user
       const user = await this.prisma.user.findUnique({
         where: { email },
+        select: {
+          password: true,
+          name: true,
+          isActive: true,
+          id: true,
+          email: true,
+          roleId: true,
+          gender: true,
+          age: true,
+          isSystem: true,
+          role: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              permissions: {
+                select: {
+                  permission: {
+                    select: {
+                      key: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       });
 
       if (!user) {
@@ -65,7 +95,23 @@ export class AuthService {
 
       const accessToken = await this.jwtService.signAsync(payload);
 
-      const { password: removedPassword, ...userReturn } = user;
+      const userReturn: LoginResponseUserDto = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roleId: user.roleId,
+        role: {
+          id: user.role.id,
+          name: user.role.name,
+          slug: user.role.slug,
+          permissions: user.role.permissions.map((permission) => ({
+            key: permission.permission.key,
+          })),
+        },
+        isActive: user.isActive,
+        isSystem: user.isSystem,
+        gender: user.gender,
+      };
 
       return {
         accessToken,

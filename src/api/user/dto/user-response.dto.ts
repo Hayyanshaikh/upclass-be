@@ -1,6 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Gendar } from '../../../generated/prisma/enums.ts';
+import { PermissionDataDto } from '../../permissions/dto/permission-response.dto.ts';
 
+export class PermissionKey {
+  @ApiProperty()
+  key: string;
+}
 export class RoleSummaryDto {
   @ApiProperty()
   id: string;
@@ -10,6 +15,9 @@ export class RoleSummaryDto {
 
   @ApiProperty({ example: 'super_admin' })
   slug: string;
+
+  @ApiPropertyOptional({ type: () => [PermissionKey] })
+  permissions?: PermissionKey[];
 }
 export class LoginResponseUserDto {
   @ApiProperty()
