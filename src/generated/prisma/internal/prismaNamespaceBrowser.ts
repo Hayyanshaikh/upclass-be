@@ -95,6 +95,7 @@ export const RoleScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   description: 'description',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

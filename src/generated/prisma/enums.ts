@@ -15,3 +15,11 @@ export const Gendar = {
 } as const
 
 export type Gendar = (typeof Gendar)[keyof typeof Gendar]
+
+
+export const RoleType = {
+  SYSTEM_ROLE: 'SYSTEM_ROLE',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type RoleType = (typeof RoleType)[keyof typeof RoleType]

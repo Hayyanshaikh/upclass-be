@@ -1,9 +1,11 @@
 import { prisma } from '../prisma-client';
+import { RoleType } from '../../src/generated/prisma/client';
 
 const superAdminRole = {
   name: 'Super Admin',
   slug: 'super_admin',
   description: 'Full access to the system.',
+  type: RoleType.SYSTEM_ROLE,
 };
 
 export async function seedSuperAdminRole() {

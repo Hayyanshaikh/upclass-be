@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -21,6 +22,7 @@ import {
   RolesResponseDto,
 } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
+import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
 
 @ApiTags('Roles')
 @Controller('roles')
@@ -45,8 +47,8 @@ export class RolesController {
     description: 'Roles retrieved successfully',
     type: RolesResponseDto,
   })
-  findAll(): Promise<RolesResponseDto> {
-    return this.rolesService.findAll();
+  findAll(@Query() query: FindRolesQueryDto): Promise<RolesResponseDto> {
+    return this.rolesService.findAll(query);
   }
 
   @Get(':id')

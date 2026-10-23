@@ -7,12 +7,9 @@ import {
 import { Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { CreateRoleDto } from './dto/create-role.dto.ts';
-import {
-  RoleResponseDto,
-  RolesResponseDto,
-} from './dto/role-response.dto.ts';
+import { RoleResponseDto, RolesResponseDto } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
-import { Role } from './entities/role.entity.ts';
+import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
 
 export interface RoleApiResponse<T extends object | object[]> {
   data: T;
@@ -33,12 +30,33 @@ export class RolesService {
     }
   }
 
-  async findAll(): Promise<RolesResponseDto> {
+  async findAll(query: FindRolesQueryDto): Promise<RolesResponseDto> {
     try {
-      const roles = await this.prisma.role.findMany({
-        orderBy: { name: 'asc' },
-      });
-      return this.success(roles, 'Roles retrieved successfully.');
+      const where: Prisma.RoleWhereInput = {
+        ...(query.searchKey && {
+          name: { contains: query.searchKey, mode: 'insensitive' },
+        }),
+        ...(query.type && { type: query.type }),
+      };
+      const [roles, total] = await Promise.all([
+        this.prisma.role.findMany({
+          where,
+          take: query.limit,
+          skip: query.offset ?? 0,
+          orderBy: [{ name: 'asc' }, { id: 'asc' }],
+          include: { _count: { select: { users: true } } },
+        }),
+        this.prisma.role.count({ where }),
+      ]);
+      return {
+        data: roles.map(({ _count, ...role }) => ({
+          ...role,
+          users: _count.users,
+        })),
+        total,
+        message: 'Roles retrieved successfully.',
+        statusCode: 200,
+      };
     } catch {
       throw new InternalServerErrorException('Failed to retrieve roles.');
     }
@@ -47,7 +65,8 @@ export class RolesService {
   async findOne(id: string): Promise<RoleResponseDto> {
     try {
       const role = await this.prisma.role.findUnique({ where: { id } });
-      if (!role) throw new NotFoundException(`Role with ID "${id}" was not found.`);
+      if (!role)
+        throw new NotFoundException(`Role with ID "${id}" was not found.`);
       return this.success(role, 'Role retrieved successfully.');
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
@@ -55,10 +74,7 @@ export class RolesService {
     }
   }
 
-  async update(
-    id: string,
-    dto: UpdateRoleDto,
-  ): Promise<RoleResponseDto> {
+  async update(id: string, dto: UpdateRoleDto): Promise<RoleResponseDto> {
     try {
       const role = await this.prisma.role.update({ where: { id }, data: dto });
       return this.success(role, 'Role updated successfully.');
@@ -87,7 +103,9 @@ export class RolesService {
   private handlePrismaError(error: unknown, id?: string): never {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
-        throw new ConflictException('A role with this name or slug already exists.');
+        throw new ConflictException(
+          'A role with this name or slug already exists.',
+        );
       }
       if (error.code === 'P2025') {
         throw new NotFoundException(`Role with ID "${id}" was not found.`);

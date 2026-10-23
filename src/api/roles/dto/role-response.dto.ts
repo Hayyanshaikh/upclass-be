@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { RoleType } from '../../../generated/prisma/client.ts';
 
 export class RoleDataDto {
   @ApiProperty()
@@ -12,6 +13,9 @@ export class RoleDataDto {
 
   @ApiProperty({ nullable: true })
   description!: string | null;
+
+  @ApiProperty({ enum: RoleType })
+  type!: RoleType;
 
   @ApiProperty()
   createdAt!: Date;
@@ -34,9 +38,17 @@ export class RoleResponseDto {
   warning?: string;
 }
 
+export class RoleListItemDto extends RoleDataDto {
+  @ApiProperty()
+  users!: number;
+}
+
 export class RolesResponseDto {
-  @ApiProperty({ type: [RoleDataDto] })
-  data!: RoleDataDto[];
+  @ApiProperty({ type: [RoleListItemDto] })
+  data!: RoleListItemDto[];
+
+  @ApiProperty()
+  total!: number;
 
   @ApiProperty()
   message!: string;
