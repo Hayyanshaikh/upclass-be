@@ -11,8 +11,6 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { Gendar } from '../../../generated/prisma/enums.ts';
-
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
@@ -27,16 +25,6 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Password is required.' })
   @MinLength(8, { message: 'Password must be at least 8 characters.' })
   password: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsInt()
-  age?: number;
-
-  @ApiPropertyOptional({ enum: Gendar })
-  @IsOptional()
-  @IsEnum(Gendar)
-  gender?: Gendar;
 
   @ApiProperty()
   @IsString()

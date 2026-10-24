@@ -14,10 +14,10 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Gendar {
-  MALE
-  FEMALE
-}
+// enum Gendar {
+//   MALE
+//   FEMALE
+// }
 
 enum RoleType {
   SYSTEM_ROLE
@@ -29,8 +29,6 @@ model User {
   name      String
   password  String
   email     String   @unique()
-  age       Int?
-  gender    Gendar   @default(FEMALE)
   isActive  Boolean  @default(true)
   isSystem  Boolean  @default(false)
   roleId    String

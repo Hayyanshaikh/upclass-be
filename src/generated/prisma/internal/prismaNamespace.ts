@@ -760,8 +760,6 @@ export const UserScalarFieldEnum = {
   name: 'name',
   password: 'password',
   email: 'email',
-  age: 'age',
-  gender: 'gender',
   isActive: 'isActive',
   isSystem: 'isSystem',
   roleId: 'roleId',
@@ -852,34 +850,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Gendar'
- */
-export type EnumGendarFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gendar'>
-    
-
-
-/**
- * Reference to a field of type 'Gendar[]'
- */
-export type ListEnumGendarFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gendar[]'>
-    
-
-
-/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -904,14 +874,28 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'RoleType'
  */
 export type EnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType'>
-
+    
 
 
 /**
  * Reference to a field of type 'RoleType[]'
  */
 export type ListEnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType[]'>
+    
 
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
 
 
 /**

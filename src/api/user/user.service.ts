@@ -67,8 +67,6 @@ export class UserService {
           name: dto.name,
           email: dto.email,
           password: hashedPassword,
-          age: dto.age,
-          gender: dto.gender,
           roleId: dto.roleId,
           isActive: dto.isActive,
         },
@@ -134,7 +132,6 @@ export class UserService {
             },
             isActive: true,
             isSystem: true,
-            gender: true,
           },
         }),
         this.prisma.user.count({ where }),
@@ -159,6 +156,8 @@ export class UserService {
   // GET USER BY ID
   async findOne(id: string): Promise<UserFindOneResponseDto> {
     try {
+      console.log(`id =>>>>>>>>`, id);
+
       const user = await this.prisma.user.findUnique({
         where: { id },
         select: {
@@ -184,7 +183,6 @@ export class UserService {
           },
           isActive: true,
           isSystem: true,
-          gender: true,
         },
       });
 
@@ -202,7 +200,6 @@ export class UserService {
         roleId: user.roleId,
         isActive: user.isActive,
         isSystem: user.isSystem,
-        gender: user.gender,
         role: user.role
           ? {
               id: user.role.id,
@@ -289,7 +286,6 @@ export class UserService {
           },
           isActive: true,
           isSystem: true,
-          gender: true,
         },
       });
 

@@ -154,13 +154,13 @@ export type PermissionAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   _avg?: PermissionAvgAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to sum
   **/
   _sum?: PermissionSumAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   *
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: PermissionMinAggregateInputType

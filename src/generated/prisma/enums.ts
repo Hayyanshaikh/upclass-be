@@ -9,14 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const Gendar = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE'
-} as const
-
-export type Gendar = (typeof Gendar)[keyof typeof Gendar]
-
-
 export const RoleType = {
   SYSTEM_ROLE: 'SYSTEM_ROLE',
   CUSTOM: 'CUSTOM'
