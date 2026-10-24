@@ -156,8 +156,6 @@ export class UserService {
   // GET USER BY ID
   async findOne(id: string): Promise<UserFindOneResponseDto> {
     try {
-      console.log(`id =>>>>>>>>`, id);
-
       const user = await this.prisma.user.findUnique({
         where: { id },
         select: {
