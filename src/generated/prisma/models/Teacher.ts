@@ -236,16 +236,16 @@ export type TeacherGroupByOutputType = {
   userId: string
   image: string | null
   firstName: string
-  lastName: string
+  lastName: string | null
   dateOfBirth: Date | null
   gender: $Enums.Gender | null
   cnicNo: string | null
   maritalStatus: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId: string | null
   qualification: string | null
   joiningDate: Date | null
-  employmentType: $Enums.EmploymentType
-  isActive: boolean
+  employmentType: $Enums.EmploymentType | null
+  isActive: boolean | null
   phone: string | null
   email: string | null
   address: string | null
@@ -279,16 +279,16 @@ export type TeacherWhereInput = {
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
-  lastName?: Prisma.StringFilter<"Teacher"> | string
+  lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   gender?: Prisma.EnumGenderNullableFilter<"Teacher"> | $Enums.Gender | null
   cnicNo?: Prisma.StringNullableFilter<"Teacher"> | string | null
   maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Teacher"> | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFilter<"Teacher"> | string
+  employeeId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   qualification?: Prisma.StringNullableFilter<"Teacher"> | string | null
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFilter<"Teacher"> | $Enums.EmploymentType
-  isActive?: Prisma.BoolFilter<"Teacher"> | boolean
+  employmentType?: Prisma.EnumEmploymentTypeNullableFilter<"Teacher"> | $Enums.EmploymentType | null
+  isActive?: Prisma.BoolNullableFilter<"Teacher"> | boolean | null
   phone?: Prisma.StringNullableFilter<"Teacher"> | string | null
   email?: Prisma.StringNullableFilter<"Teacher"> | string | null
   address?: Prisma.StringNullableFilter<"Teacher"> | string | null
@@ -302,16 +302,16 @@ export type TeacherOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   cnicNo?: Prisma.SortOrderInput | Prisma.SortOrder
   maritalStatus?: Prisma.SortOrderInput | Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   qualification?: Prisma.SortOrderInput | Prisma.SortOrder
   joiningDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  employmentType?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
+  employmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -331,14 +331,14 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
-  lastName?: Prisma.StringFilter<"Teacher"> | string
+  lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   gender?: Prisma.EnumGenderNullableFilter<"Teacher"> | $Enums.Gender | null
   maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Teacher"> | $Enums.MaritalStatus | null
   qualification?: Prisma.StringNullableFilter<"Teacher"> | string | null
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFilter<"Teacher"> | $Enums.EmploymentType
-  isActive?: Prisma.BoolFilter<"Teacher"> | boolean
+  employmentType?: Prisma.EnumEmploymentTypeNullableFilter<"Teacher"> | $Enums.EmploymentType | null
+  isActive?: Prisma.BoolNullableFilter<"Teacher"> | boolean | null
   phone?: Prisma.StringNullableFilter<"Teacher"> | string | null
   address?: Prisma.StringNullableFilter<"Teacher"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Teacher"> | Date | string
@@ -351,16 +351,16 @@ export type TeacherOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  lastName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   cnicNo?: Prisma.SortOrderInput | Prisma.SortOrder
   maritalStatus?: Prisma.SortOrderInput | Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   qualification?: Prisma.SortOrderInput | Prisma.SortOrder
   joiningDate?: Prisma.SortOrderInput | Prisma.SortOrder
-  employmentType?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
+  employmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -379,16 +379,16 @@ export type TeacherScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
   image?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   firstName?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
-  lastName?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"Teacher"> | Date | string | null
   gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"Teacher"> | $Enums.Gender | null
   cnicNo?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   maritalStatus?: Prisma.EnumMaritalStatusNullableWithAggregatesFilter<"Teacher"> | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
+  employeeId?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   qualification?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   joiningDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Teacher"> | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeWithAggregatesFilter<"Teacher"> | $Enums.EmploymentType
-  isActive?: Prisma.BoolWithAggregatesFilter<"Teacher"> | boolean
+  employmentType?: Prisma.EnumEmploymentTypeNullableWithAggregatesFilter<"Teacher"> | $Enums.EmploymentType | null
+  isActive?: Prisma.BoolNullableWithAggregatesFilter<"Teacher"> | boolean | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
@@ -400,16 +400,16 @@ export type TeacherCreateInput = {
   id?: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -423,16 +423,16 @@ export type TeacherUncheckedCreateInput = {
   userId: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -444,16 +444,16 @@ export type TeacherUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -467,16 +467,16 @@ export type TeacherUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -489,16 +489,16 @@ export type TeacherCreateManyInput = {
   userId: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -510,16 +510,16 @@ export type TeacherUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -532,16 +532,16 @@ export type TeacherUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -679,24 +679,28 @@ export type NullableEnumMaritalStatusFieldUpdateOperationsInput = {
   set?: $Enums.MaritalStatus | null
 }
 
-export type EnumEmploymentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.EmploymentType
+export type NullableEnumEmploymentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EmploymentType | null
+}
+
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
 }
 
 export type TeacherCreateWithoutUserInput = {
   id?: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -708,16 +712,16 @@ export type TeacherUncheckedCreateWithoutUserInput = {
   id?: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -759,16 +763,16 @@ export type TeacherScalarWhereInput = {
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
-  lastName?: Prisma.StringFilter<"Teacher"> | string
+  lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   gender?: Prisma.EnumGenderNullableFilter<"Teacher"> | $Enums.Gender | null
   cnicNo?: Prisma.StringNullableFilter<"Teacher"> | string | null
   maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Teacher"> | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFilter<"Teacher"> | string
+  employeeId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   qualification?: Prisma.StringNullableFilter<"Teacher"> | string | null
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFilter<"Teacher"> | $Enums.EmploymentType
-  isActive?: Prisma.BoolFilter<"Teacher"> | boolean
+  employmentType?: Prisma.EnumEmploymentTypeNullableFilter<"Teacher"> | $Enums.EmploymentType | null
+  isActive?: Prisma.BoolNullableFilter<"Teacher"> | boolean | null
   phone?: Prisma.StringNullableFilter<"Teacher"> | string | null
   email?: Prisma.StringNullableFilter<"Teacher"> | string | null
   address?: Prisma.StringNullableFilter<"Teacher"> | string | null
@@ -780,16 +784,16 @@ export type TeacherCreateManyUserInput = {
   id?: string
   image?: string | null
   firstName: string
-  lastName: string
+  lastName?: string | null
   dateOfBirth?: Date | string | null
   gender?: $Enums.Gender | null
   cnicNo?: string | null
   maritalStatus?: $Enums.MaritalStatus | null
-  employeeId: string
+  employeeId?: string | null
   qualification?: string | null
   joiningDate?: Date | string | null
-  employmentType?: $Enums.EmploymentType
-  isActive?: boolean
+  employmentType?: $Enums.EmploymentType | null
+  isActive?: boolean | null
   phone?: string | null
   email?: string | null
   address?: string | null
@@ -801,16 +805,16 @@ export type TeacherUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -822,16 +826,16 @@ export type TeacherUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -843,16 +847,16 @@ export type TeacherUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   cnicNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maritalStatus?: Prisma.NullableEnumMaritalStatusFieldUpdateOperationsInput | $Enums.MaritalStatus | null
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qualification?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  employmentType?: Prisma.NullableEnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -974,16 +978,16 @@ export type $TeacherPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     userId: string
     image: string | null
     firstName: string
-    lastName: string
+    lastName: string | null
     dateOfBirth: Date | null
     gender: $Enums.Gender | null
     cnicNo: string | null
     maritalStatus: $Enums.MaritalStatus | null
-    employeeId: string
+    employeeId: string | null
     qualification: string | null
     joiningDate: Date | null
-    employmentType: $Enums.EmploymentType
-    isActive: boolean
+    employmentType: $Enums.EmploymentType | null
+    isActive: boolean | null
     phone: string | null
     email: string | null
     address: string | null

@@ -97,24 +97,24 @@ model RolePermission {
 }
 
 model Teacher {
-  id             String         @id @default(cuid())
+  id             String          @id @default(cuid())
   userId         String
-  user           User           @relation(fields: [userId], references: [id])
+  user           User            @relation(fields: [userId], references: [id])
   image          String?
   firstName      String
-  lastName       String
+  lastName       String?
   dateOfBirth    DateTime?
   gender         Gender?
-  cnicNo         String?        @unique
+  cnicNo         String?         @unique
   maritalStatus  MaritalStatus?
-  employeeId     String         @unique
+  employeeId     String?         @unique
   qualification  String?
   joiningDate    DateTime?
-  employmentType EmploymentType @default(FULL_TIME)
-  isActive       Boolean        @default(true)
+  employmentType EmploymentType? @default(FULL_TIME)
+  isActive       Boolean?        @default(true)
   phone          String?
-  email          String?        @unique
+  email          String?         @unique
   address        String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }

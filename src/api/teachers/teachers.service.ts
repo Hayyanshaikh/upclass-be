@@ -28,7 +28,6 @@ export class TeachersService {
     const {
       firstName,
       lastName,
-      employeeId,
       image,
       dateOfBirth,
       gender,
@@ -43,24 +42,24 @@ export class TeachersService {
       address,
     } = dto;
 
-    if (!firstName?.trim() || !lastName?.trim() || !employeeId?.trim()) {
-      throw new BadRequestException(
-        'First name, last name and employee ID are required.',
-      );
+    if (!firstName?.trim()) {
+      throw new BadRequestException('First name is required.');
     }
-    if (employmentType === null || isActive === null) {
+    if (lastName != null && !lastName.trim()) {
       throw new BadRequestException(
-        'Employment type and active status cannot be null.',
+        'Last name and employee ID cannot be empty.',
       );
     }
 
     try {
+      const employeeId = await this.generateTeacherEmployeeId();
+
       const teacher = await this.prisma.teacher.create({
         data: {
           userId,
           firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          employeeId: employeeId.trim(),
+          lastName: lastName?.trim() ?? lastName,
+          employeeId: employeeId,
           image,
           dateOfBirth,
           gender,
@@ -165,16 +164,11 @@ export class TeachersService {
 
     if (
       (firstName !== undefined && !firstName?.trim()) ||
-      (lastName !== undefined && !lastName?.trim()) ||
-      (employeeId !== undefined && !employeeId?.trim())
+      (lastName != null && !lastName.trim()) ||
+      (employeeId != null && !employeeId.trim())
     ) {
       throw new BadRequestException(
         'First name, last name and employee ID cannot be empty.',
-      );
-    }
-    if (employmentType === null || isActive === null) {
-      throw new BadRequestException(
-        'Employment type and active status cannot be null.',
       );
     }
 
@@ -183,8 +177,8 @@ export class TeachersService {
         where: { id },
         data: {
           firstName: firstName?.trim(),
-          lastName: lastName?.trim(),
-          employeeId: employeeId?.trim(),
+          lastName: lastName?.trim() ?? lastName,
+          employeeId: employeeId?.trim() ?? employeeId,
           image,
           dateOfBirth,
           gender,
@@ -239,5 +233,11 @@ export class TeachersService {
       }
     }
     throw new InternalServerErrorException('Teacher operation failed.');
+  }
+
+  async generateTeacherEmployeeId(): Promise<string> {
+    const count = await this.prisma.teacher.count();
+
+    return `T-${String(count + 1).padStart(3, '0')}`;
   }
 }

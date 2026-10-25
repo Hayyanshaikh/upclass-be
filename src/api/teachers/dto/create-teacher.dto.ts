@@ -42,15 +42,17 @@ export class CreateTeacherDto {
   @IsNotEmpty()
   firstName!: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional({ nullable: true })
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  lastName!: string;
+  lastName?: string | null;
 
-  @ApiProperty()
+  @ApiPropertyOptional({ nullable: true })
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  employeeId!: string;
+  employeeId?: string | null;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -90,15 +92,15 @@ export class CreateTeacherDto {
   @IsDate()
   joiningDate?: Date | null;
 
-  @ApiPropertyOptional({ enum: TeacherEmploymentType })
+  @ApiPropertyOptional({ enum: TeacherEmploymentType, nullable: true })
   @IsOptional()
   @IsEnum(TeacherEmploymentType)
-  employmentType?: TeacherEmploymentType;
+  employmentType?: TeacherEmploymentType | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ nullable: true })
   @IsOptional()
   @IsBoolean()
-  isActive?: boolean;
+  isActive?: boolean | null;
 
   @ApiPropertyOptional()
   @IsOptional()

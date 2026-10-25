@@ -15,11 +15,11 @@ export class TeacherDto {
   @ApiProperty()
   firstName: string;
 
-  @ApiProperty()
-  lastName: string;
+  @ApiPropertyOptional({ nullable: true })
+  lastName: string | null;
 
-  @ApiProperty()
-  employeeId: string;
+  @ApiPropertyOptional({ nullable: true })
+  employeeId: string | null;
 
   @ApiPropertyOptional({ nullable: true })
   image: string | null;
@@ -42,11 +42,11 @@ export class TeacherDto {
   @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
   joiningDate: Date | null;
 
-  @ApiProperty({ enum: TeacherEmploymentType })
-  employmentType: TeacherEmploymentType;
+  @ApiPropertyOptional({ enum: TeacherEmploymentType, nullable: true })
+  employmentType: TeacherEmploymentType | null;
 
-  @ApiProperty()
-  isActive: boolean;
+  @ApiPropertyOptional({ nullable: true })
+  isActive: boolean | null;
 
   @ApiPropertyOptional({ nullable: true })
   phone: string | null;

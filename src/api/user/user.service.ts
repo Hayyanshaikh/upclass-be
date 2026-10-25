@@ -20,10 +20,14 @@ import {
   UserFindOneResponseDto,
   UserResponseDto,
 } from './dto/user-response.dto.ts';
+import { TeachersService } from '../teachers/teachers.service.ts';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly teachersService: TeachersService,
+  ) {}
 
   // CREATE USER
 
@@ -72,6 +76,7 @@ export class UserService {
       }
 
       const hashedPassword = await bcrypt.hash(dto.password, 12);
+      const employeeId = await this.teachersService.generateTeacherEmployeeId();
 
       const user = await this.prisma.$transaction(async (tx) => {
         const newUser = await tx.user.create({
@@ -90,8 +95,9 @@ export class UserService {
         if (role.slug === 'teacher') {
           await tx.teacher.create({
             data: {
-              name: dto.name.trim(),
               userId: newUser.id,
+              employeeId: employeeId,
+              firstName: dto.name.trim(),
             },
           });
         }
