@@ -1,11 +1,13 @@
 import {
   BadRequestException,
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { CreateTeacherDto } from './dto/create-teacher.dto.ts';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.ts';
@@ -19,23 +21,58 @@ import {
 export class TeachersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Create Teacher
-  async create(dto: CreateTeacherDto, userId: string) {
+  async create(
+    dto: CreateTeacherDto,
+    userId: string,
+  ): Promise<TeacherFindOneResponseDto> {
+    const {
+      firstName,
+      lastName,
+      employeeId,
+      image,
+      dateOfBirth,
+      gender,
+      cnicNo,
+      maritalStatus,
+      qualification,
+      joiningDate,
+      employmentType,
+      isActive,
+      phone,
+      email,
+      address,
+    } = dto;
+
+    if (!firstName?.trim() || !lastName?.trim() || !employeeId?.trim()) {
+      throw new BadRequestException(
+        'First name, last name and employee ID are required.',
+      );
+    }
+    if (employmentType === null || isActive === null) {
+      throw new BadRequestException(
+        'Employment type and active status cannot be null.',
+      );
+    }
+
     try {
-      const errors: string[] = [];
-
-      if (!dto.name?.trim()) {
-        errors.push('Name is required.');
-      }
-
-      if (errors.length > 0) {
-        throw new BadRequestException(errors);
-      }
-
       const teacher = await this.prisma.teacher.create({
         data: {
-          name: dto.name.trim(),
-          userId: userId,
+          userId,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          employeeId: employeeId.trim(),
+          image,
+          dateOfBirth,
+          gender,
+          cnicNo,
+          maritalStatus,
+          qualification,
+          joiningDate,
+          employmentType,
+          isActive,
+          phone,
+          email,
+          address,
         },
       });
 
@@ -45,123 +82,162 @@ export class TeachersService {
         data: teacher,
       };
     } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-
-      console.error('CREATE TEACHER ERROR:', error);
-
-      throw new InternalServerErrorException('Failed to create teacher.');
+      this.handlePrismaError(error);
     }
   }
 
-  // Get All Teachers
   async findAll(query: FindTeachersQueryDto): Promise<TeacherResponseDto> {
-    const { limit = 10, offset = 0, searchKey } = query;
-
-    const where = {
-      ...(searchKey
-        ? {
-            name: {
-              contains: searchKey,
-              mode: 'insensitive' as const,
-            },
-          }
-        : {}),
+    const { limit = 10, offset = 0, searchKey, role } = query;
+    const where: Prisma.TeacherWhereInput = {
+      ...(searchKey && {
+        OR: [
+          { firstName: { contains: searchKey, mode: 'insensitive' } },
+          { lastName: { contains: searchKey, mode: 'insensitive' } },
+          { employeeId: { contains: searchKey, mode: 'insensitive' } },
+        ],
+      }),
+      ...(role && {
+        user: {
+          OR: [{ roleId: role }, { role: { slug: role } }],
+        },
+      }),
     };
 
-    const data = await this.prisma.teacher.findMany({
-      where,
-      take: limit,
-      skip: offset,
-      orderBy: {
-        id: 'desc',
-      },
-    });
+    try {
+      const [data, total] = await Promise.all([
+        this.prisma.teacher.findMany({
+          where,
+          take: limit,
+          skip: offset,
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        }),
+        this.prisma.teacher.count({ where }),
+      ]);
 
-    const total = await this.prisma.teacher.count({
-      where,
-    });
-
-    return {
-      data,
-      total,
-      message: 'Teachers retrieved successfully',
-      statusCode: 200,
-    };
+      return {
+        data,
+        total,
+        message: 'Teachers retrieved successfully.',
+        statusCode: HttpStatus.OK,
+      };
+    } catch {
+      throw new InternalServerErrorException('Failed to retrieve teachers.');
+    }
   }
 
-  // Get Single Teacher
   async findOne(id: string): Promise<TeacherFindOneResponseDto> {
     try {
-      const errors: string[] = [];
-
-      if (!id?.trim()) {
-        errors.push('Teacher ID is required.');
-      }
-
-      if (errors.length > 0) {
-        throw new BadRequestException(errors);
-      }
-
-      const data = await this.prisma.teacher.findUnique({
-        where: {
-          id: id,
-        },
-      });
-
-      if (!data) {
-        throw new NotFoundException('Teacher not found.');
-      }
+      const teacher = await this.prisma.teacher.findUnique({ where: { id } });
+      if (!teacher) throw new NotFoundException('Teacher not found.');
 
       return {
         statusCode: HttpStatus.OK,
         message: 'Teacher retrieved successfully.',
-        data,
+        data: teacher,
       };
     } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-
-      console.error('FIND TEACHER ERROR:', error);
-
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException('Failed to retrieve teacher.');
     }
   }
 
-  // Update Teacher
-  async update(id: string, dto: UpdateTeacherDto) {
-    const teacher = await this.prisma.teacher.findUnique({
-      where: { id },
-    });
+  async update(
+    id: string,
+    dto: UpdateTeacherDto,
+  ): Promise<TeacherFindOneResponseDto> {
+    const {
+      firstName,
+      lastName,
+      employeeId,
+      image,
+      dateOfBirth,
+      gender,
+      cnicNo,
+      maritalStatus,
+      qualification,
+      joiningDate,
+      employmentType,
+      isActive,
+      phone,
+      email,
+      address,
+    } = dto;
 
-    if (!teacher) {
-      throw new NotFoundException('Teacher not found');
+    if (
+      (firstName !== undefined && !firstName?.trim()) ||
+      (lastName !== undefined && !lastName?.trim()) ||
+      (employeeId !== undefined && !employeeId?.trim())
+    ) {
+      throw new BadRequestException(
+        'First name, last name and employee ID cannot be empty.',
+      );
+    }
+    if (employmentType === null || isActive === null) {
+      throw new BadRequestException(
+        'Employment type and active status cannot be null.',
+      );
     }
 
-    return this.prisma.teacher.update({
-      where: { id },
-      data: {
-        ...(dto.name !== undefined && {
-          name: dto.name,
-        }),
-      },
-    });
+    try {
+      const teacher = await this.prisma.teacher.update({
+        where: { id },
+        data: {
+          firstName: firstName?.trim(),
+          lastName: lastName?.trim(),
+          employeeId: employeeId?.trim(),
+          image,
+          dateOfBirth,
+          gender,
+          cnicNo,
+          maritalStatus,
+          qualification,
+          joiningDate,
+          employmentType,
+          isActive,
+          phone,
+          email,
+          address,
+        },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Teacher updated successfully.',
+        data: teacher,
+      };
+    } catch (error) {
+      this.handlePrismaError(error, id);
+    }
   }
 
-  // Delete Teacher
-  async remove(id: string) {
-    const teacher = await this.prisma.teacher.findUnique({
-      where: { id },
-    });
-
-    if (!teacher) {
-      throw new NotFoundException('Teacher not found');
+  async remove(id: string): Promise<TeacherFindOneResponseDto> {
+    try {
+      const teacher = await this.prisma.teacher.delete({ where: { id } });
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Teacher deleted successfully.',
+        data: teacher,
+      };
+    } catch (error) {
+      this.handlePrismaError(error, id);
     }
+  }
 
-    return this.prisma.teacher.delete({
-      where: { id },
-    });
+  private handlePrismaError(error: unknown, id?: string): never {
+    if (error instanceof HttpException) throw error;
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        throw new ConflictException(
+          'Teacher employee ID, CNIC or email already exists.',
+        );
+      }
+      if (error.code === 'P2003') {
+        throw new BadRequestException('Invalid user ID for teacher.');
+      }
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Teacher with ID "${id}" was not found.`);
+      }
+    }
+    throw new InternalServerErrorException('Teacher operation failed.');
   }
 }

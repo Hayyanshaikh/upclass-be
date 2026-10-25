@@ -126,8 +126,24 @@ export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnu
 
 export const TeacherScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  userId: 'userId'
+  userId: 'userId',
+  image: 'image',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  cnicNo: 'cnicNo',
+  maritalStatus: 'maritalStatus',
+  employeeId: 'employeeId',
+  qualification: 'qualification',
+  joiningDate: 'joiningDate',
+  employmentType: 'employmentType',
+  isActive: 'isActive',
+  phone: 'phone',
+  email: 'email',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]

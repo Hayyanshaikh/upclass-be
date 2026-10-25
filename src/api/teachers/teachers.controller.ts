@@ -16,6 +16,7 @@ import {
   ApiOperation,
   ApiOkResponse,
   ApiBearerAuth,
+  ApiCreatedResponse,
 } from '@nestjs/swagger';
 
 import { TeachersService } from './teachers.service.ts';
@@ -38,12 +39,16 @@ export class TeachersController {
 
   @Post()
   @ApiOperation({ summary: 'Create a teacher' })
-  @ApiResponse({ status: 201, description: 'Teacher created successfully' })
+  @ApiCreatedResponse({
+    description: 'Teacher created successfully',
+    type: TeacherFindOneResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Validation failed' })
+  @ApiResponse({ status: 409, description: 'Teacher already exists' })
   create(
     @Body() createTeacherDto: CreateTeacherDto,
     @Req() req: AuthenticatedRequest,
-  ) {
+  ): Promise<TeacherFindOneResponseDto> {
     return this.teachersService.create(createTeacherDto, req.user.id);
   }
 
@@ -70,18 +75,28 @@ export class TeachersController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a teacher' })
-  @ApiResponse({ status: 200, description: 'Teacher updated successfully' })
+  @ApiOkResponse({
+    description: 'Teacher updated successfully',
+    type: TeacherFindOneResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 404, description: 'Teacher not found' })
-  update(@Param('id') id: string, @Body() dto: UpdateTeacherDto) {
+  @ApiResponse({ status: 409, description: 'Teacher already exists' })
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateTeacherDto,
+  ): Promise<TeacherFindOneResponseDto> {
     return this.teachersService.update(id, dto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a teacher' })
-  @ApiResponse({ status: 200, description: 'Teacher deleted successfully' })
+  @ApiOkResponse({
+    description: 'Teacher deleted successfully',
+    type: TeacherFindOneResponseDto,
+  })
   @ApiResponse({ status: 404, description: 'Teacher not found' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<TeacherFindOneResponseDto> {
     return this.teachersService.remove(id);
   }
 }

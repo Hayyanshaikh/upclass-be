@@ -1,12 +1,67 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PermissionDataDto } from '../../permissions/dto/permission-response.dto.ts';
+import {
+  TeacherEmploymentType,
+  TeacherGender,
+  TeacherMaritalStatus,
+} from './create-teacher.dto.ts';
 
 export class TeacherDto {
   @ApiProperty()
   id: string;
 
   @ApiProperty()
-  name: string;
+  userId: string;
+
+  @ApiProperty()
+  firstName: string;
+
+  @ApiProperty()
+  lastName: string;
+
+  @ApiProperty()
+  employeeId: string;
+
+  @ApiPropertyOptional({ nullable: true })
+  image: string | null;
+
+  @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
+  dateOfBirth: Date | null;
+
+  @ApiPropertyOptional({ enum: TeacherGender, nullable: true })
+  gender: TeacherGender | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  cnicNo: string | null;
+
+  @ApiPropertyOptional({ enum: TeacherMaritalStatus, nullable: true })
+  maritalStatus: TeacherMaritalStatus | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  qualification: string | null;
+
+  @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
+  joiningDate: Date | null;
+
+  @ApiProperty({ enum: TeacherEmploymentType })
+  employmentType: TeacherEmploymentType;
+
+  @ApiProperty()
+  isActive: boolean;
+
+  @ApiPropertyOptional({ nullable: true })
+  phone: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  email: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  address: string | null;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }
 
 export class TeacherResponseDto {
