@@ -20,10 +20,14 @@ import {
   UserFindOneResponseDto,
   UserResponseDto,
 } from './dto/user-response.dto.ts';
+import { TeachersService } from '../teachers/teachers.service.ts';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly teachersService: TeachersService,
+  ) {}
 
   // CREATE USER
 
@@ -47,33 +51,58 @@ export class UserService {
         errors.push('Password must be at least 8 characters.');
       }
 
+      if (!dto.roleId?.trim()) {
+        errors.push('Role is required.');
+      }
+
       if (errors.length > 0) {
         throw new BadRequestException(errors);
       }
 
       const existingUser = await this.prisma.user.findUnique({
-        where: { email: dto.email },
+        where: { email: dto.email.trim() },
       });
 
       if (existingUser) {
         throw new ConflictException('Email already exists.');
       }
 
-      // Hash password before saving
-      const hashedPassword = await bcrypt.hash(dto.password, 12);
+      const role = await this.prisma.role.findUnique({
+        where: { id: dto.roleId },
+      });
 
-      const user = await this.prisma.user.create({
-        data: {
-          name: dto.name,
-          email: dto.email,
-          password: hashedPassword,
-          roleId: dto.roleId,
-          isActive: dto.isActive,
-        },
-        // Never return password hash in API response
-        omit: {
-          password: true,
-        },
+      if (!role) {
+        throw new BadRequestException('Invalid role selected.');
+      }
+
+      const hashedPassword = await bcrypt.hash(dto.password, 12);
+      const employeeId = await this.teachersService.generateTeacherEmployeeId();
+
+      const user = await this.prisma.$transaction(async (tx) => {
+        const newUser = await tx.user.create({
+          data: {
+            name: dto.name.trim(),
+            email: dto.email.trim(),
+            password: hashedPassword,
+            roleId: dto.roleId,
+            isActive: dto.isActive,
+          },
+          omit: {
+            password: true,
+          },
+        });
+
+        if (role.slug === 'teacher') {
+          await tx.teacher.create({
+            data: {
+              userId: newUser.id,
+              employeeId: employeeId,
+              firstName: dto.name.trim(),
+            },
+          });
+        }
+
+        return newUser;
       });
 
       return {

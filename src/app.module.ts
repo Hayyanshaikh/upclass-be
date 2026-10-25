@@ -6,6 +6,7 @@ import { UserModule } from './api/user/user.module.ts';
 import { PrismaModule } from './database/prisma.module.ts';
 import { RolesModule } from './api/roles/roles.module.ts';
 import { PermissionsModule } from './api/permissions/permissions.module.ts';
+import { TeachersModule } from './api/teachers/teachers.module.ts';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PermissionsModule } from './api/permissions/permissions.module.ts';
     UserModule,
     RolesModule,
     PermissionsModule,
+    TeachersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
