@@ -90,9 +90,9 @@ export class TeachersController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete a teacher' })
+  @ApiOperation({ summary: 'Delete a teacher and linked user' })
   @ApiOkResponse({
-    description: 'Teacher deleted successfully',
+    description: 'Teacher and linked user deleted successfully',
     type: TeacherFindOneResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Teacher not found' })

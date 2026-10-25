@@ -7,7 +7,9 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '../../generated/prisma/client.ts';
+import { randomBytes } from 'node:crypto';
+import * as bcrypt from 'bcrypt';
+import { Prisma, TeacherStatus } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { CreateTeacherDto } from './dto/create-teacher.dto.ts';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.ts';
@@ -23,8 +25,8 @@ export class TeachersService {
 
   async create(
     dto: CreateTeacherDto,
-    userId: string,
-  ): Promise<TeacherFindOneResponseDto> {
+    _userId: string,
+  ): Promise<TeacherFindOneResponseDto & { temporaryPassword: string }> {
     const {
       firstName,
       lastName,
@@ -50,43 +52,99 @@ export class TeachersService {
         'Last name and employee ID cannot be empty.',
       );
     }
+    if (!email?.trim()) {
+      throw new BadRequestException(['Email is required.']);
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new BadRequestException(['Please enter a valid email address.']);
+    }
 
     try {
-      const employeeId = await this.generateTeacherEmployeeId();
+      const userName = [firstName.trim(), lastName?.trim()]
+        .filter(Boolean)
+        .join(' ');
+      const userEmail = email.trim();
+      const role = await this.prisma.role.findUnique({
+        where: { slug: 'teacher' },
+        select: { id: true },
+      });
+      if (!role) {
+        throw new BadRequestException('Invalid role selected.');
+      }
 
-      const teacher = await this.prisma.teacher.create({
-        data: {
-          userId,
-          firstName: firstName.trim(),
-          lastName: lastName?.trim() ?? lastName,
-          employeeId: employeeId,
-          image,
-          dateOfBirth,
-          gender,
-          cnicNo,
-          maritalStatus,
-          qualification,
-          joiningDate,
-          employmentType,
-          isActive,
-          phone,
-          email,
-          address,
-        },
+      const temporaryPassword = randomBytes(18).toString('base64url');
+      const hashedPassword = await bcrypt.hash(temporaryPassword, 12);
+      const employeeId = await this.generateTeacherEmployeeId();
+      const teacher = await this.prisma.$transaction(async (tx) => {
+        const existingUser = await tx.user.findUnique({
+          where: { email: userEmail },
+          select: { id: true },
+        });
+        if (existingUser) {
+          throw new ConflictException('Email already exists.');
+        }
+
+        const existingName = await tx.user.findFirst({
+          where: { name: { equals: userName, mode: 'insensitive' } },
+          select: { id: true },
+        });
+        if (existingName) {
+          throw new ConflictException('Username already exists.');
+        }
+
+        const user = await tx.user.create({
+          data: {
+            name: userName,
+            email: userEmail,
+            password: hashedPassword,
+            roleId: role.id,
+            isActive: isActive ?? true,
+          },
+        });
+
+        return tx.teacher.create({
+          data: {
+            userId: user.id,
+            firstName: firstName.trim(),
+            lastName: lastName?.trim() ?? lastName,
+            employeeId,
+            image,
+            dateOfBirth,
+            gender,
+            cnicNo,
+            maritalStatus,
+            qualification,
+            joiningDate,
+            employmentType,
+            isActive,
+            phone,
+            email: userEmail,
+            address,
+          },
+        });
       });
 
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Teacher created successfully.',
         data: teacher,
+        temporaryPassword,
       };
     } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002' &&
+        Array.isArray(error.meta?.target) &&
+        error.meta.target.includes('email')
+      ) {
+        throw new ConflictException('Email already exists.');
+      }
       this.handlePrismaError(error);
     }
   }
 
   async findAll(query: FindTeachersQueryDto): Promise<TeacherResponseDto> {
-    const { limit = 10, offset = 0, searchKey, role } = query;
+    const { limit = 10, offset = 0, searchKey, employmentType, status, role } = query;
     const where: Prisma.TeacherWhereInput = {
       ...(searchKey && {
         OR: [
@@ -95,6 +153,8 @@ export class TeachersService {
           { employeeId: { contains: searchKey, mode: 'insensitive' } },
         ],
       }),
+      ...(employmentType && { employmentType }),
+      ...(status && { isActive: status === TeacherStatus.ACTIVE }),
       ...(role && {
         user: {
           OR: [{ roleId: role }, { role: { slug: role } }],
@@ -171,27 +231,82 @@ export class TeachersService {
         'First name, last name and employee ID cannot be empty.',
       );
     }
+    if (email !== undefined && !email?.trim()) {
+      throw new BadRequestException('Email is required.');
+    }
 
     try {
-      const teacher = await this.prisma.teacher.update({
-        where: { id },
-        data: {
-          firstName: firstName?.trim(),
-          lastName: lastName?.trim() ?? lastName,
-          employeeId: employeeId?.trim() ?? employeeId,
-          image,
-          dateOfBirth,
-          gender,
-          cnicNo,
-          maritalStatus,
-          qualification,
-          joiningDate,
-          employmentType,
-          isActive,
-          phone,
-          email,
-          address,
-        },
+      const teacher = await this.prisma.$transaction(async (tx) => {
+        const current = await tx.teacher.findUnique({
+          where: { id },
+          select: {
+            firstName: true,
+            lastName: true,
+            userId: true,
+            user: { select: { name: true, email: true } },
+          },
+        });
+        if (!current) throw new NotFoundException('Teacher not found.');
+
+        const nextFirstName = firstName?.trim() ?? current.firstName;
+        const nextLastName =
+          lastName === undefined
+            ? current.lastName
+            : lastName?.trim() ?? lastName;
+        const nextName = [nextFirstName, nextLastName].filter(Boolean).join(' ');
+        const nextEmail = email?.trim() ?? current.user.email;
+
+        if (nextEmail !== current.user.email) {
+          const existingEmail = await tx.user.findFirst({
+            where: { email: nextEmail, id: { not: current.userId } },
+            select: { id: true },
+          });
+          if (existingEmail) {
+            throw new ConflictException('Email already exists.');
+          }
+        }
+        if (nextName !== current.user.name) {
+          const existingName = await tx.user.findFirst({
+            where: {
+              name: { equals: nextName, mode: 'insensitive' },
+              id: { not: current.userId },
+            },
+            select: { id: true },
+          });
+          if (existingName) {
+            throw new ConflictException('Username already exists.');
+          }
+        }
+
+        await tx.user.update({
+          where: { id: current.userId },
+          data: {
+            name: nextName,
+            email: nextEmail,
+            isActive: isActive ?? undefined,
+          },
+        });
+
+        return tx.teacher.update({
+          where: { id },
+          data: {
+            firstName: firstName?.trim(),
+            lastName: lastName?.trim() ?? lastName,
+            employeeId: employeeId?.trim() ?? employeeId,
+            image,
+            dateOfBirth,
+            gender,
+            cnicNo,
+            maritalStatus,
+            qualification,
+            joiningDate,
+            employmentType,
+            isActive,
+            phone,
+            email: email?.trim() ?? email,
+            address,
+          },
+        });
       });
 
       return {
@@ -200,19 +315,65 @@ export class TeachersService {
         data: teacher,
       };
     } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002' &&
+        Array.isArray(error.meta?.target) &&
+        error.meta.target.includes('email')
+      ) {
+        throw new ConflictException('Email already exists.');
+      }
       this.handlePrismaError(error, id);
     }
   }
 
   async remove(id: string): Promise<TeacherFindOneResponseDto> {
     try {
-      const teacher = await this.prisma.teacher.delete({ where: { id } });
+      const teacher = await this.prisma.$transaction(async (tx) => {
+        const record = await tx.teacher.findUnique({ where: { id } });
+        if (!record) throw new NotFoundException('Teacher not found.');
+
+        const user = await tx.user.findUnique({
+          where: { id: record.userId },
+          select: { isSystem: true },
+        });
+        if (!user || user.isSystem) {
+          throw new ConflictException('The linked user cannot be deleted.');
+        }
+
+        const otherTeachers = await tx.teacher.count({
+          where: { userId: record.userId, id: { not: id } },
+        });
+        if (otherTeachers > 0) {
+          throw new ConflictException(
+            'The linked user is connected to another teacher. Neither record was deleted.',
+          );
+        }
+
+        const deletedTeacher = await tx.teacher.delete({ where: { id } });
+        const deletedUser = await tx.user.deleteMany({
+          where: { id: record.userId, isSystem: false },
+        });
+        if (deletedUser.count !== 1) {
+          throw new ConflictException('The linked user could not be deleted.');
+        }
+
+        return deletedTeacher;
+      });
       return {
         statusCode: HttpStatus.OK,
-        message: 'Teacher deleted successfully.',
+        message: 'Teacher and linked user deleted successfully.',
         data: teacher,
       };
     } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        (error.code === 'P2003' || error.code === 'P2014')
+      ) {
+        throw new ConflictException(
+          'The linked user is connected to another record. Neither record was deleted.',
+        );
+      }
       this.handlePrismaError(error, id);
     }
   }

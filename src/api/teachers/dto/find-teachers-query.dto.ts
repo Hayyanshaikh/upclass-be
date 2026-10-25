@@ -1,6 +1,10 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  EmploymentType,
+  TeacherStatus,
+} from '../../../generated/prisma/client.ts';
 
 export class FindTeachersQueryDto {
   @ApiPropertyOptional({
@@ -33,6 +37,16 @@ export class FindTeachersQueryDto {
   @IsInt()
   @Min(0)
   offset?: number;
+
+  @ApiPropertyOptional({ enum: EmploymentType })
+  @IsOptional()
+  @IsEnum(EmploymentType)
+  employmentType?: EmploymentType;
+
+  @ApiPropertyOptional({ enum: TeacherStatus })
+  @IsOptional()
+  @IsEnum(TeacherStatus)
+  status?: TeacherStatus;
 
   @ApiPropertyOptional({
     description: 'Filter teachers by role ID or slug',

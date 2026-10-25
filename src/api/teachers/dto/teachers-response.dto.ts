@@ -1,9 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  TeacherEmploymentType,
-  TeacherGender,
-  TeacherMaritalStatus,
-} from './create-teacher.dto.ts';
+  EmploymentType,
+  Gender,
+  MaritalStatus,
+} from '../../../generated/prisma/client.ts';
 
 export class TeacherDto {
   @ApiProperty()
@@ -15,46 +15,46 @@ export class TeacherDto {
   @ApiProperty()
   firstName: string;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   lastName: string | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   employeeId: string | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   image: string | null;
 
-  @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
+  @ApiProperty({ type: Date, nullable: true })
   dateOfBirth: Date | null;
 
-  @ApiPropertyOptional({ enum: TeacherGender, nullable: true })
-  gender: TeacherGender | null;
+  @ApiProperty({ enum: Gender, nullable: true })
+  gender: Gender | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   cnicNo: string | null;
 
-  @ApiPropertyOptional({ enum: TeacherMaritalStatus, nullable: true })
-  maritalStatus: TeacherMaritalStatus | null;
+  @ApiProperty({ enum: MaritalStatus, nullable: true })
+  maritalStatus: MaritalStatus | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   qualification: string | null;
 
-  @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
+  @ApiProperty({ type: Date, nullable: true })
   joiningDate: Date | null;
 
-  @ApiPropertyOptional({ enum: TeacherEmploymentType, nullable: true })
-  employmentType: TeacherEmploymentType | null;
+  @ApiProperty({ enum: EmploymentType, nullable: true })
+  employmentType: EmploymentType | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: Boolean, nullable: true })
   isActive: boolean | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   phone: string | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   email: string | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiProperty({ type: String, nullable: true })
   address: string | null;
 
   @ApiProperty()
@@ -90,6 +90,9 @@ export class TeacherFindOneResponseDto {
 
   @ApiProperty({ type: TeacherDto })
   data: TeacherDto;
+
+  @ApiPropertyOptional({ description: 'One-time password returned on teacher creation' })
+  temporaryPassword?: string;
 
   @ApiPropertyOptional()
   warning?: string;

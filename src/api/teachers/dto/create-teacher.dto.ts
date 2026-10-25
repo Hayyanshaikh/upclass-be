@@ -1,6 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  EmploymentType,
+  Gender,
+  MaritalStatus,
+} from '../../../generated/prisma/client.ts';
+import {
   IsBoolean,
   IsDate,
   IsEmail,
@@ -11,108 +16,83 @@ import {
   Matches,
 } from 'class-validator';
 
-export const TeacherGender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER',
-} as const;
-export type TeacherGender = (typeof TeacherGender)[keyof typeof TeacherGender];
-
-export const TeacherMaritalStatus = {
-  SINGLE: 'SINGLE',
-  MARRIED: 'MARRIED',
-  DIVORCED: 'DIVORCED',
-  WIDOWED: 'WIDOWED',
-} as const;
-export type TeacherMaritalStatus =
-  (typeof TeacherMaritalStatus)[keyof typeof TeacherMaritalStatus];
-
-export const TeacherEmploymentType = {
-  FULL_TIME: 'FULL_TIME',
-  PART_TIME: 'PART_TIME',
-  CONTRACT: 'CONTRACT',
-  TEMPORARY: 'TEMPORARY',
-} as const;
-export type TeacherEmploymentType =
-  (typeof TeacherEmploymentType)[keyof typeof TeacherEmploymentType];
-
 export class CreateTeacherDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   firstName!: string;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   lastName?: string | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   employeeId?: string | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   image?: string | null;
 
-  @ApiPropertyOptional({ type: String, format: 'date-time' })
+  @ApiPropertyOptional({ type: Date, nullable: true })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
   dateOfBirth?: Date | null;
 
-  @ApiPropertyOptional({ enum: TeacherGender })
+  @ApiPropertyOptional({ enum: Gender, nullable: true })
   @IsOptional()
-  @IsEnum(TeacherGender)
-  gender?: TeacherGender | null;
+  @IsEnum(Gender)
+  gender?: Gender | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   @Matches(/^\d{5}-\d{7}-\d$/, { message: 'CNIC must use format 00000-0000000-0.' })
   cnicNo?: string | null;
 
-  @ApiPropertyOptional({ enum: TeacherMaritalStatus })
+  @ApiPropertyOptional({ enum: MaritalStatus, nullable: true })
   @IsOptional()
-  @IsEnum(TeacherMaritalStatus)
-  maritalStatus?: TeacherMaritalStatus | null;
+  @IsEnum(MaritalStatus)
+  maritalStatus?: MaritalStatus | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   qualification?: string | null;
 
-  @ApiPropertyOptional({ type: String, format: 'date-time' })
+  @ApiPropertyOptional({ type: Date, nullable: true })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
   joiningDate?: Date | null;
 
-  @ApiPropertyOptional({ enum: TeacherEmploymentType, nullable: true })
+  @ApiPropertyOptional({ enum: EmploymentType, nullable: true })
   @IsOptional()
-  @IsEnum(TeacherEmploymentType)
-  employmentType?: TeacherEmploymentType | null;
+  @IsEnum(EmploymentType)
+  employmentType?: EmploymentType | null;
 
-  @ApiPropertyOptional({ nullable: true })
+  @ApiPropertyOptional({ type: Boolean, nullable: true })
   @IsOptional()
   @IsBoolean()
   isActive?: boolean | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   phone?: string | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsEmail()
   email?: string | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
   address?: string | null;

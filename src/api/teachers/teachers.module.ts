@@ -5,5 +5,6 @@ import { TeachersController } from './teachers.controller.ts';
 @Module({
   controllers: [TeachersController],
   providers: [TeachersService],
+  exports: [TeachersService],
 })
 export class TeachersModule {}
