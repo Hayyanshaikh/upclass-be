@@ -6,6 +6,12 @@ import { Express } from 'express';
 @Injectable()
 export class CloudinaryService {
   constructor(private config: ConfigService) {
+    console.log(
+      'Cloudinary env check:',
+      Boolean(process.env.CLOUDINARY_CLOUD_NAME),
+      Boolean(process.env.CLOUDINARY_API_KEY),
+      Boolean(process.env.CLOUDINARY_API_SECRET),
+    );
     cloudinary.config({
       cloud_name: this.config.getOrThrow('CLOUDINARY_CLOUD_NAME'),
       api_key: this.config.getOrThrow('CLOUDINARY_API_KEY'),

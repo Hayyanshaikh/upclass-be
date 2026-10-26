@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller.ts';
 import { AppService } from './app.service.ts';
@@ -11,6 +12,9 @@ import { CloudinaryModule } from './api/cloudinary/cloudinary.module.js';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PrismaModule,
     AuthModule,
     UserModule,
