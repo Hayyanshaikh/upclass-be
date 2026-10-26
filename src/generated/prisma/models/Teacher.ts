@@ -28,6 +28,7 @@ export type TeacherMinAggregateOutputType = {
   id: string | null
   userId: string | null
   image: string | null
+  imagePublicId: string | null
   firstName: string | null
   lastName: string | null
   dateOfBirth: Date | null
@@ -50,6 +51,7 @@ export type TeacherMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   image: string | null
+  imagePublicId: string | null
   firstName: string | null
   lastName: string | null
   dateOfBirth: Date | null
@@ -72,6 +74,7 @@ export type TeacherCountAggregateOutputType = {
   id: number
   userId: number
   image: number
+  imagePublicId: number
   firstName: number
   lastName: number
   dateOfBirth: number
@@ -96,6 +99,7 @@ export type TeacherMinAggregateInputType = {
   id?: true
   userId?: true
   image?: true
+  imagePublicId?: true
   firstName?: true
   lastName?: true
   dateOfBirth?: true
@@ -118,6 +122,7 @@ export type TeacherMaxAggregateInputType = {
   id?: true
   userId?: true
   image?: true
+  imagePublicId?: true
   firstName?: true
   lastName?: true
   dateOfBirth?: true
@@ -140,6 +145,7 @@ export type TeacherCountAggregateInputType = {
   id?: true
   userId?: true
   image?: true
+  imagePublicId?: true
   firstName?: true
   lastName?: true
   dateOfBirth?: true
@@ -235,6 +241,7 @@ export type TeacherGroupByOutputType = {
   id: string
   userId: string
   image: string | null
+  imagePublicId: string | null
   firstName: string
   lastName: string | null
   dateOfBirth: Date | null
@@ -278,6 +285,7 @@ export type TeacherWhereInput = {
   id?: Prisma.StringFilter<"Teacher"> | string
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
   lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
@@ -301,6 +309,7 @@ export type TeacherOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +339,7 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.TeacherWhereInput | Prisma.TeacherWhereInput[]
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
   lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
@@ -350,6 +360,7 @@ export type TeacherOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -378,6 +389,7 @@ export type TeacherScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
   image?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
+  imagePublicId?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   firstName?: Prisma.StringWithAggregatesFilter<"Teacher"> | string
   lastName?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"Teacher"> | Date | string | null
@@ -399,6 +411,7 @@ export type TeacherScalarWhereWithAggregatesInput = {
 export type TeacherCreateInput = {
   id?: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -422,6 +435,7 @@ export type TeacherUncheckedCreateInput = {
   id?: string
   userId: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -443,6 +457,7 @@ export type TeacherUncheckedCreateInput = {
 export type TeacherUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -466,6 +481,7 @@ export type TeacherUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -488,6 +504,7 @@ export type TeacherCreateManyInput = {
   id?: string
   userId: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -509,6 +526,7 @@ export type TeacherCreateManyInput = {
 export type TeacherUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -531,6 +549,7 @@ export type TeacherUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -563,6 +582,7 @@ export type TeacherCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
@@ -585,6 +605,7 @@ export type TeacherMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
@@ -607,6 +628,7 @@ export type TeacherMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
@@ -690,6 +712,7 @@ export type NullableBoolFieldUpdateOperationsInput = {
 export type TeacherCreateWithoutUserInput = {
   id?: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -711,6 +734,7 @@ export type TeacherCreateWithoutUserInput = {
 export type TeacherUncheckedCreateWithoutUserInput = {
   id?: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -762,6 +786,7 @@ export type TeacherScalarWhereInput = {
   id?: Prisma.StringFilter<"Teacher"> | string
   userId?: Prisma.StringFilter<"Teacher"> | string
   image?: Prisma.StringNullableFilter<"Teacher"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   firstName?: Prisma.StringFilter<"Teacher"> | string
   lastName?: Prisma.StringNullableFilter<"Teacher"> | string | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
@@ -783,6 +808,7 @@ export type TeacherScalarWhereInput = {
 export type TeacherCreateManyUserInput = {
   id?: string
   image?: string | null
+  imagePublicId?: string | null
   firstName: string
   lastName?: string | null
   dateOfBirth?: Date | string | null
@@ -804,6 +830,7 @@ export type TeacherCreateManyUserInput = {
 export type TeacherUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -825,6 +852,7 @@ export type TeacherUpdateWithoutUserInput = {
 export type TeacherUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -846,6 +874,7 @@ export type TeacherUncheckedUpdateWithoutUserInput = {
 export type TeacherUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -870,6 +899,7 @@ export type TeacherSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   userId?: boolean
   image?: boolean
+  imagePublicId?: boolean
   firstName?: boolean
   lastName?: boolean
   dateOfBirth?: boolean
@@ -893,6 +923,7 @@ export type TeacherSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   userId?: boolean
   image?: boolean
+  imagePublicId?: boolean
   firstName?: boolean
   lastName?: boolean
   dateOfBirth?: boolean
@@ -916,6 +947,7 @@ export type TeacherSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   userId?: boolean
   image?: boolean
+  imagePublicId?: boolean
   firstName?: boolean
   lastName?: boolean
   dateOfBirth?: boolean
@@ -939,6 +971,7 @@ export type TeacherSelectScalar = {
   id?: boolean
   userId?: boolean
   image?: boolean
+  imagePublicId?: boolean
   firstName?: boolean
   lastName?: boolean
   dateOfBirth?: boolean
@@ -957,7 +990,7 @@ export type TeacherSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TeacherOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "image" | "firstName" | "lastName" | "dateOfBirth" | "gender" | "cnicNo" | "maritalStatus" | "employeeId" | "qualification" | "joiningDate" | "employmentType" | "isActive" | "phone" | "email" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
+export type TeacherOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "image" | "imagePublicId" | "firstName" | "lastName" | "dateOfBirth" | "gender" | "cnicNo" | "maritalStatus" | "employeeId" | "qualification" | "joiningDate" | "employmentType" | "isActive" | "phone" | "email" | "address" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
 export type TeacherInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -977,6 +1010,7 @@ export type $TeacherPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     userId: string
     image: string | null
+    imagePublicId: string | null
     firstName: string
     lastName: string | null
     dateOfBirth: Date | null
@@ -1420,6 +1454,7 @@ export interface TeacherFieldRefs {
   readonly id: Prisma.FieldRef<"Teacher", 'String'>
   readonly userId: Prisma.FieldRef<"Teacher", 'String'>
   readonly image: Prisma.FieldRef<"Teacher", 'String'>
+  readonly imagePublicId: Prisma.FieldRef<"Teacher", 'String'>
   readonly firstName: Prisma.FieldRef<"Teacher", 'String'>
   readonly lastName: Prisma.FieldRef<"Teacher", 'String'>
   readonly dateOfBirth: Prisma.FieldRef<"Teacher", 'DateTime'>

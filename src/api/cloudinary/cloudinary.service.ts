@@ -14,7 +14,6 @@ export class CloudinaryService {
   }
 
   async uploadImage(file: Express.Multer.File) {
-    console.log({ file });
     if (!file || !file.mimetype.startsWith('image/')) {
       throw new InternalServerErrorException('Valid image required');
     }

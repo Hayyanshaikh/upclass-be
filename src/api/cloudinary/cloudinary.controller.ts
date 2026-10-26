@@ -5,10 +5,17 @@ import {
   UseInterceptors,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiTags, ApiConsumes, ApiBody, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiConsumes,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { CloudinaryService } from './cloudinary.service.ts';
 import type { Express } from 'express';
 import { ImageUploadInterceptor } from '../../common/interceptors/image-upload.interceptor.ts';
+import { CloudinaryUploadResponseDto } from './dto/cloudinary-upload-response.dto.ts';
 
 @ApiTags('Uploads')
 @Controller('uploads')
@@ -17,6 +24,7 @@ export class CloudinaryController {
 
   @Post('image')
   @ApiOperation({ summary: 'Upload an image to Cloudinary' })
+  @ApiCreatedResponse({ type: CloudinaryUploadResponseDto })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -34,7 +42,6 @@ export class CloudinaryController {
   upload(@UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException('Image file required');
     const returnFile = this.cloudinaryService.uploadImage(file);
-    console.log({ returnFile });
 
     return returnFile;
   }
