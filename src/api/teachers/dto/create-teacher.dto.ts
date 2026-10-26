@@ -39,6 +39,11 @@ export class CreateTeacherDto {
   @IsString()
   image?: string | null;
 
+  @ApiPropertyOptional({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  imagePublicId?: string | null;
+
   @ApiPropertyOptional({ type: Date, nullable: true })
   @IsOptional()
   @Type(() => Date)
@@ -53,7 +58,9 @@ export class CreateTeacherDto {
   @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
   @IsString()
-  @Matches(/^\d{5}-\d{7}-\d$/, { message: 'CNIC must use format 00000-0000000-0.' })
+  @Matches(/^\d{5}-\d{7}-\d$/, {
+    message: 'CNIC must use format 00000-0000000-0.',
+  })
   cnicNo?: string | null;
 
   @ApiPropertyOptional({ enum: MaritalStatus, nullable: true })

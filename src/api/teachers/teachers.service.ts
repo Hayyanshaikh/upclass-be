@@ -5,12 +5,14 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { randomBytes } from 'node:crypto';
 import * as bcrypt from 'bcrypt';
 import { Prisma, TeacherStatus } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
+import { CloudinaryService } from '../cloudinary/cloudinary.service.ts';
 import { CreateTeacherDto } from './dto/create-teacher.dto.ts';
 import { UpdateTeacherDto } from './dto/update-teacher.dto.ts';
 import { FindTeachersQueryDto } from './dto/find-teachers-query.dto.ts';
@@ -21,7 +23,12 @@ import {
 
 @Injectable()
 export class TeachersService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(TeachersService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cloudinary: CloudinaryService,
+  ) {}
 
   async create(
     dto: CreateTeacherDto,
@@ -31,6 +38,7 @@ export class TeachersService {
       firstName,
       lastName,
       image,
+      imagePublicId,
       dateOfBirth,
       gender,
       cnicNo,
@@ -44,22 +52,22 @@ export class TeachersService {
       address,
     } = dto;
 
-    if (!firstName?.trim()) {
-      throw new BadRequestException('First name is required.');
-    }
-    if (lastName != null && !lastName.trim()) {
-      throw new BadRequestException(
-        'Last name and employee ID cannot be empty.',
-      );
-    }
-    if (!email?.trim()) {
-      throw new BadRequestException(['Email is required.']);
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      throw new BadRequestException(['Please enter a valid email address.']);
-    }
-
     try {
+      if (!firstName?.trim()) {
+        throw new BadRequestException('First name is required.');
+      }
+      if (lastName != null && !lastName.trim()) {
+        throw new BadRequestException(
+          'Last name and employee ID cannot be empty.',
+        );
+      }
+      if (!email?.trim()) {
+        throw new BadRequestException(['Email is required.']);
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new BadRequestException(['Please enter a valid email address.']);
+      }
+
       const userName = [firstName.trim(), lastName?.trim()]
         .filter(Boolean)
         .join(' ');
@@ -109,6 +117,7 @@ export class TeachersService {
             lastName: lastName?.trim() ?? lastName,
             employeeId,
             image,
+            imagePublicId,
             dateOfBirth,
             gender,
             cnicNo,
@@ -131,6 +140,7 @@ export class TeachersService {
         temporaryPassword,
       };
     } catch (error) {
+      await this.deleteCloudinaryImageSafely(imagePublicId);
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002' &&
@@ -209,6 +219,7 @@ export class TeachersService {
       lastName,
       employeeId,
       image,
+      imagePublicId,
       dateOfBirth,
       gender,
       cnicNo,
@@ -222,31 +233,36 @@ export class TeachersService {
       address,
     } = dto;
 
-    if (
-      (firstName !== undefined && !firstName?.trim()) ||
-      (lastName != null && !lastName.trim()) ||
-      (employeeId != null && !employeeId.trim())
-    ) {
-      throw new BadRequestException(
-        'First name, last name and employee ID cannot be empty.',
-      );
-    }
-    if (email !== undefined && !email?.trim()) {
-      throw new BadRequestException('Email is required.');
-    }
-
+    let currentImagePublicId: string | null | undefined;
     try {
+      if (
+        (firstName !== undefined && !firstName?.trim()) ||
+        (lastName != null && !lastName.trim()) ||
+        (employeeId != null && !employeeId.trim())
+      ) {
+        throw new BadRequestException(
+          'First name, last name and employee ID cannot be empty.',
+        );
+      }
+      if (email !== undefined && !email?.trim()) {
+        throw new BadRequestException('Email is required.');
+      }
+
       const teacher = await this.prisma.$transaction(async (tx) => {
         const current = await tx.teacher.findUnique({
           where: { id },
           select: {
             firstName: true,
             lastName: true,
+            image: true,
+            imagePublicId: true,
             userId: true,
             user: { select: { name: true, email: true } },
           },
         });
         if (!current) throw new NotFoundException('Teacher not found.');
+        currentImagePublicId =
+          current.imagePublicId ?? this.extractPublicIdFromImageUrl(current.image);
 
         const nextFirstName = firstName?.trim() ?? current.firstName;
         const nextLastName =
@@ -294,6 +310,7 @@ export class TeachersService {
             lastName: lastName?.trim() ?? lastName,
             employeeId: employeeId?.trim() ?? employeeId,
             image,
+            imagePublicId,
             dateOfBirth,
             gender,
             cnicNo,
@@ -309,12 +326,23 @@ export class TeachersService {
         });
       });
 
+      if (
+        imagePublicId !== undefined &&
+        currentImagePublicId &&
+        currentImagePublicId !== imagePublicId
+      ) {
+        await this.deleteCloudinaryImageSafely(currentImagePublicId);
+      }
+
       return {
         statusCode: HttpStatus.OK,
         message: 'Teacher updated successfully.',
         data: teacher,
       };
     } catch (error) {
+      if (imagePublicId && imagePublicId !== currentImagePublicId) {
+        await this.deleteCloudinaryImageSafely(imagePublicId);
+      }
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002' &&
@@ -394,6 +422,49 @@ export class TeachersService {
       }
     }
     throw new InternalServerErrorException('Teacher operation failed.');
+  }
+
+  private async deleteCloudinaryImageSafely(
+    publicId: string | null | undefined,
+  ): Promise<void> {
+    if (!publicId) return;
+
+    try {
+      await this.cloudinary.deleteImage(publicId);
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete Cloudinary image "${publicId}".`,
+        error instanceof Error ? error.stack : undefined,
+      );
+    }
+  }
+
+  private extractPublicIdFromImageUrl(imageUrl: string | null): string | null {
+    if (!imageUrl) return null;
+
+    try {
+      const url = new URL(imageUrl);
+      if (url.hostname !== 'res.cloudinary.com') return null;
+
+      const uploadPath = '/image/upload/';
+      const uploadPathIndex = url.pathname.indexOf(uploadPath);
+      if (uploadPathIndex === -1) return null;
+
+      const assetPath = url.pathname.slice(uploadPathIndex + uploadPath.length);
+      const versionMatch = assetPath.match(/(?:^|\/)v\d+\//);
+      const publicIdPath =
+        versionMatch?.index !== undefined
+          ? assetPath.slice(versionMatch.index + versionMatch[0].length)
+          : assetPath;
+      const publicId = decodeURIComponent(publicIdPath).replace(
+        /\.[^/.]+$/,
+        '',
+      );
+
+      return publicId || null;
+    } catch {
+      return null;
+    }
   }
 
   async generateTeacherEmployeeId(): Promise<string> {

@@ -24,6 +24,9 @@ export class TeacherDto {
   @ApiProperty({ type: String, nullable: true })
   image: string | null;
 
+  @ApiProperty({ type: String, nullable: true })
+  imagePublicId: string | null;
+
   @ApiProperty({ type: Date, nullable: true })
   dateOfBirth: Date | null;
 
@@ -91,7 +94,9 @@ export class TeacherFindOneResponseDto {
   @ApiProperty({ type: TeacherDto })
   data: TeacherDto;
 
-  @ApiPropertyOptional({ description: 'One-time password returned on teacher creation' })
+  @ApiPropertyOptional({
+    description: 'One-time password returned on teacher creation',
+  })
   temporaryPassword?: string;
 
   @ApiPropertyOptional()

@@ -101,6 +101,7 @@ model Teacher {
   userId         String
   user           User            @relation(fields: [userId], references: [id])
   image          String?
+  imagePublicId  String?
   firstName      String
   lastName       String?
   dateOfBirth    DateTime?

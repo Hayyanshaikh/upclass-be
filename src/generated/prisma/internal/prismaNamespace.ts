@@ -884,6 +884,7 @@ export const TeacherScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   image: 'image',
+  imagePublicId: 'imagePublicId',
   firstName: 'firstName',
   lastName: 'lastName',
   dateOfBirth: 'dateOfBirth',
