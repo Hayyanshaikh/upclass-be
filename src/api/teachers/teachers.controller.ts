@@ -28,15 +28,19 @@ import {
   TeacherResponseDto,
 } from './dto/teachers-response.dto.ts';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
+import { Permissions } from '../auth/decorators/permissions.decorator.ts';
+import { TEACHER_PERMISSIONS } from './entities/teacher.permission.ts';
 
 @ApiTags('Teachers')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('teachers')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
+  @Permissions(TEACHER_PERMISSIONS.CREATE)
   @Post()
   @ApiOperation({ summary: 'Create a teacher' })
   @ApiCreatedResponse({
@@ -52,6 +56,7 @@ export class TeachersController {
     return this.teachersService.create(createTeacherDto, req.user.id);
   }
 
+  @Permissions(TEACHER_PERMISSIONS.VIEW)
   @Get()
   @ApiOperation({ summary: 'Get all teachers' })
   @ApiOkResponse({
@@ -62,6 +67,7 @@ export class TeachersController {
     return this.teachersService.findAll(query);
   }
 
+  @Permissions(TEACHER_PERMISSIONS.VIEW)
   @Get(':id')
   @ApiOperation({ summary: 'Get a teacher by ID' })
   @ApiOkResponse({
@@ -73,6 +79,7 @@ export class TeachersController {
     return this.teachersService.findOne(id);
   }
 
+  @Permissions(TEACHER_PERMISSIONS.EDIT)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a teacher' })
   @ApiOkResponse({
@@ -89,6 +96,7 @@ export class TeachersController {
     return this.teachersService.update(id, dto);
   }
 
+  @Permissions(TEACHER_PERMISSIONS.DELETE)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a teacher and linked user' })
   @ApiOkResponse({
