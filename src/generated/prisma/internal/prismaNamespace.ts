@@ -401,6 +401,7 @@ export const ModelName = {
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
+  Documents: 'Documents',
   Teacher: 'Teacher'
 } as const
 
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "teacher"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "documents" | "teacher"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -717,6 +718,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Documents: {
+      payload: Prisma.$DocumentsPayload<ExtArgs>
+      fields: Prisma.DocumentsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        update: {
+          args: Prisma.DocumentsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocuments>
+        }
+        groupBy: {
+          args: Prisma.DocumentsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentsCountAggregateOutputType> | number
+        }
+      }
+    }
     Teacher: {
       payload: Prisma.$TeacherPayload<ExtArgs>
       fields: Prisma.TeacherFieldRefs
@@ -880,6 +955,18 @@ export const RolePermissionScalarFieldEnum = {
 export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
 
 
+export const DocumentsScalarFieldEnum = {
+  id: 'id',
+  documentName: 'documentName',
+  documentUrl: 'documentUrl',
+  teacherId: 'teacherId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentsScalarFieldEnum = (typeof DocumentsScalarFieldEnum)[keyof typeof DocumentsScalarFieldEnum]
+
+
 export const TeacherScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -899,6 +986,8 @@ export const TeacherScalarFieldEnum = {
   phone: 'phone',
   email: 'email',
   address: 'address',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1209,6 +1298,7 @@ export type GlobalOmitConfig = {
   role?: Prisma.RoleOmit
   permission?: Prisma.PermissionOmit
   rolePermission?: Prisma.RolePermissionOmit
+  documents?: Prisma.DocumentsOmit
   teacher?: Prisma.TeacherOmit
 }
 
