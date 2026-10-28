@@ -97,6 +97,7 @@ export class UserService {
             data: {
               userId: newUser.id,
               employeeId: employeeId,
+              email: dto.email.trim(),
               firstName: dto.name.trim(),
             },
           });

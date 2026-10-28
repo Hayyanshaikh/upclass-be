@@ -4,6 +4,7 @@ import {
   Gender,
   MaritalStatus,
 } from '../../../generated/prisma/client.ts';
+import { Documents } from './create-teacher.dto.ts';
 
 export class TeacherDto {
   @ApiProperty()
@@ -59,6 +60,15 @@ export class TeacherDto {
 
   @ApiProperty({ type: String, nullable: true })
   address: string | null;
+
+  @ApiProperty({ type: String, nullable: true })
+  bankName: string | null;
+
+  @ApiProperty({ type: String, nullable: true })
+  accountNumber: string | null;
+
+  @ApiProperty({ type: [Documents] })
+  documents: Documents[];
 
   @ApiProperty()
   createdAt: Date;

@@ -6,15 +6,30 @@ import {
   MaritalStatus,
 } from '../../../generated/prisma/client.ts';
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Matches,
+  ValidateNested,
 } from 'class-validator';
+
+export class Documents {
+  @ApiPropertyOptional({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  documentName?: string | null;
+
+  @ApiPropertyOptional({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  documentUrl?: string | null;
+}
 
 export class CreateTeacherDto {
   @ApiProperty()
@@ -103,4 +118,21 @@ export class CreateTeacherDto {
   @IsOptional()
   @IsString()
   address?: string | null;
+
+  @ApiPropertyOptional({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  bankName?: string | null;
+
+  @ApiPropertyOptional({ type: String, nullable: true })
+  @IsOptional()
+  @IsString()
+  accountNumber?: string | null;
+
+  @ApiPropertyOptional({ type: [Documents] })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Documents)
+  documents?: Documents[];
 }

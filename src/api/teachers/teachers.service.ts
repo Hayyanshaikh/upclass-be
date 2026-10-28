@@ -50,6 +50,9 @@ export class TeachersService {
       phone,
       email,
       address,
+      bankName,
+      accountNumber,
+      documents,
     } = dto;
 
     try {
@@ -129,6 +132,18 @@ export class TeachersService {
             phone,
             email: userEmail,
             address,
+            bankName,
+            accountNumber,
+            documents: {
+              create:
+                documents?.map((doc) => ({
+                  documentName: doc.documentName,
+                  documentUrl: doc.documentUrl,
+                })) ?? [],
+            },
+          },
+          include: {
+            documents: true,
           },
         });
       });
@@ -154,7 +169,14 @@ export class TeachersService {
   }
 
   async findAll(query: FindTeachersQueryDto): Promise<TeacherResponseDto> {
-    const { limit = 10, offset = 0, searchKey, employmentType, status, role } = query;
+    const {
+      limit = 10,
+      offset = 0,
+      searchKey,
+      employmentType,
+      status,
+      role,
+    } = query;
     const where: Prisma.TeacherWhereInput = {
       ...(searchKey && {
         OR: [
@@ -179,6 +201,9 @@ export class TeachersService {
           take: limit,
           skip: offset,
           orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+          include: {
+            documents: true,
+          },
         }),
         this.prisma.teacher.count({ where }),
       ]);
@@ -196,7 +221,12 @@ export class TeachersService {
 
   async findOne(id: string): Promise<TeacherFindOneResponseDto> {
     try {
-      const teacher = await this.prisma.teacher.findUnique({ where: { id } });
+      const teacher = await this.prisma.teacher.findUnique({
+        where: { id },
+        include: {
+          documents: true,
+        },
+      });
       if (!teacher) throw new NotFoundException('Teacher not found.');
 
       return {
@@ -231,9 +261,14 @@ export class TeachersService {
       phone,
       email,
       address,
+      bankName,
+      accountNumber,
+      documents,
     } = dto;
 
     let currentImagePublicId: string | null | undefined;
+    let removedDocuments: { documentUrl: string | null }[] = [];
+
     try {
       if (
         (firstName !== undefined && !firstName?.trim()) ||
@@ -244,6 +279,7 @@ export class TeachersService {
           'First name, last name and employee ID cannot be empty.',
         );
       }
+
       if (email !== undefined && !email?.trim()) {
         throw new BadRequestException('Email is required.');
       }
@@ -251,36 +287,46 @@ export class TeachersService {
       const teacher = await this.prisma.$transaction(async (tx) => {
         const current = await tx.teacher.findUnique({
           where: { id },
-          select: {
-            firstName: true,
-            lastName: true,
-            image: true,
-            imagePublicId: true,
-            userId: true,
+          include: {
             user: { select: { name: true, email: true } },
+            documents: true,
           },
         });
-        if (!current) throw new NotFoundException('Teacher not found.');
+
+        if (!current) {
+          throw new NotFoundException('Teacher not found.');
+        }
+
         currentImagePublicId =
-          current.imagePublicId ?? this.extractPublicIdFromImageUrl(current.image);
+          current.imagePublicId ??
+          this.extractPublicIdFromImageUrl(current.image);
 
         const nextFirstName = firstName?.trim() ?? current.firstName;
         const nextLastName =
           lastName === undefined
             ? current.lastName
-            : lastName?.trim() ?? lastName;
-        const nextName = [nextFirstName, nextLastName].filter(Boolean).join(' ');
+            : (lastName?.trim() ?? lastName);
+
+        const nextName = [nextFirstName, nextLastName]
+          .filter(Boolean)
+          .join(' ');
+
         const nextEmail = email?.trim() ?? current.user.email;
 
         if (nextEmail !== current.user.email) {
           const existingEmail = await tx.user.findFirst({
-            where: { email: nextEmail, id: { not: current.userId } },
+            where: {
+              email: nextEmail,
+              id: { not: current.userId },
+            },
             select: { id: true },
           });
+
           if (existingEmail) {
             throw new ConflictException('Email already exists.');
           }
         }
+
         if (nextName !== current.user.name) {
           const existingName = await tx.user.findFirst({
             where: {
@@ -289,9 +335,92 @@ export class TeachersService {
             },
             select: { id: true },
           });
+
           if (existingName) {
             throw new ConflictException('Username already exists.');
           }
+        }
+
+        // Identify documents removed by the frontend.
+        // If documents is omitted, leave the relation unchanged.
+        if (documents !== undefined) {
+          const incomingUrls = new Set(
+            documents
+              .map((doc) => doc.documentUrl)
+              .filter((url): url is string => Boolean(url)),
+          );
+
+          removedDocuments = current.documents
+            .filter(
+              (doc) => !doc.documentUrl || !incomingUrls.has(doc.documentUrl),
+            )
+            .map((doc) => ({ documentUrl: doc.documentUrl }));
+
+          const existingUrls = new Set(
+            current.documents.map((doc) => doc.documentUrl),
+          );
+
+          const newDocuments = documents
+            .filter(
+              (doc) =>
+                doc.documentName?.trim() &&
+                doc.documentUrl &&
+                !existingUrls.has(doc.documentUrl),
+            )
+            .map((doc) => ({
+              documentName: doc.documentName!.trim(),
+              documentUrl: doc.documentUrl!,
+            }));
+
+          await tx.user.update({
+            where: { id: current.userId },
+            data: {
+              name: nextName,
+              email: nextEmail,
+              isActive: isActive ?? undefined,
+            },
+          });
+
+          return tx.teacher.update({
+            where: { id },
+            data: {
+              firstName: firstName?.trim(),
+              lastName: lastName?.trim() ?? lastName,
+              employeeId: employeeId?.trim() ?? employeeId,
+              image,
+              imagePublicId,
+              dateOfBirth,
+              gender,
+              cnicNo,
+              maritalStatus,
+              qualification,
+              joiningDate,
+              employmentType,
+              isActive,
+              phone,
+              email: email?.trim() ?? email,
+              address,
+              accountNumber,
+              bankName,
+              documents: {
+                deleteMany: {
+                  id: {
+                    in: current.documents
+                      .filter(
+                        (doc) =>
+                          !doc.documentUrl ||
+                          !incomingUrls.has(doc.documentUrl),
+                      )
+                      .map((doc) => doc.id),
+                  },
+                },
+                create: newDocuments,
+              },
+            },
+            include: {
+              documents: true,
+            },
+          });
         }
 
         await tx.user.update({
@@ -322,9 +451,32 @@ export class TeachersService {
             phone,
             email: email?.trim() ?? email,
             address,
+            accountNumber,
+            bankName,
+          },
+          include: {
+            documents: true,
           },
         });
       });
+
+      // Delete removed Cloudinary files only after DB transaction succeeds.
+      for (const doc of removedDocuments) {
+        try {
+          const publicId = this.extractPublicIdFromImageUrl(doc.documentUrl);
+
+          if (publicId) {
+            await this.deleteCloudinaryImageSafely(publicId);
+          }
+        } catch (error) {
+          // Do not fail the teacher update if Cloudinary cleanup fails.
+          console.error(
+            'Failed to delete removed teacher document from Cloudinary:',
+            doc.documentUrl,
+            error,
+          );
+        }
+      }
 
       if (
         imagePublicId !== undefined &&
@@ -343,6 +495,7 @@ export class TeachersService {
       if (imagePublicId && imagePublicId !== currentImagePublicId) {
         await this.deleteCloudinaryImageSafely(imagePublicId);
       }
+
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002' &&
@@ -351,6 +504,7 @@ export class TeachersService {
       ) {
         throw new ConflictException('Email already exists.');
       }
+
       this.handlePrismaError(error, id);
     }
   }
@@ -358,39 +512,68 @@ export class TeachersService {
   async remove(id: string): Promise<TeacherFindOneResponseDto> {
     try {
       const teacher = await this.prisma.$transaction(async (tx) => {
-        const record = await tx.teacher.findUnique({ where: { id } });
-        if (!record) throw new NotFoundException('Teacher not found.');
+        const record = await tx.teacher.findUnique({
+          where: { id },
+          include: {
+            documents: true,
+          },
+        });
+
+        if (!record) {
+          throw new NotFoundException('Teacher not found.');
+        }
 
         const user = await tx.user.findUnique({
           where: { id: record.userId },
           select: { isSystem: true },
         });
+
         if (!user || user.isSystem) {
           throw new ConflictException('The linked user cannot be deleted.');
         }
 
         const otherTeachers = await tx.teacher.count({
-          where: { userId: record.userId, id: { not: id } },
+          where: {
+            userId: record.userId,
+            id: { not: id },
+          },
         });
+
         if (otherTeachers > 0) {
           throw new ConflictException(
             'The linked user is connected to another teacher. Neither record was deleted.',
           );
         }
 
-        const deletedTeacher = await tx.teacher.delete({ where: { id } });
-        const deletedUser = await tx.user.deleteMany({
-          where: { id: record.userId, isSystem: false },
+        // Delete associated documents first
+        await tx.documents.deleteMany({
+          where: { teacherId: id },
         });
+
+        // Delete teacher
+        await tx.teacher.delete({
+          where: { id },
+        });
+
+        // Delete linked user
+        const deletedUser = await tx.user.deleteMany({
+          where: {
+            id: record.userId,
+            isSystem: false,
+          },
+        });
+
         if (deletedUser.count !== 1) {
           throw new ConflictException('The linked user could not be deleted.');
         }
 
-        return deletedTeacher;
+        return record;
       });
+
       return {
         statusCode: HttpStatus.OK,
-        message: 'Teacher and linked user deleted successfully.',
+        message:
+          'Teacher, associated documents, and linked user deleted successfully.',
         data: teacher,
       };
     } catch (error) {
@@ -402,6 +585,7 @@ export class TeachersService {
           'The linked user is connected to another record. Neither record was deleted.',
         );
       }
+
       this.handlePrismaError(error, id);
     }
   }
