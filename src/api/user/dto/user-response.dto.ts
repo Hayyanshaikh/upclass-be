@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Gendar } from '../../../generated/prisma/enums.ts';
 import { PermissionDataDto } from '../../permissions/dto/permission-response.dto.ts';
 
 export class PermissionKey {
@@ -40,9 +39,6 @@ export class LoginResponseUserDto {
 
   @ApiProperty()
   isSystem: boolean;
-
-  @ApiProperty({ enum: Gendar })
-  gender: Gendar;
 }
 
 export class LoginResponseDto {

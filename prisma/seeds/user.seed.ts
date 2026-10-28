@@ -1,4 +1,3 @@
-import { Gendar } from '../../src/generated/prisma/client';
 import { prisma } from '../prisma-client';
 import * as bcrypt from 'bcrypt';
 
@@ -20,7 +19,6 @@ export async function seedUsers(superAdminRoleId: string) {
       email,
       password: hashedPassword,
       roleId: superAdminRoleId,
-      gender: Gendar.MALE,
       isActive: true,
       isSystem: true,
     },

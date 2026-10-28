@@ -45,8 +45,6 @@ export class AuthService {
           id: true,
           email: true,
           roleId: true,
-          gender: true,
-          age: true,
           isSystem: true,
           role: {
             select: {
@@ -110,7 +108,6 @@ export class AuthService {
         },
         isActive: user.isActive,
         isSystem: user.isSystem,
-        gender: user.gender,
       };
 
       return {

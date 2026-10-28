@@ -4,9 +4,9 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-  moduleFormat = "esm"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
   importFileExtension = "ts"
 }
 
@@ -14,29 +14,53 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Gendar {
-  MALE
-  FEMALE
-}
+// enum Gendar {
+//   MALE
+//   FEMALE
+// }
 
 enum RoleType {
   SYSTEM_ROLE
   CUSTOM
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  TEMPORARY
+}
+
+enum TeacherStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
   password  String
-  email     String   @unique()
-  age       Int?
-  gender    Gendar   @default(FEMALE)
-  isActive  Boolean  @default(true)
-  isSystem  Boolean  @default(false)
+  email     String    @unique()
+  isActive  Boolean   @default(true)
+  isSystem  Boolean   @default(false)
   roleId    String
-  role      Role     @relation(fields: [roleId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      Role      @relation(fields: [roleId], references: [id])
+  teachers  Teacher[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Role {
@@ -70,4 +94,41 @@ model RolePermission {
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
   @@id([roleId, permissionId])
+}
+
+model Documents {
+  id           String   @id @default(uuid())
+  documentName String?
+  documentUrl  String?
+  teacherId    String
+  teacher      Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Teacher {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  image          String?
+  imagePublicId  String?
+  firstName      String
+  lastName       String?
+  dateOfBirth    DateTime?
+  gender         Gender?
+  cnicNo         String?         @unique
+  maritalStatus  MaritalStatus?
+  employeeId     String?         @unique
+  qualification  String?
+  joiningDate    DateTime?
+  employmentType EmploymentType? @default(FULL_TIME)
+  isActive       Boolean?        @default(true)
+  phone          String?
+  email          String?         @unique
+  address        String?
+  bankName       String?
+  accountNumber  String?
+  documents      Documents[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }

@@ -1,35 +1,51 @@
-import { prisma } from '../prisma-client';
-import { RoleType } from '../../src/generated/prisma/client';
+import { prisma } from '../prisma-client.ts';
+import { RoleType } from '../../src/generated/prisma/client.ts';
 
-const superAdminRole = {
-  name: 'Super Admin',
-  slug: 'super_admin',
-  description: 'Full access to the system.',
-  type: RoleType.SYSTEM_ROLE,
-};
+const roles = [
+  {
+    name: 'Super Admin',
+    slug: 'super_admin',
+    description: 'Full access to the system.',
+    type: RoleType.SYSTEM_ROLE,
+  },
+  {
+    name: 'Admin',
+    slug: 'admin',
+    description: 'Manage school operations.',
+    type: RoleType.SYSTEM_ROLE,
+  },
+  {
+    name: 'Teacher',
+    slug: 'teacher',
+    description: 'Manage teaching and academic activities.',
+    type: RoleType.SYSTEM_ROLE,
+  },
+  {
+    name: 'Parent',
+    slug: 'parent',
+    description: 'View student progress and attendance.',
+    type: RoleType.SYSTEM_ROLE,
+  },
+  {
+    name: 'Student',
+    slug: 'student',
+    description: 'Access personal academic information.',
+    type: RoleType.SYSTEM_ROLE,
+  },
+];
 
-export async function seedSuperAdminRole() {
-  const roleBySlug = await prisma.role.findUnique({
-    where: { slug: superAdminRole.slug },
-  });
+export async function seedRoles() {
+  const seededRoles = [];
 
-  if (roleBySlug) {
-    return prisma.role.update({
-      where: { id: roleBySlug.id },
-      data: superAdminRole,
+  for (const role of roles) {
+    const seededRole = await prisma.role.upsert({
+      where: { slug: role.slug },
+      update: role,
+      create: role,
     });
+
+    seededRoles.push(seededRole);
   }
 
-  const roleByName = await prisma.role.findUnique({
-    where: { name: superAdminRole.name },
-  });
-
-  if (roleByName) {
-    return prisma.role.update({
-      where: { id: roleByName.id },
-      data: superAdminRole,
-    });
-  }
-
-  return prisma.role.create({ data: superAdminRole });
+  return seededRoles;
 }

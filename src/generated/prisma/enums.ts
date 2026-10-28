@@ -9,17 +9,46 @@
 * 🟢 You can import this file directly.
 */
 
-export const Gendar = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE'
-} as const
-
-export type Gendar = (typeof Gendar)[keyof typeof Gendar]
-
-
 export const RoleType = {
   SYSTEM_ROLE: 'SYSTEM_ROLE',
   CUSTOM: 'CUSTOM'
 } as const
 
 export type RoleType = (typeof RoleType)[keyof typeof RoleType]
+
+
+export const Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
+
+
+export const MaritalStatus = {
+  SINGLE: 'SINGLE',
+  MARRIED: 'MARRIED',
+  DIVORCED: 'DIVORCED',
+  WIDOWED: 'WIDOWED'
+} as const
+
+export type MaritalStatus = (typeof MaritalStatus)[keyof typeof MaritalStatus]
+
+
+export const EmploymentType = {
+  FULL_TIME: 'FULL_TIME',
+  PART_TIME: 'PART_TIME',
+  CONTRACT: 'CONTRACT',
+  TEMPORARY: 'TEMPORARY'
+} as const
+
+export type EmploymentType = (typeof EmploymentType)[keyof typeof EmploymentType]
+
+
+export const TeacherStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type TeacherStatus = (typeof TeacherStatus)[keyof typeof TeacherStatus]

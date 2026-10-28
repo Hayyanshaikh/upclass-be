@@ -1,19 +1,25 @@
-import { seedUsers } from './seeds/user.seed.ts';
-import { seedSuperAdminRole } from './seeds/role.seed.ts';
-import { seedPermissions } from './seeds/permission.seed.ts';
 import { prisma } from './prisma-client.ts';
+import { seedPermissions } from './seeds/permission.seed.ts';
+import { seedRoles } from './seeds/role.seed.ts';
+import { seedRolePermissions } from './seeds/role-permission.seed.ts';
+import { seedUsers } from './seeds/user.seed.ts';
 
 async function main() {
-  const permissions = await seedPermissions();
-  const superAdminRole = await seedSuperAdminRole();
-  await prisma.rolePermission.createMany({
-    data: permissions.map((permission) => ({
-      roleId: superAdminRole.id,
-      permissionId: permission.id,
-    })),
-    skipDuplicates: true,
-  });
+  await seedPermissions();
+
+  const roles = await seedRoles();
+
+  await seedRolePermissions();
+
+  const superAdminRole = roles.find((role) => role.slug === 'super_admin');
+
+  if (!superAdminRole) {
+    throw new Error('Super Admin role not found.');
+  }
+
   await seedUsers(superAdminRole.id);
+
+  console.log('All seeds completed successfully.');
 }
 
 main()
