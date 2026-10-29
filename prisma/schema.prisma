@@ -96,6 +96,31 @@ model RolePermission {
   @@id([roleId, permissionId])
 }
 
+enum SubjectType {
+  THEORY
+  PRACTICAL
+  LAB
+  MIXED
+}
+
+enum SubjectStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Subject {
+  id                  String        @id @default(cuid())
+  name                String
+  code                String        @unique
+  type                SubjectType
+  status              SubjectStatus @default(ACTIVE)
+  hasPractical        Boolean       @default(false)
+  defaultTotalMarks   Float         @default(100)
+  defaultPassingMarks Float         @default(33)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
 model Documents {
   id           String   @id @default(uuid())
   documentName String?
