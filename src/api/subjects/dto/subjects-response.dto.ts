@@ -39,7 +39,7 @@ export class SubjectDto {
   updatedAt: Date;
 }
 
-export class SubjectResponseDto {
+export class SubjectsResponseDto {
   @ApiProperty({ type: [SubjectDto] })
   data: SubjectDto[];
 
