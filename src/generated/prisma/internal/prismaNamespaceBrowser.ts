@@ -55,6 +55,7 @@ export const ModelName = {
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
+  Subject: 'Subject',
   Documents: 'Documents',
   Teacher: 'Teacher'
 } as const
@@ -123,6 +124,22 @@ export const RolePermissionScalarFieldEnum = {
 } as const
 
 export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
+
+
+export const SubjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  type: 'type',
+  status: 'status',
+  hasPractical: 'hasPractical',
+  defaultTotalMarks: 'defaultTotalMarks',
+  defaultPassingMarks: 'defaultPassingMarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubjectScalarFieldEnum = (typeof SubjectScalarFieldEnum)[keyof typeof SubjectScalarFieldEnum]
 
 
 export const DocumentsScalarFieldEnum = {
