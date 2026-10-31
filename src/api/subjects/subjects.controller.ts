@@ -63,11 +63,20 @@ export class SubjectsController {
     description: 'Subjects retrieved successfully',
     type: SubjectsResponseDto,
   })
-  findAll(@Query() query: { searchKey?: string; type?: string; status?: string; limit?: number; offset?: number }): Promise<SubjectsResponseDto> {
+  findAll(
+    @Query()
+    query: {
+      searchKey?: string;
+      type?: string;
+      status?: string;
+      limit?: number;
+      offset?: number;
+    },
+  ): Promise<SubjectsResponseDto> {
     return this.subjectsService.findAll(query);
   }
 
-  @Permissions(SUBJECT_PERMISSIONS.VIEW)
+  @Permissions(SUBJECT_PERMISSIONS.EDIT)
   @Get(':id')
   @ApiOperation({ summary: 'Get a subject by ID' })
   @ApiOkResponse({
