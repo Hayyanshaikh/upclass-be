@@ -3,6 +3,105 @@ import { prisma } from '../prisma-client.ts';
 const rolePermissions: Record<string, string[]> = {
   super_admin: ['*'],
 
+  // super_admin: [
+  //   'schools.view',
+  //   'schools.create',
+  //   'schools.edit',
+  //   'schools.delete',
+  //   'subscriptions.view',
+  //   'subscriptions.manage',
+  // ],
+
+  school_admin: [
+    'dashboard.view',
+
+    'students.view',
+    'students.create',
+    'students.edit',
+    'students.delete',
+
+    'teachers.view',
+    'teachers.create',
+    'teachers.edit',
+    'teachers.delete',
+
+    'parents.view',
+    'parents.create',
+    'parents.edit',
+    'parents.delete',
+
+    'subjects.view',
+    'subjects.create',
+    'subjects.edit',
+    'subjects.delete',
+
+    'classes.view',
+    'classes.create',
+    'classes.edit',
+    'classes.delete',
+
+    'student_attendance.view',
+    'student_attendance.create',
+    'student_attendance.edit',
+    'student_attendance.delete',
+
+    'teacher_attendance.view',
+    'teacher_attendance.create',
+    'teacher_attendance.edit',
+    'teacher_attendance.delete',
+
+    'mark_attendance.view',
+    'mark_attendance.create',
+    'mark_attendance.edit',
+    'mark_attendance.delete',
+
+    'timetable.view',
+    'timetable.create',
+    'timetable.edit',
+    'timetable.delete',
+
+    'exams_results.view',
+    'exams_results.create',
+    'exams_results.edit',
+    'exams_results.delete',
+
+    'fees.view',
+    'fees.create',
+    'fees.edit',
+    'fees.delete',
+
+    'fee_structure.view',
+    'fee_structure.create',
+    'fee_structure.edit',
+    'fee_structure.delete',
+
+    'notices.view',
+    'notices.create',
+    'notices.edit',
+    'notices.delete',
+
+    'leave_requests.view',
+    'leave_requests.edit',
+
+    'teacher_leaves.view',
+    'teacher_leaves.create',
+    'teacher_leaves.edit',
+    'teacher_leaves.delete',
+
+    'users.view',
+    'users.create',
+    'users.edit',
+    'users.delete',
+
+    'roles.view',
+    'roles.create',
+    'roles.edit',
+    'roles.delete',
+
+    'settings.view',
+    'settings.edit',
+  ],
+
   admin: [
     'dashboard.view',
     'students.view',

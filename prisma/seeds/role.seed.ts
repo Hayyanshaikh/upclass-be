@@ -5,13 +5,13 @@ const roles = [
   {
     name: 'Super Admin',
     slug: 'super_admin',
-    description: 'Full access to the system.',
+    description: 'Manage the SaaS platform and all schools.',
     type: RoleType.SYSTEM_ROLE,
   },
   {
-    name: 'Admin',
-    slug: 'admin',
-    description: 'Manage school operations.',
+    name: 'School Admin',
+    slug: 'school_admin',
+    description: 'Manage school operations and users.',
     type: RoleType.SYSTEM_ROLE,
   },
   {

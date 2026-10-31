@@ -32,6 +32,7 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 import { Permissions } from '../auth/decorators/permissions.decorator.ts';
 import { SUBJECT_PERMISSIONS } from './entities/subject.permission.ts';
+import { FindSubjectsQueryDto } from './dto/find-subjects-query.dto.ts';
 
 @ApiTags('Subjects')
 @ApiBearerAuth()
@@ -65,13 +66,7 @@ export class SubjectsController {
   })
   findAll(
     @Query()
-    query: {
-      searchKey?: string;
-      type?: string;
-      status?: string;
-      limit?: number;
-      offset?: number;
-    },
+    query: FindSubjectsQueryDto,
   ): Promise<SubjectsResponseDto> {
     return this.subjectsService.findAll(query);
   }
