@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import {
   ApiResponse,
@@ -23,6 +24,7 @@ import {
   UserFindOneResponseDto,
   UserResponseDto,
 } from './dto/user-response.dto.ts';
+import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 @ApiTags('Users')
 @Controller('user')
@@ -34,8 +36,12 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 409, description: 'Email already exists' })
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  create(
+    @Body() dto: CreateUserDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<UserFindOneResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.userService.create(dto, schoolId);
   }
 
   @Get()
@@ -44,8 +50,12 @@ export class UserController {
     description: 'Users retrieved successfully',
     type: UserResponseDto,
   })
-  findAll(@Query() query: FindUsersQueryDto): Promise<UserResponseDto> {
-    return this.userService.findAll(query);
+  findAll(
+    @Query() query: FindUsersQueryDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<UserResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.userService.findAll(query, schoolId);
   }
 
   @Get(':id')

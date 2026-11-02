@@ -46,6 +46,12 @@ export class AuthService {
           email: true,
           roleId: true,
           isSystem: true,
+          school: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
           role: {
             select: {
               id: true,
@@ -98,6 +104,10 @@ export class AuthService {
         name: user.name,
         email: user.email,
         roleId: user.roleId,
+        school: {
+          id: user?.school?.id || '',
+          name: user?.school?.name || '',
+        },
         role: {
           id: user.role.id,
           name: user.role.name,

@@ -18,12 +18,16 @@ import {
   SchoolsResponseDto,
 } from './dto/schools-response.dto.ts';
 import * as bcrypt from 'bcrypt';
+import { SchoolDefaultsService } from './school-defaults.service.ts';
 
 @Injectable()
 export class SchoolsService {
   private readonly logger = new Logger(SchoolsService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly schoolDefaultsService: SchoolDefaultsService,
+  ) {}
 
   async create(dto: CreateSchoolDto): Promise<SchoolFindOneResponseDto> {
     const {
@@ -55,14 +59,6 @@ export class SchoolsService {
 
       const hashedPassword = await bcrypt.hash(adminPassword, 12);
 
-      const schoolAdminRole = await this.prisma.role.findUnique({
-        where: { slug: 'school_admin' },
-      });
-
-      if (!schoolAdminRole) {
-        throw new NotFoundException('School Admin role not found.');
-      }
-
       const result = await this.prisma.$transaction(async (tx) => {
         const school = await tx.school.create({
           data: {
@@ -74,12 +70,22 @@ export class SchoolsService {
           },
         });
 
+        await this.schoolDefaultsService.createDefaults(tx, school.id);
+
+        // School Admin role retrieve karein
+        const adminRole = await tx.role.findFirstOrThrow({
+          where: {
+            schoolId: school.id,
+            slug: 'school_admin',
+          },
+        });
+
         await tx.user.create({
           data: {
             name: adminName.trim(),
             email: adminEmail.trim(),
             password: hashedPassword,
-            roleId: schoolAdminRole.id,
+            roleId: adminRole.id,
             schoolId: school.id,
             isActive: true,
             isSystem: false,

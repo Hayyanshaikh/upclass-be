@@ -20,6 +20,7 @@ import {
   TeacherFindOneResponseDto,
   TeacherResponseDto,
 } from './dto/teachers-response.dto.ts';
+import { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 @Injectable()
 export class TeachersService {
@@ -32,7 +33,7 @@ export class TeachersService {
 
   async create(
     dto: CreateTeacherDto,
-    _userId: string,
+    _user: AuthenticatedRequest,
   ): Promise<TeacherFindOneResponseDto & { temporaryPassword: string }> {
     const {
       firstName,
@@ -76,8 +77,15 @@ export class TeachersService {
         .join(' ');
       const userEmail = email.trim();
       const role = await this.prisma.role.findUnique({
-        where: { slug: 'teacher' },
-        select: { id: true },
+        where: {
+          schoolId_slug: {
+            schoolId: _user.user.schoolId,
+            slug: 'teacher',
+          },
+        },
+        select: {
+          id: true,
+        },
       });
       if (!role) {
         throw new BadRequestException('Invalid role selected.');

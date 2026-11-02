@@ -34,10 +34,15 @@ type RoleWithPermissions = Prisma.RoleGetPayload<{
 export class RolesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateRoleDto): Promise<RoleResponseDto> {
+  async create(dto: CreateRoleDto, schoolId: string): Promise<RoleResponseDto> {
     try {
       const role = await this.prisma.role.create({
-        data: dto,
+        data: {
+          name: dto.name,
+          slug: dto.slug,
+          description: dto.description ?? null,
+          schoolId,
+        },
         include: rolePermissionsInclude,
       });
       return this.success(
@@ -50,9 +55,13 @@ export class RolesService {
     }
   }
 
-  async findAll(query: FindRolesQueryDto): Promise<RolesResponseDto> {
+  async findAll(
+    query: FindRolesQueryDto,
+    schoolId: string,
+  ): Promise<RolesResponseDto> {
     try {
       const where: Prisma.RoleWhereInput = {
+        schoolId: schoolId,
         ...(query.searchKey && {
           name: { contains: query.searchKey, mode: 'insensitive' },
         }),

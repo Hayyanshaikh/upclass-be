@@ -12,7 +12,7 @@ async function main() {
 
   await seedRolePermissions();
 
-  await seedSubjects();
+  // await seedSubjects();
 
   const superAdminRole = roles.find((role) => role.slug === 'super_admin');
 

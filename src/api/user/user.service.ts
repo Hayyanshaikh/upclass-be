@@ -31,7 +31,10 @@ export class UserService {
 
   // CREATE USER
 
-  async create(dto: CreateUserDto) {
+  async create(
+    dto: CreateUserDto,
+    schoolId: string,
+  ): Promise<UserFindOneResponseDto> {
     try {
       const errors: string[] = [];
 
@@ -86,6 +89,7 @@ export class UserService {
             password: hashedPassword,
             roleId: dto.roleId,
             isActive: dto.isActive,
+            schoolId: schoolId,
           },
           omit: {
             password: true,
@@ -129,9 +133,13 @@ export class UserService {
     }
   }
 
-  async findAll(query: FindUsersQueryDto): Promise<UserResponseDto> {
+  async findAll(
+    query: FindUsersQueryDto,
+    schoolId: string,
+  ): Promise<UserResponseDto> {
     try {
       const where: Prisma.UserWhereInput = {
+        schoolId: schoolId,
         ...(query.role && {
           OR: [{ roleId: query.role }, { role: { slug: query.role } }],
         }),
@@ -193,6 +201,12 @@ export class UserService {
           name: true,
           email: true,
           roleId: true,
+          school: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
           role: {
             select: {
               id: true,
@@ -228,6 +242,10 @@ export class UserService {
         roleId: user.roleId,
         isActive: user.isActive,
         isSystem: user.isSystem,
+        school: {
+          id: user?.school?.id || '',
+          name: user?.school?.name || '',
+        },
         role: user.role
           ? {
               id: user.role.id,

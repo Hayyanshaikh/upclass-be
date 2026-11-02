@@ -53,7 +53,7 @@ export class TeachersController {
     @Body() createTeacherDto: CreateTeacherDto,
     @Req() req: AuthenticatedRequest,
   ): Promise<TeacherFindOneResponseDto> {
-    return this.teachersService.create(createTeacherDto, req.user.id);
+    return this.teachersService.create(createTeacherDto, req);
   }
 
   @Permissions(TEACHER_PERMISSIONS.VIEW)

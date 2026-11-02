@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -17,12 +18,10 @@ import {
 } from '@nestjs/swagger';
 import { RolesService } from './roles.service.ts';
 import { CreateRoleDto } from './dto/create-role.dto.ts';
-import {
-  RoleResponseDto,
-  RolesResponseDto,
-} from './dto/role-response.dto.ts';
+import { RoleResponseDto, RolesResponseDto } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
 import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
+import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 @ApiTags('Roles')
 @Controller('roles')
@@ -37,8 +36,12 @@ export class RolesController {
   })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 409, description: 'Role name or slug already exists' })
-  create(@Body() dto: CreateRoleDto): Promise<RoleResponseDto> {
-    return this.rolesService.create(dto);
+  create(
+    @Body() dto: CreateRoleDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<RoleResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.rolesService.create(dto, schoolId);
   }
 
   @Get()
@@ -47,8 +50,15 @@ export class RolesController {
     description: 'Roles retrieved successfully',
     type: RolesResponseDto,
   })
-  findAll(@Query() query: FindRolesQueryDto): Promise<RolesResponseDto> {
-    return this.rolesService.findAll(query);
+  findAll(
+    @Query() query: FindRolesQueryDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<RolesResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+
+    console.log({ req });
+
+    return this.rolesService.findAll(query, schoolId);
   }
 
   @Get(':id')
@@ -71,7 +81,10 @@ export class RolesController {
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 404, description: 'Role not found' })
   @ApiResponse({ status: 409, description: 'Role name or slug already exists' })
-  update(@Param('id') id: string, @Body() dto: UpdateRoleDto): Promise<RoleResponseDto> {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateRoleDto,
+  ): Promise<RoleResponseDto> {
     return this.rolesService.update(id, dto);
   }
 
