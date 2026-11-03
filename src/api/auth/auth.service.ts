@@ -50,6 +50,7 @@ export class AuthService {
             select: {
               id: true,
               name: true,
+              isActive: true,
             },
           },
           role: {
@@ -84,6 +85,14 @@ export class AuthService {
 
       // Check account status
       if (!user.isActive) {
+        throw new HttpException(
+          'Your account is inactive.',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      // Check account status
+      if (!user.school?.isActive) {
         throw new HttpException(
           'Your account is inactive.',
           HttpStatus.UNAUTHORIZED,

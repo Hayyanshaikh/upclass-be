@@ -16,6 +16,7 @@ import {
   SubjectFindOneResponseDto,
   SubjectsResponseDto,
 } from './dto/subjects-response.dto.ts';
+import { FindSchoolsQueryDto } from '../schools/dto/find-schools-query.dto.ts';
 
 @Injectable()
 export class SubjectsService {
@@ -25,6 +26,7 @@ export class SubjectsService {
 
   async create(
     dto: CreateSubjectDto,
+    schoolId: string,
   ): Promise<SubjectFindOneResponseDto> {
     const {
       name,
@@ -43,6 +45,9 @@ export class SubjectsService {
       if (!code?.trim()) {
         throw new BadRequestException('Subject code is required.');
       }
+      if (!schoolId?.trim()) {
+        throw new BadRequestException('School context is required.');
+      }
       if (
         defaultPassingMarks != null &&
         defaultTotalMarks != null &&
@@ -57,6 +62,7 @@ export class SubjectsService {
         data: {
           name: name.trim(),
           code: code.trim().toUpperCase(),
+          schoolId,
           type,
           status,
           hasPractical: hasPractical ?? false,
@@ -81,19 +87,21 @@ export class SubjectsService {
     }
   }
 
-  async findAll(query: {
-    searchKey?: string;
-    type?: string;
-    status?: string;
-    limit?: number | string;
-    offset?: number | string;
-  }): Promise<SubjectsResponseDto> {
+  async findAll(
+    query: FindSchoolsQueryDto,
+    schoolId: string,
+  ): Promise<SubjectsResponseDto> {
     try {
       const where: Prisma.SubjectWhereInput = {
+        schoolId,
         ...(query.searchKey && {
           OR: [
-            { name: { contains: query.searchKey, mode: 'insensitive' as never } },
-            { code: { contains: query.searchKey, mode: 'insensitive' as never } },
+            {
+              name: { contains: query.searchKey, mode: 'insensitive' as never },
+            },
+            {
+              code: { contains: query.searchKey, mode: 'insensitive' as never },
+            },
           ],
         }),
         ...(query.type && { type: query.type as never }),
@@ -174,10 +182,12 @@ export class SubjectsService {
 
       const updateData: Prisma.SubjectUpdateInput = {};
       if (dto.name !== undefined) updateData.name = dto.name.trim();
-      if (dto.code !== undefined) updateData.code = dto.code.trim().toUpperCase();
+      if (dto.code !== undefined)
+        updateData.code = dto.code.trim().toUpperCase();
       if (dto.type !== undefined) updateData.type = dto.type;
       if (dto.status !== undefined) updateData.status = dto.status;
-      if (dto.hasPractical !== undefined) updateData.hasPractical = dto.hasPractical;
+      if (dto.hasPractical !== undefined)
+        updateData.hasPractical = dto.hasPractical;
       if (dto.defaultTotalMarks !== undefined)
         updateData.defaultTotalMarks = dto.defaultTotalMarks;
       if (dto.defaultPassingMarks !== undefined)

@@ -56,8 +56,6 @@ export class RolesController {
   ): Promise<RolesResponseDto> {
     const schoolId = req.headers['schoolid'] as string;
 
-    console.log({ req });
-
     return this.rolesService.findAll(query, schoolId);
   }
 

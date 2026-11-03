@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, RoleType } from '../../generated/prisma/client.ts';
+import {
+  Prisma,
+  RoleType,
+  SubjectStatus,
+  SubjectType,
+} from '../../generated/prisma/client.ts';
 import { rolePermissions } from '../../common/constants/role-permissions.ts';
 
 @Injectable()
@@ -53,5 +58,142 @@ export class SchoolDefaultsService {
         skipDuplicates: true,
       });
     }
+
+    const defaultSubjects = [
+      {
+        name: 'English',
+        code: 'ENG',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Urdu',
+        code: 'URD',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Mathematics',
+        code: 'MATH',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Science',
+        code: 'SCI',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Islamiat',
+        code: 'ISL',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Social Studies',
+        code: 'SST',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Computer',
+        code: 'COMP',
+        type: SubjectType.MIXED,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: true,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Pakistan Studies',
+        code: 'PST',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Sindhi',
+        code: 'SIND',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Arabic',
+        code: 'ARAB',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Drawing',
+        code: 'DRAW',
+        type: SubjectType.PRACTICAL,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: true,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Physics',
+        code: 'PHY',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Chemistry',
+        code: 'CHEM',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+      {
+        name: 'Biology',
+        code: 'BIO',
+        type: SubjectType.THEORY,
+        status: SubjectStatus.ACTIVE,
+        hasPractical: false,
+        defaultTotalMarks: 100,
+        defaultPassingMarks: 40,
+      },
+    ];
+
+    await tx.subject.createMany({
+      data: defaultSubjects.map((subject) => ({
+        ...subject,
+        schoolId,
+      })),
+      skipDuplicates: true,
+    });
   }
 }

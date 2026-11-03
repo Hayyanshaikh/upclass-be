@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -31,6 +32,11 @@ export class CreateSchoolDto {
   @IsOptional()
   @IsString()
   address?: string | null;
+
+  @ApiPropertyOptional({ type: Boolean, default: true })
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean | null;
 
   // School Admin Details
 

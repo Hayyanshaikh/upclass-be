@@ -35,6 +35,7 @@ export class SchoolsService {
       email,
       phone,
       address,
+      isActive,
       adminName,
       adminEmail,
       adminPassword,
@@ -66,7 +67,7 @@ export class SchoolsService {
             email: email?.trim() ?? null,
             phone: phone?.trim() ?? null,
             address: address?.trim() ?? null,
-            isActive: true,
+            isActive: isActive ?? true,
           },
         });
 
@@ -193,7 +194,7 @@ export class SchoolsService {
     id: string,
     dto: UpdateSchoolDto,
   ): Promise<SchoolFindOneResponseDto> {
-    const { name, email, phone, address } = dto;
+    const { name, email, phone, address, isActive } = dto;
 
     try {
       const school = await this.prisma.school.findUnique({
@@ -221,6 +222,7 @@ export class SchoolsService {
       if (email !== undefined) updateData.email = email.trim() ?? null;
       if (phone !== undefined) updateData.phone = phone?.trim() ?? null;
       if (address !== undefined) updateData.address = address?.trim() ?? null;
+      if (isActive != null) updateData.isActive = isActive;
 
       const updated = await this.prisma.school.update({
         where: { id },

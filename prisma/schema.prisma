@@ -59,6 +59,7 @@ model School {
   users     User[]
   roles     Role[]
   teachers  Teacher[]
+  subjects  Subject[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -131,7 +132,9 @@ enum SubjectStatus {
 model Subject {
   id                  String        @id @default(cuid())
   name                String
-  code                String        @unique
+  code                String
+  schoolId            String
+  school              School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   type                SubjectType
   status              SubjectStatus @default(ACTIVE)
   hasPractical        Boolean       @default(false)
@@ -139,6 +142,8 @@ model Subject {
   defaultPassingMarks Float         @default(33)
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
+
+  @@unique([schoolId, code])
 }
 
 model Documents {

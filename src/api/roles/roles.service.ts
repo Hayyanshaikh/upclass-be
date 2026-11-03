@@ -57,16 +57,28 @@ export class RolesService {
 
   async findAll(
     query: FindRolesQueryDto,
-    schoolId: string,
+    schoolId: string | null,
   ): Promise<RolesResponseDto> {
     try {
-      const where: Prisma.RoleWhereInput = {
-        schoolId: schoolId,
-        ...(query.searchKey && {
-          name: { contains: query.searchKey, mode: 'insensitive' },
-        }),
-        ...(query.type && { type: query.type }),
-      };
+      const where: Prisma.RoleWhereInput = {};
+
+      if (schoolId === null || schoolId === undefined) {
+        where.OR = [{ schoolId: null }, { slug: 'school_admin' }];
+      } else {
+        where.schoolId = schoolId;
+      }
+
+      if (query.searchKey) {
+        where.name = {
+          contains: query.searchKey,
+          mode: 'insensitive',
+        };
+      }
+
+      if (query.type) {
+        where.type = query.type;
+      }
+
       const [roles, total] = await Promise.all([
         this.prisma.role.findMany({
           where,
@@ -77,6 +89,7 @@ export class RolesService {
         }),
         this.prisma.role.count({ where }),
       ]);
+
       return {
         data: roles.map(({ _count, ...role }) => ({
           ...role,

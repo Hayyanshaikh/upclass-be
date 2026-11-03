@@ -135,21 +135,32 @@ export class UserService {
 
   async findAll(
     query: FindUsersQueryDto,
-    schoolId: string,
+    schoolId: string | null,
   ): Promise<UserResponseDto> {
     try {
-      const where: Prisma.UserWhereInput = {
-        schoolId: schoolId,
-        ...(query.role && {
-          OR: [{ roleId: query.role }, { role: { slug: query.role } }],
-        }),
-        ...(query.searchKey && {
-          name: {
-            contains: query.searchKey,
-            mode: 'insensitive',
+      const where: Prisma.UserWhereInput = {};
+
+      if (schoolId === null || schoolId === undefined) {
+        where.OR = [{ schoolId: null }, { role: { slug: 'school_admin' } }];
+      } else {
+        where.schoolId = schoolId;
+      }
+
+      if (query.role) {
+        where.AND = [
+          {
+            OR: [{ roleId: query.role }, { role: { slug: query.role } }],
           },
-        }),
-      };
+        ];
+      }
+
+      if (query.searchKey) {
+        where.name = {
+          contains: query.searchKey,
+          mode: 'insensitive',
+        };
+      }
+
       const [users, total] = await Promise.all([
         this.prisma.user.findMany({
           where,
