@@ -103,6 +103,7 @@ export class UserService {
               employeeId: employeeId,
               email: dto.email.trim(),
               firstName: dto.name.trim(),
+              schoolId: schoolId,
             },
           });
         }

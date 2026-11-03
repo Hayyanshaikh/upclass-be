@@ -81,3 +81,13 @@ export type Documents = Prisma.DocumentsModel
  * 
  */
 export type Teacher = Prisma.TeacherModel
+/**
+ * Model Class
+ * 
+ */
+export type Class = Prisma.ClassModel
+/**
+ * Model ClassSubject
+ * 
+ */
+export type ClassSubject = Prisma.ClassSubjectModel

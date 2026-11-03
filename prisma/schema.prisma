@@ -60,6 +60,7 @@ model School {
   roles     Role[]
   teachers  Teacher[]
   subjects  Subject[]
+  classes   Class[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -130,18 +131,19 @@ enum SubjectStatus {
 }
 
 model Subject {
-  id                  String        @id @default(cuid())
+  id                  String         @id @default(cuid())
   name                String
   code                String
   schoolId            String
-  school              School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  school              School         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   type                SubjectType
-  status              SubjectStatus @default(ACTIVE)
-  hasPractical        Boolean       @default(false)
-  defaultTotalMarks   Float         @default(100)
-  defaultPassingMarks Float         @default(33)
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
+  status              SubjectStatus  @default(ACTIVE)
+  hasPractical        Boolean        @default(false)
+  defaultTotalMarks   Float          @default(100)
+  defaultPassingMarks Float          @default(33)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  classSubjects       ClassSubject[]
 
   @@unique([schoolId, code])
 }
@@ -157,30 +159,74 @@ model Documents {
 }
 
 model Teacher {
-  id             String          @id @default(cuid())
-  userId         String
-  user           User            @relation(fields: [userId], references: [id])
-  schoolId       String?
-  school         School?         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
-  image          String?
-  imagePublicId  String?
-  firstName      String
-  lastName       String?
-  dateOfBirth    DateTime?
-  gender         Gender?
-  cnicNo         String?         @unique
-  maritalStatus  MaritalStatus?
-  employeeId     String?         @unique
-  qualification  String?
-  joiningDate    DateTime?
-  employmentType EmploymentType? @default(FULL_TIME)
-  isActive       Boolean?        @default(true)
-  phone          String?
-  email          String?         @unique
-  address        String?
-  bankName       String?
-  accountNumber  String?
-  documents      Documents[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id               String          @id @default(cuid())
+  userId           String
+  user             User            @relation(fields: [userId], references: [id])
+  schoolId         String?
+  school           School?         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  image            String?
+  imagePublicId    String?
+  firstName        String
+  lastName         String?
+  dateOfBirth      DateTime?
+  gender           Gender?
+  cnicNo           String?         @unique
+  maritalStatus    MaritalStatus?
+  employeeId       String?         @unique
+  qualification    String?
+  joiningDate      DateTime?
+  employmentType   EmploymentType? @default(FULL_TIME)
+  isActive         Boolean?        @default(true)
+  phone            String?
+  email            String?         @unique
+  address          String?
+  bankName         String?
+  accountNumber    String?
+  documents        Documents[]
+  classes          Class[]         @relation("ClassTeacher")
+  assistantClasses Class[]         @relation("AssistantClassTeacher")
+  classSubjects    ClassSubject[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+enum ClassStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Class {
+  id                 String         @id @default(cuid())
+  schoolId           String?
+  school             School?        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  name               String
+  section            String
+  room               String
+  capacity           Int
+  academicYear       String
+  status             ClassStatus    @default(ACTIVE)
+  teacherId          String
+  teacher            Teacher        @relation("ClassTeacher", fields: [teacherId], references: [id])
+  assistantTeacherId String?
+  assistantTeacher   Teacher?       @relation("AssistantClassTeacher", fields: [assistantTeacherId], references: [id])
+  subjects           ClassSubject[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@unique([name, section, academicYear])
+}
+
+model ClassSubject {
+  id             String   @id @default(cuid())
+  classId        String
+  schoolClass    Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subjectId      String
+  subject        Subject  @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  teacherId      String
+  teacher        Teacher  @relation(fields: [teacherId], references: [id])
+  periodsPerWeek Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([classId, subjectId])
 }
