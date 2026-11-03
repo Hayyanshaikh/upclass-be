@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -15,6 +16,7 @@ import {
 } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
 import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
+import { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 export interface RoleApiResponse<T extends object | object[]> {
   data: T;
@@ -122,7 +124,11 @@ export class RolesService {
     }
   }
 
-  async update(id: string, dto: UpdateRoleDto): Promise<RoleResponseDto> {
+  async update(
+    id: string,
+    dto: UpdateRoleDto,
+    user: AuthenticatedRequest,
+  ): Promise<RoleResponseDto> {
     try {
       const { permissionKeys, ...fields } = dto;
       let permissionIds: string[] | undefined;
@@ -140,6 +146,13 @@ export class RolesService {
           );
         }
         permissionIds = permissions.map(({ id }) => id);
+      }
+      console.log({ id, user: user.user });
+
+      if (id === user.user.role) {
+        throw new BadRequestException(
+          'You cannot modify your own assigned role.',
+        );
       }
 
       const role = await this.prisma.role.update({
@@ -164,7 +177,13 @@ export class RolesService {
         'Role updated successfully.',
       );
     } catch (error) {
-      if (error instanceof BadRequestException) throw error;
+      if (
+        error instanceof BadRequestException ||
+        error instanceof ForbiddenException
+      ) {
+        throw error;
+      }
+
       this.handlePrismaError(error, id);
     }
   }

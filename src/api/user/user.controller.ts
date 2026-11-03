@@ -8,12 +8,14 @@ import {
   Delete,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiResponse,
   ApiTags,
   ApiOperation,
   ApiOkResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service.ts';
@@ -25,8 +27,12 @@ import {
   UserResponseDto,
 } from './dto/user-response.dto.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 
 @ApiTags('Users')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

@@ -92,9 +92,9 @@ export class AuthService {
       }
 
       // Check account status
-      if (!user.school?.isActive) {
+      if (user.school && !user.school.isActive) {
         throw new HttpException(
-          'Your account is inactive.',
+          'Your school account is inactive.',
           HttpStatus.UNAUTHORIZED,
         );
       }

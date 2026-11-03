@@ -8,8 +8,10 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -22,8 +24,12 @@ import { RoleResponseDto, RolesResponseDto } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
 import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 
 @ApiTags('Roles')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -82,8 +88,9 @@ export class RolesController {
   update(
     @Param('id') id: string,
     @Body() dto: UpdateRoleDto,
+    @Req() req: AuthenticatedRequest,
   ): Promise<RoleResponseDto> {
-    return this.rolesService.update(id, dto);
+    return this.rolesService.update(id, dto, req);
   }
 
   @Delete(':id')
