@@ -1152,6 +1152,7 @@ export type DocumentsScalarFieldEnum = (typeof DocumentsScalarFieldEnum)[keyof t
 export const TeacherScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  schoolId: 'schoolId',
   image: 'image',
   imagePublicId: 'imagePublicId',
   firstName: 'firstName',

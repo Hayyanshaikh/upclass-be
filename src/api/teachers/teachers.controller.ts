@@ -53,7 +53,8 @@ export class TeachersController {
     @Body() createTeacherDto: CreateTeacherDto,
     @Req() req: AuthenticatedRequest,
   ): Promise<TeacherFindOneResponseDto> {
-    return this.teachersService.create(createTeacherDto, req);
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.create(createTeacherDto, req, schoolId);
   }
 
   @Permissions(TEACHER_PERMISSIONS.VIEW)
@@ -63,8 +64,12 @@ export class TeachersController {
     description: 'Teachers retrieved successfully',
     type: TeacherResponseDto,
   })
-  findAll(@Query() query: FindTeachersQueryDto): Promise<TeacherResponseDto> {
-    return this.teachersService.findAll(query);
+  findAll(
+    @Query() query: FindTeachersQueryDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<TeacherResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.findAll(query, schoolId);
   }
 
   @Permissions(TEACHER_PERMISSIONS.VIEW)
@@ -75,8 +80,12 @@ export class TeachersController {
     type: TeacherFindOneResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Teacher not found' })
-  findOne(@Param('id') id: string): Promise<TeacherFindOneResponseDto> {
-    return this.teachersService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<TeacherFindOneResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.findOne(id, schoolId);
   }
 
   @Permissions(TEACHER_PERMISSIONS.EDIT)
@@ -92,8 +101,10 @@ export class TeachersController {
   update(
     @Param('id') id: string,
     @Body() dto: UpdateTeacherDto,
+    @Req() req: AuthenticatedRequest,
   ): Promise<TeacherFindOneResponseDto> {
-    return this.teachersService.update(id, dto);
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.update(id, schoolId, dto);
   }
 
   @Permissions(TEACHER_PERMISSIONS.DELETE)
@@ -104,7 +115,11 @@ export class TeachersController {
     type: TeacherFindOneResponseDto,
   })
   @ApiResponse({ status: 404, description: 'Teacher not found' })
-  remove(@Param('id') id: string): Promise<TeacherFindOneResponseDto> {
-    return this.teachersService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<TeacherFindOneResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.remove(id, schoolId);
   }
 }
