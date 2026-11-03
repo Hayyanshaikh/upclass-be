@@ -20,6 +20,7 @@ import {
   TeacherFindOneResponseDto,
   TeacherResponseDto,
 } from './dto/teachers-response.dto.ts';
+import { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 @Injectable()
 export class TeachersService {
@@ -32,7 +33,8 @@ export class TeachersService {
 
   async create(
     dto: CreateTeacherDto,
-    _userId: string,
+    _user: AuthenticatedRequest,
+    schoolId: string,
   ): Promise<TeacherFindOneResponseDto & { temporaryPassword: string }> {
     const {
       firstName,
@@ -76,8 +78,15 @@ export class TeachersService {
         .join(' ');
       const userEmail = email.trim();
       const role = await this.prisma.role.findUnique({
-        where: { slug: 'teacher' },
-        select: { id: true },
+        where: {
+          schoolId_slug: {
+            schoolId,
+            slug: 'teacher',
+          },
+        },
+        select: {
+          id: true,
+        },
       });
       if (!role) {
         throw new BadRequestException('Invalid role selected.');
@@ -110,12 +119,14 @@ export class TeachersService {
             password: hashedPassword,
             roleId: role.id,
             isActive: isActive ?? true,
+            schoolId: schoolId,
           },
         });
 
         return tx.teacher.create({
           data: {
             userId: user.id,
+            schoolId,
             firstName: firstName.trim(),
             lastName: lastName?.trim() ?? lastName,
             employeeId,
@@ -168,7 +179,10 @@ export class TeachersService {
     }
   }
 
-  async findAll(query: FindTeachersQueryDto): Promise<TeacherResponseDto> {
+  async findAll(
+    query: FindTeachersQueryDto,
+    schoolId: string,
+  ): Promise<TeacherResponseDto> {
     const {
       limit = 10,
       offset = 0,
@@ -178,6 +192,7 @@ export class TeachersService {
       role,
     } = query;
     const where: Prisma.TeacherWhereInput = {
+      schoolId,
       ...(searchKey && {
         OR: [
           { firstName: { contains: searchKey, mode: 'insensitive' } },
@@ -219,10 +234,13 @@ export class TeachersService {
     }
   }
 
-  async findOne(id: string): Promise<TeacherFindOneResponseDto> {
+  async findOne(
+    id: string,
+    schoolId: string,
+  ): Promise<TeacherFindOneResponseDto> {
     try {
       const teacher = await this.prisma.teacher.findUnique({
-        where: { id },
+        where: { id, schoolId },
         include: {
           documents: true,
         },
@@ -242,6 +260,7 @@ export class TeachersService {
 
   async update(
     id: string,
+    schoolId: string,
     dto: UpdateTeacherDto,
   ): Promise<TeacherFindOneResponseDto> {
     const {
@@ -286,7 +305,7 @@ export class TeachersService {
 
       const teacher = await this.prisma.$transaction(async (tx) => {
         const current = await tx.teacher.findUnique({
-          where: { id },
+          where: { id, schoolId },
           include: {
             user: { select: { name: true, email: true } },
             documents: true,
@@ -509,11 +528,14 @@ export class TeachersService {
     }
   }
 
-  async remove(id: string): Promise<TeacherFindOneResponseDto> {
+  async remove(
+    id: string,
+    schoolId: string,
+  ): Promise<TeacherFindOneResponseDto> {
     try {
       const teacher = await this.prisma.$transaction(async (tx) => {
         const record = await tx.teacher.findUnique({
-          where: { id },
+          where: { id, schoolId },
           include: {
             documents: true,
           },

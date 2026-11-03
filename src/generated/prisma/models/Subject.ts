@@ -40,6 +40,7 @@ export type SubjectMinAggregateOutputType = {
   id: string | null
   name: string | null
   code: string | null
+  schoolId: string | null
   type: $Enums.SubjectType | null
   status: $Enums.SubjectStatus | null
   hasPractical: boolean | null
@@ -53,6 +54,7 @@ export type SubjectMaxAggregateOutputType = {
   id: string | null
   name: string | null
   code: string | null
+  schoolId: string | null
   type: $Enums.SubjectType | null
   status: $Enums.SubjectStatus | null
   hasPractical: boolean | null
@@ -66,6 +68,7 @@ export type SubjectCountAggregateOutputType = {
   id: number
   name: number
   code: number
+  schoolId: number
   type: number
   status: number
   hasPractical: number
@@ -91,6 +94,7 @@ export type SubjectMinAggregateInputType = {
   id?: true
   name?: true
   code?: true
+  schoolId?: true
   type?: true
   status?: true
   hasPractical?: true
@@ -104,6 +108,7 @@ export type SubjectMaxAggregateInputType = {
   id?: true
   name?: true
   code?: true
+  schoolId?: true
   type?: true
   status?: true
   hasPractical?: true
@@ -117,6 +122,7 @@ export type SubjectCountAggregateInputType = {
   id?: true
   name?: true
   code?: true
+  schoolId?: true
   type?: true
   status?: true
   hasPractical?: true
@@ -217,6 +223,7 @@ export type SubjectGroupByOutputType = {
   id: string
   name: string
   code: string
+  schoolId: string
   type: $Enums.SubjectType
   status: $Enums.SubjectStatus
   hasPractical: boolean
@@ -253,6 +260,7 @@ export type SubjectWhereInput = {
   id?: Prisma.StringFilter<"Subject"> | string
   name?: Prisma.StringFilter<"Subject"> | string
   code?: Prisma.StringFilter<"Subject"> | string
+  schoolId?: Prisma.StringFilter<"Subject"> | string
   type?: Prisma.EnumSubjectTypeFilter<"Subject"> | $Enums.SubjectType
   status?: Prisma.EnumSubjectStatusFilter<"Subject"> | $Enums.SubjectStatus
   hasPractical?: Prisma.BoolFilter<"Subject"> | boolean
@@ -260,12 +268,14 @@ export type SubjectWhereInput = {
   defaultPassingMarks?: Prisma.FloatFilter<"Subject"> | number
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+  school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
 }
 
 export type SubjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  schoolId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   hasPractical?: Prisma.SortOrder
@@ -273,15 +283,18 @@ export type SubjectOrderByWithRelationInput = {
   defaultPassingMarks?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  school?: Prisma.SchoolOrderByWithRelationInput
 }
 
 export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  code?: string
+  schoolId_code?: Prisma.SubjectSchoolIdCodeCompoundUniqueInput
   AND?: Prisma.SubjectWhereInput | Prisma.SubjectWhereInput[]
   OR?: Prisma.SubjectWhereInput[]
   NOT?: Prisma.SubjectWhereInput | Prisma.SubjectWhereInput[]
   name?: Prisma.StringFilter<"Subject"> | string
+  code?: Prisma.StringFilter<"Subject"> | string
+  schoolId?: Prisma.StringFilter<"Subject"> | string
   type?: Prisma.EnumSubjectTypeFilter<"Subject"> | $Enums.SubjectType
   status?: Prisma.EnumSubjectStatusFilter<"Subject"> | $Enums.SubjectStatus
   hasPractical?: Prisma.BoolFilter<"Subject"> | boolean
@@ -289,12 +302,14 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   defaultPassingMarks?: Prisma.FloatFilter<"Subject"> | number
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
-}, "id" | "code">
+  school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+}, "id" | "schoolId_code">
 
 export type SubjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  schoolId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   hasPractical?: Prisma.SortOrder
@@ -316,6 +331,7 @@ export type SubjectScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   name?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   code?: Prisma.StringWithAggregatesFilter<"Subject"> | string
+  schoolId?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   type?: Prisma.EnumSubjectTypeWithAggregatesFilter<"Subject"> | $Enums.SubjectType
   status?: Prisma.EnumSubjectStatusWithAggregatesFilter<"Subject"> | $Enums.SubjectStatus
   hasPractical?: Prisma.BoolWithAggregatesFilter<"Subject"> | boolean
@@ -336,12 +352,14 @@ export type SubjectCreateInput = {
   defaultPassingMarks?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  school: Prisma.SchoolCreateNestedOneWithoutSubjectsInput
 }
 
 export type SubjectUncheckedCreateInput = {
   id?: string
   name: string
   code: string
+  schoolId: string
   type: $Enums.SubjectType
   status?: $Enums.SubjectStatus
   hasPractical?: boolean
@@ -362,12 +380,14 @@ export type SubjectUpdateInput = {
   defaultPassingMarks?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  school?: Prisma.SchoolUpdateOneRequiredWithoutSubjectsNestedInput
 }
 
 export type SubjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSubjectTypeFieldUpdateOperationsInput | $Enums.SubjectType
   status?: Prisma.EnumSubjectStatusFieldUpdateOperationsInput | $Enums.SubjectStatus
   hasPractical?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -381,6 +401,7 @@ export type SubjectCreateManyInput = {
   id?: string
   name: string
   code: string
+  schoolId: string
   type: $Enums.SubjectType
   status?: $Enums.SubjectStatus
   hasPractical?: boolean
@@ -407,6 +428,7 @@ export type SubjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSubjectTypeFieldUpdateOperationsInput | $Enums.SubjectType
   status?: Prisma.EnumSubjectStatusFieldUpdateOperationsInput | $Enums.SubjectStatus
   hasPractical?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -416,10 +438,26 @@ export type SubjectUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type SubjectListRelationFilter = {
+  every?: Prisma.SubjectWhereInput
+  some?: Prisma.SubjectWhereInput
+  none?: Prisma.SubjectWhereInput
+}
+
+export type SubjectOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type SubjectSchoolIdCodeCompoundUniqueInput = {
+  schoolId: string
+  code: string
+}
+
 export type SubjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  schoolId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   hasPractical?: Prisma.SortOrder
@@ -438,6 +476,7 @@ export type SubjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  schoolId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   hasPractical?: Prisma.SortOrder
@@ -451,6 +490,7 @@ export type SubjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  schoolId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   hasPractical?: Prisma.SortOrder
@@ -463,6 +503,48 @@ export type SubjectMinOrderByAggregateInput = {
 export type SubjectSumOrderByAggregateInput = {
   defaultTotalMarks?: Prisma.SortOrder
   defaultPassingMarks?: Prisma.SortOrder
+}
+
+export type SubjectCreateNestedManyWithoutSchoolInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput> | Prisma.SubjectCreateWithoutSchoolInput[] | Prisma.SubjectUncheckedCreateWithoutSchoolInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutSchoolInput | Prisma.SubjectCreateOrConnectWithoutSchoolInput[]
+  createMany?: Prisma.SubjectCreateManySchoolInputEnvelope
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+}
+
+export type SubjectUncheckedCreateNestedManyWithoutSchoolInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput> | Prisma.SubjectCreateWithoutSchoolInput[] | Prisma.SubjectUncheckedCreateWithoutSchoolInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutSchoolInput | Prisma.SubjectCreateOrConnectWithoutSchoolInput[]
+  createMany?: Prisma.SubjectCreateManySchoolInputEnvelope
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+}
+
+export type SubjectUpdateManyWithoutSchoolNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput> | Prisma.SubjectCreateWithoutSchoolInput[] | Prisma.SubjectUncheckedCreateWithoutSchoolInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutSchoolInput | Prisma.SubjectCreateOrConnectWithoutSchoolInput[]
+  upsert?: Prisma.SubjectUpsertWithWhereUniqueWithoutSchoolInput | Prisma.SubjectUpsertWithWhereUniqueWithoutSchoolInput[]
+  createMany?: Prisma.SubjectCreateManySchoolInputEnvelope
+  set?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  disconnect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  delete?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  update?: Prisma.SubjectUpdateWithWhereUniqueWithoutSchoolInput | Prisma.SubjectUpdateWithWhereUniqueWithoutSchoolInput[]
+  updateMany?: Prisma.SubjectUpdateManyWithWhereWithoutSchoolInput | Prisma.SubjectUpdateManyWithWhereWithoutSchoolInput[]
+  deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+}
+
+export type SubjectUncheckedUpdateManyWithoutSchoolNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput> | Prisma.SubjectCreateWithoutSchoolInput[] | Prisma.SubjectUncheckedCreateWithoutSchoolInput[]
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutSchoolInput | Prisma.SubjectCreateOrConnectWithoutSchoolInput[]
+  upsert?: Prisma.SubjectUpsertWithWhereUniqueWithoutSchoolInput | Prisma.SubjectUpsertWithWhereUniqueWithoutSchoolInput[]
+  createMany?: Prisma.SubjectCreateManySchoolInputEnvelope
+  set?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  disconnect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  delete?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  connect?: Prisma.SubjectWhereUniqueInput | Prisma.SubjectWhereUniqueInput[]
+  update?: Prisma.SubjectUpdateWithWhereUniqueWithoutSchoolInput | Prisma.SubjectUpdateWithWhereUniqueWithoutSchoolInput[]
+  updateMany?: Prisma.SubjectUpdateManyWithWhereWithoutSchoolInput | Prisma.SubjectUpdateManyWithWhereWithoutSchoolInput[]
+  deleteMany?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
 }
 
 export type EnumSubjectTypeFieldUpdateOperationsInput = {
@@ -481,12 +563,134 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type SubjectCreateWithoutSchoolInput = {
+  id?: string
+  name: string
+  code: string
+  type: $Enums.SubjectType
+  status?: $Enums.SubjectStatus
+  hasPractical?: boolean
+  defaultTotalMarks?: number
+  defaultPassingMarks?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubjectUncheckedCreateWithoutSchoolInput = {
+  id?: string
+  name: string
+  code: string
+  type: $Enums.SubjectType
+  status?: $Enums.SubjectStatus
+  hasPractical?: boolean
+  defaultTotalMarks?: number
+  defaultPassingMarks?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubjectCreateOrConnectWithoutSchoolInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput>
+}
+
+export type SubjectCreateManySchoolInputEnvelope = {
+  data: Prisma.SubjectCreateManySchoolInput | Prisma.SubjectCreateManySchoolInput[]
+  skipDuplicates?: boolean
+}
+
+export type SubjectUpsertWithWhereUniqueWithoutSchoolInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutSchoolInput, Prisma.SubjectUncheckedUpdateWithoutSchoolInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutSchoolInput, Prisma.SubjectUncheckedCreateWithoutSchoolInput>
+}
+
+export type SubjectUpdateWithWhereUniqueWithoutSchoolInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutSchoolInput, Prisma.SubjectUncheckedUpdateWithoutSchoolInput>
+}
+
+export type SubjectUpdateManyWithWhereWithoutSchoolInput = {
+  where: Prisma.SubjectScalarWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateManyMutationInput, Prisma.SubjectUncheckedUpdateManyWithoutSchoolInput>
+}
+
+export type SubjectScalarWhereInput = {
+  AND?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+  OR?: Prisma.SubjectScalarWhereInput[]
+  NOT?: Prisma.SubjectScalarWhereInput | Prisma.SubjectScalarWhereInput[]
+  id?: Prisma.StringFilter<"Subject"> | string
+  name?: Prisma.StringFilter<"Subject"> | string
+  code?: Prisma.StringFilter<"Subject"> | string
+  schoolId?: Prisma.StringFilter<"Subject"> | string
+  type?: Prisma.EnumSubjectTypeFilter<"Subject"> | $Enums.SubjectType
+  status?: Prisma.EnumSubjectStatusFilter<"Subject"> | $Enums.SubjectStatus
+  hasPractical?: Prisma.BoolFilter<"Subject"> | boolean
+  defaultTotalMarks?: Prisma.FloatFilter<"Subject"> | number
+  defaultPassingMarks?: Prisma.FloatFilter<"Subject"> | number
+  createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
+}
+
+export type SubjectCreateManySchoolInput = {
+  id?: string
+  name: string
+  code: string
+  type: $Enums.SubjectType
+  status?: $Enums.SubjectStatus
+  hasPractical?: boolean
+  defaultTotalMarks?: number
+  defaultPassingMarks?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SubjectUpdateWithoutSchoolInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSubjectTypeFieldUpdateOperationsInput | $Enums.SubjectType
+  status?: Prisma.EnumSubjectStatusFieldUpdateOperationsInput | $Enums.SubjectStatus
+  hasPractical?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  defaultTotalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  defaultPassingMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubjectUncheckedUpdateWithoutSchoolInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSubjectTypeFieldUpdateOperationsInput | $Enums.SubjectType
+  status?: Prisma.EnumSubjectStatusFieldUpdateOperationsInput | $Enums.SubjectStatus
+  hasPractical?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  defaultTotalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  defaultPassingMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubjectUncheckedUpdateManyWithoutSchoolInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSubjectTypeFieldUpdateOperationsInput | $Enums.SubjectType
+  status?: Prisma.EnumSubjectStatusFieldUpdateOperationsInput | $Enums.SubjectStatus
+  hasPractical?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  defaultTotalMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  defaultPassingMarks?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   code?: boolean
+  schoolId?: boolean
   type?: boolean
   status?: boolean
   hasPractical?: boolean
@@ -494,12 +698,14 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   defaultPassingMarks?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
 export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   code?: boolean
+  schoolId?: boolean
   type?: boolean
   status?: boolean
   hasPractical?: boolean
@@ -507,12 +713,14 @@ export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   defaultPassingMarks?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
 export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   code?: boolean
+  schoolId?: boolean
   type?: boolean
   status?: boolean
   hasPractical?: boolean
@@ -520,12 +728,14 @@ export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   defaultPassingMarks?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
 export type SubjectSelectScalar = {
   id?: boolean
   name?: boolean
   code?: boolean
+  schoolId?: boolean
   type?: boolean
   status?: boolean
   hasPractical?: boolean
@@ -535,15 +745,27 @@ export type SubjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "type" | "status" | "hasPractical" | "defaultTotalMarks" | "defaultPassingMarks" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "schoolId" | "type" | "status" | "hasPractical" | "defaultTotalMarks" | "defaultPassingMarks" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+}
+export type SubjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+}
+export type SubjectIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+}
 
 export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Subject"
-  objects: {}
+  objects: {
+    school: Prisma.$SchoolPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     code: string
+    schoolId: string
     type: $Enums.SubjectType
     status: $Enums.SubjectStatus
     hasPractical: boolean
@@ -945,6 +1167,7 @@ readonly fields: SubjectFieldRefs;
  */
 export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -977,6 +1200,7 @@ export interface SubjectFieldRefs {
   readonly id: Prisma.FieldRef<"Subject", 'String'>
   readonly name: Prisma.FieldRef<"Subject", 'String'>
   readonly code: Prisma.FieldRef<"Subject", 'String'>
+  readonly schoolId: Prisma.FieldRef<"Subject", 'String'>
   readonly type: Prisma.FieldRef<"Subject", 'SubjectType'>
   readonly status: Prisma.FieldRef<"Subject", 'SubjectStatus'>
   readonly hasPractical: Prisma.FieldRef<"Subject", 'Boolean'>
@@ -1001,6 +1225,10 @@ export type SubjectFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
+  /**
    * Filter, which Subject to fetch.
    */
   where: Prisma.SubjectWhereUniqueInput
@@ -1019,6 +1247,10 @@ export type SubjectFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
+  /**
    * Filter, which Subject to fetch.
    */
   where: Prisma.SubjectWhereUniqueInput
@@ -1036,6 +1268,10 @@ export type SubjectFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
   /**
    * Filter, which Subject to fetch.
    */
@@ -1085,6 +1321,10 @@ export type SubjectFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
+  /**
    * Filter, which Subject to fetch.
    */
   where?: Prisma.SubjectWhereInput
@@ -1132,6 +1372,10 @@ export type SubjectFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
   /**
    * Filter, which Subjects to fetch.
    */
@@ -1181,6 +1425,10 @@ export type SubjectCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
+  /**
    * The data needed to create a Subject.
    */
   data: Prisma.XOR<Prisma.SubjectCreateInput, Prisma.SubjectUncheckedCreateInput>
@@ -1214,6 +1462,10 @@ export type SubjectCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.SubjectCreateManyInput | Prisma.SubjectCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1228,6 +1480,10 @@ export type SubjectUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
   /**
    * The data needed to update a Subject.
    */
@@ -1280,6 +1536,10 @@ export type SubjectUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Subjects to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1294,6 +1554,10 @@ export type SubjectUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
   /**
    * The filter to search for the Subject to update in case it exists.
    */
@@ -1320,6 +1584,10 @@ export type SubjectDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
   /**
    * Filter which Subject to delete.
    */
@@ -1352,4 +1620,8 @@ export type SubjectDefaultArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Subject
    */
   omit?: Prisma.SubjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubjectInclude<ExtArgs> | null
 }

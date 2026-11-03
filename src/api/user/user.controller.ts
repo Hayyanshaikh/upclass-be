@@ -7,12 +7,15 @@ import {
   Param,
   Delete,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiResponse,
   ApiTags,
   ApiOperation,
   ApiOkResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service.ts';
@@ -23,8 +26,13 @@ import {
   UserFindOneResponseDto,
   UserResponseDto,
 } from './dto/user-response.dto.ts';
+import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 
 @ApiTags('Users')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -34,8 +42,12 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
   @ApiResponse({ status: 409, description: 'Email already exists' })
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  create(
+    @Body() dto: CreateUserDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<UserFindOneResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.userService.create(dto, schoolId);
   }
 
   @Get()
@@ -44,8 +56,12 @@ export class UserController {
     description: 'Users retrieved successfully',
     type: UserResponseDto,
   })
-  findAll(@Query() query: FindUsersQueryDto): Promise<UserResponseDto> {
-    return this.userService.findAll(query);
+  findAll(
+    @Query() query: FindUsersQueryDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<UserResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.userService.findAll(query, schoolId);
   }
 
   @Get(':id')

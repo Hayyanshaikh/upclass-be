@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PermissionDataDto } from '../../permissions/dto/permission-response.dto.ts';
+import { SchoolDto } from '../../schools/dto/schools-response.dto.ts';
 
 export class PermissionKey {
   @ApiProperty()
@@ -39,6 +40,9 @@ export class LoginResponseUserDto {
 
   @ApiProperty()
   isSystem: boolean;
+
+  @ApiPropertyOptional({ type: () => SchoolDto })
+  school?: Pick<SchoolDto, 'id' | 'name'>;
 }
 
 export class LoginResponseDto {

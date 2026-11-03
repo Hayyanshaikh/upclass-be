@@ -46,6 +46,13 @@ export class AuthService {
           email: true,
           roleId: true,
           isSystem: true,
+          school: {
+            select: {
+              id: true,
+              name: true,
+              isActive: true,
+            },
+          },
           role: {
             select: {
               id: true,
@@ -84,11 +91,20 @@ export class AuthService {
         );
       }
 
+      // Check account status
+      if (user.school && !user.school.isActive) {
+        throw new HttpException(
+          'Your school account is inactive.',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
       // Generate JWT
       const payload = {
         sub: user.id,
         email: user.email,
         role: user.roleId,
+        schoolId: user.school?.id ?? '',
       };
 
       const accessToken = await this.jwtService.signAsync(payload);
@@ -98,6 +114,10 @@ export class AuthService {
         name: user.name,
         email: user.email,
         roleId: user.roleId,
+        school: {
+          id: user?.school?.id || '',
+          name: user?.school?.name || '',
+        },
         role: {
           id: user.role.id,
           name: user.role.name,

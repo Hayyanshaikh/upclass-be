@@ -1,4 +1,4 @@
-import { prisma } from '../prisma-client';
+import { prisma } from '../prisma-client.ts';
 import * as bcrypt from 'bcrypt';
 
 export async function seedUsers(superAdminRoleId: string) {

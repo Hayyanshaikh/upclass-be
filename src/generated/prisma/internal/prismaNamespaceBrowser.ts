@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  School: 'School',
   User: 'User',
   Role: 'Role',
   Permission: 'Permission',
@@ -76,6 +77,20 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const SchoolScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -85,7 +100,8 @@ export const UserScalarFieldEnum = {
   isSystem: 'isSystem',
   roleId: 'roleId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  schoolId: 'schoolId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -97,6 +113,7 @@ export const RoleScalarFieldEnum = {
   slug: 'slug',
   description: 'description',
   type: 'type',
+  schoolId: 'schoolId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -130,6 +147,7 @@ export const SubjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
+  schoolId: 'schoolId',
   type: 'type',
   status: 'status',
   hasPractical: 'hasPractical',
@@ -157,6 +175,7 @@ export type DocumentsScalarFieldEnum = (typeof DocumentsScalarFieldEnum)[keyof t
 export const TeacherScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  schoolId: 'schoolId',
   image: 'image',
   imagePublicId: 'imagePublicId',
   firstName: 'firstName',

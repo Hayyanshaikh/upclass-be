@@ -115,6 +115,11 @@ const groups = [
       },
     ],
   },
+
+  {
+    name: 'Platform',
+    modules: [{ key: 'schools', label: 'Schools' }],
+  },
 ] as const;
 
 const permissionDefinitions = groups.flatMap((group, groupIndex) =>

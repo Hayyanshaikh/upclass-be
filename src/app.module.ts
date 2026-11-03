@@ -10,6 +10,7 @@ import { PermissionsModule } from './api/permissions/permissions.module.ts';
 import { TeachersModule } from './api/teachers/teachers.module.ts';
 import { SubjectsModule } from './api/subjects/subjects.module.ts';
 import { CloudinaryModule } from './api/cloudinary/cloudinary.module.js';
+import { SchoolsModule } from './api/schools/schools.module.js';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CloudinaryModule } from './api/cloudinary/cloudinary.module.js';
     TeachersModule,
     SubjectsModule,
     CloudinaryModule,
+    SchoolsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

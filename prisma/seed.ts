@@ -3,7 +3,6 @@ import { seedPermissions } from './seeds/permission.seed.ts';
 import { seedRoles } from './seeds/role.seed.ts';
 import { seedRolePermissions } from './seeds/role-permission.seed.ts';
 import { seedUsers } from './seeds/user.seed.ts';
-import { seedSubjects } from './seeds/subject.seed.ts';
 
 async function main() {
   await seedPermissions();
@@ -11,8 +10,6 @@ async function main() {
   const roles = await seedRoles();
 
   await seedRolePermissions();
-
-  await seedSubjects();
 
   const superAdminRole = roles.find((role) => role.slug === 'super_admin');
 

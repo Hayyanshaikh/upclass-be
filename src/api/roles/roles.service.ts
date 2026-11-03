@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -15,6 +16,7 @@ import {
 } from './dto/role-response.dto.ts';
 import { UpdateRoleDto } from './dto/update-role.dto.ts';
 import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
+import { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 
 export interface RoleApiResponse<T extends object | object[]> {
   data: T;
@@ -34,10 +36,15 @@ type RoleWithPermissions = Prisma.RoleGetPayload<{
 export class RolesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateRoleDto): Promise<RoleResponseDto> {
+  async create(dto: CreateRoleDto, schoolId: string): Promise<RoleResponseDto> {
     try {
       const role = await this.prisma.role.create({
-        data: dto,
+        data: {
+          name: dto.name,
+          slug: dto.slug,
+          description: dto.description ?? null,
+          schoolId,
+        },
         include: rolePermissionsInclude,
       });
       return this.success(
@@ -50,14 +57,30 @@ export class RolesService {
     }
   }
 
-  async findAll(query: FindRolesQueryDto): Promise<RolesResponseDto> {
+  async findAll(
+    query: FindRolesQueryDto,
+    schoolId: string | null,
+  ): Promise<RolesResponseDto> {
     try {
-      const where: Prisma.RoleWhereInput = {
-        ...(query.searchKey && {
-          name: { contains: query.searchKey, mode: 'insensitive' },
-        }),
-        ...(query.type && { type: query.type }),
-      };
+      const where: Prisma.RoleWhereInput = {};
+
+      if (schoolId === null || schoolId === undefined) {
+        where.OR = [{ schoolId: null }, { slug: 'school_admin' }];
+      } else {
+        where.schoolId = schoolId;
+      }
+
+      if (query.searchKey) {
+        where.name = {
+          contains: query.searchKey,
+          mode: 'insensitive',
+        };
+      }
+
+      if (query.type) {
+        where.type = query.type;
+      }
+
       const [roles, total] = await Promise.all([
         this.prisma.role.findMany({
           where,
@@ -68,6 +91,7 @@ export class RolesService {
         }),
         this.prisma.role.count({ where }),
       ]);
+
       return {
         data: roles.map(({ _count, ...role }) => ({
           ...role,
@@ -100,7 +124,11 @@ export class RolesService {
     }
   }
 
-  async update(id: string, dto: UpdateRoleDto): Promise<RoleResponseDto> {
+  async update(
+    id: string,
+    dto: UpdateRoleDto,
+    user: AuthenticatedRequest,
+  ): Promise<RoleResponseDto> {
     try {
       const { permissionKeys, ...fields } = dto;
       let permissionIds: string[] | undefined;
@@ -118,6 +146,13 @@ export class RolesService {
           );
         }
         permissionIds = permissions.map(({ id }) => id);
+      }
+      console.log({ id, user: user.user });
+
+      if (id === user.user.role) {
+        throw new BadRequestException(
+          'You cannot modify your own assigned role.',
+        );
       }
 
       const role = await this.prisma.role.update({
@@ -142,7 +177,13 @@ export class RolesService {
         'Role updated successfully.',
       );
     } catch (error) {
-      if (error instanceof BadRequestException) throw error;
+      if (
+        error instanceof BadRequestException ||
+        error instanceof ForbiddenException
+      ) {
+        throw error;
+      }
+
       this.handlePrismaError(error, id);
     }
   }

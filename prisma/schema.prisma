@@ -49,6 +49,21 @@ enum TeacherStatus {
   INACTIVE
 }
 
+model School {
+  id        String    @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  isActive  Boolean   @default(true)
+  users     User[]
+  roles     Role[]
+  teachers  Teacher[]
+  subjects  Subject[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model User {
   id        String    @id @default(cuid())
   name      String
@@ -61,18 +76,24 @@ model User {
   teachers  Teacher[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  school    School?   @relation(fields: [schoolId], references: [id])
+  schoolId  String?
 }
 
 model Role {
   id          String           @id @default(cuid())
-  name        String           @unique
-  slug        String           @unique
+  name        String
+  slug        String
   description String?
   type        RoleType         @default(CUSTOM)
+  schoolId    String?
+  school      School?          @relation(fields: [schoolId], references: [id])
   users       User[]
   permissions RolePermission[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+
+  @@unique([schoolId, slug])
 }
 
 model Permission {
@@ -111,7 +132,9 @@ enum SubjectStatus {
 model Subject {
   id                  String        @id @default(cuid())
   name                String
-  code                String        @unique
+  code                String
+  schoolId            String
+  school              School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   type                SubjectType
   status              SubjectStatus @default(ACTIVE)
   hasPractical        Boolean       @default(false)
@@ -119,6 +142,8 @@ model Subject {
   defaultPassingMarks Float         @default(33)
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
+
+  @@unique([schoolId, code])
 }
 
 model Documents {
@@ -135,6 +160,8 @@ model Teacher {
   id             String          @id @default(cuid())
   userId         String
   user           User            @relation(fields: [userId], references: [id])
+  schoolId       String?
+  school         School?         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   image          String?
   imagePublicId  String?
   firstName      String
