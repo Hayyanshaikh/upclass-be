@@ -58,7 +58,9 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   Subject: 'Subject',
   Documents: 'Documents',
-  Teacher: 'Teacher'
+  Teacher: 'Teacher',
+  Class: 'Class',
+  ClassSubject: 'ClassSubject'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -199,6 +201,37 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const ClassScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  section: 'section',
+  room: 'room',
+  capacity: 'capacity',
+  academicYear: 'academicYear',
+  status: 'status',
+  teacherId: 'teacherId',
+  assistantTeacherId: 'assistantTeacherId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
+
+
+export const ClassSubjectScalarFieldEnum = {
+  id: 'id',
+  classId: 'classId',
+  subjectId: 'subjectId',
+  teacherId: 'teacherId',
+  periodsPerWeek: 'periodsPerWeek',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
 
 
 export const SortOrder = {

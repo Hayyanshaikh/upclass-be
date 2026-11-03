@@ -49,6 +49,14 @@ export class FindTeachersQueryDto {
   status?: TeacherStatus;
 
   @ApiPropertyOptional({
+    description: 'Filter teachers by subject ID',
+  })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  subject?: string;
+
+  @ApiPropertyOptional({
     description: 'Filter teachers by role ID or slug',
     example: 'admin',
   })

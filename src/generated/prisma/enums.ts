@@ -70,3 +70,11 @@ export const SubjectStatus = {
 } as const
 
 export type SubjectStatus = (typeof SubjectStatus)[keyof typeof SubjectStatus]
+
+
+export const ClassStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type ClassStatus = (typeof ClassStatus)[keyof typeof ClassStatus]
