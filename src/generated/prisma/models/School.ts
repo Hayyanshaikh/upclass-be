@@ -20,8 +20,20 @@ export type SchoolModel = runtime.Types.Result.DefaultSelection<Prisma.$SchoolPa
 
 export type AggregateSchool = {
   _count: SchoolCountAggregateOutputType | null
+  _avg: SchoolAvgAggregateOutputType | null
+  _sum: SchoolSumAggregateOutputType | null
   _min: SchoolMinAggregateOutputType | null
   _max: SchoolMaxAggregateOutputType | null
+}
+
+export type SchoolAvgAggregateOutputType = {
+  establishedYear: number | null
+  feeDueDate: number | null
+}
+
+export type SchoolSumAggregateOutputType = {
+  establishedYear: number | null
+  feeDueDate: number | null
 }
 
 export type SchoolMinAggregateOutputType = {
@@ -30,6 +42,20 @@ export type SchoolMinAggregateOutputType = {
   email: string | null
   phone: string | null
   address: string | null
+  logo: string | null
+  shortCode: string | null
+  schoolType: $Enums.SchoolType | null
+  educationSystem: $Enums.EducationSystem | null
+  establishedYear: number | null
+  description: string | null
+  principalName: string | null
+  vicePrincipalName: string | null
+  adminContact: string | null
+  ownerName: string | null
+  dateFormat: string | null
+  feeDueDate: number | null
+  openingTime: string | null
+  closingTime: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +67,20 @@ export type SchoolMaxAggregateOutputType = {
   email: string | null
   phone: string | null
   address: string | null
+  logo: string | null
+  shortCode: string | null
+  schoolType: $Enums.SchoolType | null
+  educationSystem: $Enums.EducationSystem | null
+  establishedYear: number | null
+  description: string | null
+  principalName: string | null
+  vicePrincipalName: string | null
+  adminContact: string | null
+  ownerName: string | null
+  dateFormat: string | null
+  feeDueDate: number | null
+  openingTime: string | null
+  closingTime: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +92,21 @@ export type SchoolCountAggregateOutputType = {
   email: number
   phone: number
   address: number
+  logo: number
+  shortCode: number
+  schoolType: number
+  educationSystem: number
+  establishedYear: number
+  description: number
+  principalName: number
+  vicePrincipalName: number
+  adminContact: number
+  ownerName: number
+  dateFormat: number
+  feeDueDate: number
+  workingDays: number
+  openingTime: number
+  closingTime: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -59,12 +114,36 @@ export type SchoolCountAggregateOutputType = {
 }
 
 
+export type SchoolAvgAggregateInputType = {
+  establishedYear?: true
+  feeDueDate?: true
+}
+
+export type SchoolSumAggregateInputType = {
+  establishedYear?: true
+  feeDueDate?: true
+}
+
 export type SchoolMinAggregateInputType = {
   id?: true
   name?: true
   email?: true
   phone?: true
   address?: true
+  logo?: true
+  shortCode?: true
+  schoolType?: true
+  educationSystem?: true
+  establishedYear?: true
+  description?: true
+  principalName?: true
+  vicePrincipalName?: true
+  adminContact?: true
+  ownerName?: true
+  dateFormat?: true
+  feeDueDate?: true
+  openingTime?: true
+  closingTime?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -76,6 +155,20 @@ export type SchoolMaxAggregateInputType = {
   email?: true
   phone?: true
   address?: true
+  logo?: true
+  shortCode?: true
+  schoolType?: true
+  educationSystem?: true
+  establishedYear?: true
+  description?: true
+  principalName?: true
+  vicePrincipalName?: true
+  adminContact?: true
+  ownerName?: true
+  dateFormat?: true
+  feeDueDate?: true
+  openingTime?: true
+  closingTime?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -87,6 +180,21 @@ export type SchoolCountAggregateInputType = {
   email?: true
   phone?: true
   address?: true
+  logo?: true
+  shortCode?: true
+  schoolType?: true
+  educationSystem?: true
+  establishedYear?: true
+  description?: true
+  principalName?: true
+  vicePrincipalName?: true
+  adminContact?: true
+  ownerName?: true
+  dateFormat?: true
+  feeDueDate?: true
+  workingDays?: true
+  openingTime?: true
+  closingTime?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -131,6 +239,18 @@ export type SchoolAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: SchoolAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: SchoolSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: SchoolMinAggregateInputType
@@ -161,6 +281,8 @@ export type SchoolGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: SchoolCountAggregateInputType | true
+  _avg?: SchoolAvgAggregateInputType
+  _sum?: SchoolSumAggregateInputType
   _min?: SchoolMinAggregateInputType
   _max?: SchoolMaxAggregateInputType
 }
@@ -171,10 +293,27 @@ export type SchoolGroupByOutputType = {
   email: string | null
   phone: string | null
   address: string | null
+  logo: string | null
+  shortCode: string | null
+  schoolType: $Enums.SchoolType | null
+  educationSystem: $Enums.EducationSystem | null
+  establishedYear: number | null
+  description: string | null
+  principalName: string | null
+  vicePrincipalName: string | null
+  adminContact: string | null
+  ownerName: string | null
+  dateFormat: string | null
+  feeDueDate: number | null
+  workingDays: string[]
+  openingTime: string | null
+  closingTime: string | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
   _count: SchoolCountAggregateOutputType | null
+  _avg: SchoolAvgAggregateOutputType | null
+  _sum: SchoolSumAggregateOutputType | null
   _min: SchoolMinAggregateOutputType | null
   _max: SchoolMaxAggregateOutputType | null
 }
@@ -203,6 +342,21 @@ export type SchoolWhereInput = {
   email?: Prisma.StringNullableFilter<"School"> | string | null
   phone?: Prisma.StringNullableFilter<"School"> | string | null
   address?: Prisma.StringNullableFilter<"School"> | string | null
+  logo?: Prisma.StringNullableFilter<"School"> | string | null
+  shortCode?: Prisma.StringNullableFilter<"School"> | string | null
+  schoolType?: Prisma.EnumSchoolTypeNullableFilter<"School"> | $Enums.SchoolType | null
+  educationSystem?: Prisma.EnumEducationSystemNullableFilter<"School"> | $Enums.EducationSystem | null
+  establishedYear?: Prisma.IntNullableFilter<"School"> | number | null
+  description?: Prisma.StringNullableFilter<"School"> | string | null
+  principalName?: Prisma.StringNullableFilter<"School"> | string | null
+  vicePrincipalName?: Prisma.StringNullableFilter<"School"> | string | null
+  adminContact?: Prisma.StringNullableFilter<"School"> | string | null
+  ownerName?: Prisma.StringNullableFilter<"School"> | string | null
+  dateFormat?: Prisma.StringNullableFilter<"School"> | string | null
+  feeDueDate?: Prisma.IntNullableFilter<"School"> | number | null
+  workingDays?: Prisma.StringNullableListFilter<"School">
+  openingTime?: Prisma.StringNullableFilter<"School"> | string | null
+  closingTime?: Prisma.StringNullableFilter<"School"> | string | null
   isActive?: Prisma.BoolFilter<"School"> | boolean
   createdAt?: Prisma.DateTimeFilter<"School"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"School"> | Date | string
@@ -219,6 +373,21 @@ export type SchoolOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder
+  shortCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  schoolType?: Prisma.SortOrderInput | Prisma.SortOrder
+  educationSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  establishedYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  principalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  vicePrincipalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminContact?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  workingDays?: Prisma.SortOrder
+  openingTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  closingTime?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -238,6 +407,21 @@ export type SchoolWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringNullableFilter<"School"> | string | null
   phone?: Prisma.StringNullableFilter<"School"> | string | null
   address?: Prisma.StringNullableFilter<"School"> | string | null
+  logo?: Prisma.StringNullableFilter<"School"> | string | null
+  shortCode?: Prisma.StringNullableFilter<"School"> | string | null
+  schoolType?: Prisma.EnumSchoolTypeNullableFilter<"School"> | $Enums.SchoolType | null
+  educationSystem?: Prisma.EnumEducationSystemNullableFilter<"School"> | $Enums.EducationSystem | null
+  establishedYear?: Prisma.IntNullableFilter<"School"> | number | null
+  description?: Prisma.StringNullableFilter<"School"> | string | null
+  principalName?: Prisma.StringNullableFilter<"School"> | string | null
+  vicePrincipalName?: Prisma.StringNullableFilter<"School"> | string | null
+  adminContact?: Prisma.StringNullableFilter<"School"> | string | null
+  ownerName?: Prisma.StringNullableFilter<"School"> | string | null
+  dateFormat?: Prisma.StringNullableFilter<"School"> | string | null
+  feeDueDate?: Prisma.IntNullableFilter<"School"> | number | null
+  workingDays?: Prisma.StringNullableListFilter<"School">
+  openingTime?: Prisma.StringNullableFilter<"School"> | string | null
+  closingTime?: Prisma.StringNullableFilter<"School"> | string | null
   isActive?: Prisma.BoolFilter<"School"> | boolean
   createdAt?: Prisma.DateTimeFilter<"School"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"School"> | Date | string
@@ -254,12 +438,29 @@ export type SchoolOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder
+  shortCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  schoolType?: Prisma.SortOrderInput | Prisma.SortOrder
+  educationSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  establishedYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  principalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  vicePrincipalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminContact?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateFormat?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  workingDays?: Prisma.SortOrder
+  openingTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  closingTime?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SchoolCountOrderByAggregateInput
+  _avg?: Prisma.SchoolAvgOrderByAggregateInput
   _max?: Prisma.SchoolMaxOrderByAggregateInput
   _min?: Prisma.SchoolMinOrderByAggregateInput
+  _sum?: Prisma.SchoolSumOrderByAggregateInput
 }
 
 export type SchoolScalarWhereWithAggregatesInput = {
@@ -271,6 +472,21 @@ export type SchoolScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  logo?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  shortCode?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  schoolType?: Prisma.EnumSchoolTypeNullableWithAggregatesFilter<"School"> | $Enums.SchoolType | null
+  educationSystem?: Prisma.EnumEducationSystemNullableWithAggregatesFilter<"School"> | $Enums.EducationSystem | null
+  establishedYear?: Prisma.IntNullableWithAggregatesFilter<"School"> | number | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  principalName?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  vicePrincipalName?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  adminContact?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  ownerName?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  dateFormat?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  feeDueDate?: Prisma.IntNullableWithAggregatesFilter<"School"> | number | null
+  workingDays?: Prisma.StringNullableListFilter<"School">
+  openingTime?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
+  closingTime?: Prisma.StringNullableWithAggregatesFilter<"School"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"School"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"School"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"School"> | Date | string
@@ -282,6 +498,21 @@ export type SchoolCreateInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -298,6 +529,21 @@ export type SchoolUncheckedCreateInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -314,6 +560,21 @@ export type SchoolUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -330,6 +591,21 @@ export type SchoolUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -346,6 +622,21 @@ export type SchoolCreateManyInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -357,6 +648,21 @@ export type SchoolUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -368,9 +674,32 @@ export type SchoolUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type SchoolCountOrderByAggregateInput = {
@@ -379,9 +708,29 @@ export type SchoolCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
+  shortCode?: Prisma.SortOrder
+  schoolType?: Prisma.SortOrder
+  educationSystem?: Prisma.SortOrder
+  establishedYear?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  principalName?: Prisma.SortOrder
+  vicePrincipalName?: Prisma.SortOrder
+  adminContact?: Prisma.SortOrder
+  ownerName?: Prisma.SortOrder
+  dateFormat?: Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrder
+  workingDays?: Prisma.SortOrder
+  openingTime?: Prisma.SortOrder
+  closingTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type SchoolAvgOrderByAggregateInput = {
+  establishedYear?: Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrder
 }
 
 export type SchoolMaxOrderByAggregateInput = {
@@ -390,6 +739,20 @@ export type SchoolMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
+  shortCode?: Prisma.SortOrder
+  schoolType?: Prisma.SortOrder
+  educationSystem?: Prisma.SortOrder
+  establishedYear?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  principalName?: Prisma.SortOrder
+  vicePrincipalName?: Prisma.SortOrder
+  adminContact?: Prisma.SortOrder
+  ownerName?: Prisma.SortOrder
+  dateFormat?: Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrder
+  openingTime?: Prisma.SortOrder
+  closingTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -401,9 +764,28 @@ export type SchoolMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  logo?: Prisma.SortOrder
+  shortCode?: Prisma.SortOrder
+  schoolType?: Prisma.SortOrder
+  educationSystem?: Prisma.SortOrder
+  establishedYear?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  principalName?: Prisma.SortOrder
+  vicePrincipalName?: Prisma.SortOrder
+  adminContact?: Prisma.SortOrder
+  ownerName?: Prisma.SortOrder
+  dateFormat?: Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrder
+  openingTime?: Prisma.SortOrder
+  closingTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type SchoolSumOrderByAggregateInput = {
+  establishedYear?: Prisma.SortOrder
+  feeDueDate?: Prisma.SortOrder
 }
 
 export type SchoolNullableScalarRelationFilter = {
@@ -416,12 +798,37 @@ export type SchoolScalarRelationFilter = {
   isNot?: Prisma.SchoolWhereInput
 }
 
+export type SchoolCreateworkingDaysInput = {
+  set: string[]
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type NullableEnumSchoolTypeFieldUpdateOperationsInput = {
+  set?: $Enums.SchoolType | null
+}
+
+export type NullableEnumEducationSystemFieldUpdateOperationsInput = {
+  set?: $Enums.EducationSystem | null
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type SchoolUpdateworkingDaysInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -516,6 +923,21 @@ export type SchoolCreateWithoutUsersInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -531,6 +953,21 @@ export type SchoolUncheckedCreateWithoutUsersInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -562,6 +999,21 @@ export type SchoolUpdateWithoutUsersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -577,6 +1029,21 @@ export type SchoolUncheckedUpdateWithoutUsersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -592,6 +1059,21 @@ export type SchoolCreateWithoutRolesInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -607,6 +1089,21 @@ export type SchoolUncheckedCreateWithoutRolesInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -638,6 +1135,21 @@ export type SchoolUpdateWithoutRolesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -653,6 +1165,21 @@ export type SchoolUncheckedUpdateWithoutRolesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -668,6 +1195,21 @@ export type SchoolCreateWithoutSubjectsInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -683,6 +1225,21 @@ export type SchoolUncheckedCreateWithoutSubjectsInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -714,6 +1271,21 @@ export type SchoolUpdateWithoutSubjectsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -729,6 +1301,21 @@ export type SchoolUncheckedUpdateWithoutSubjectsInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -744,6 +1331,21 @@ export type SchoolCreateWithoutTeachersInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -759,6 +1361,21 @@ export type SchoolUncheckedCreateWithoutTeachersInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -790,6 +1407,21 @@ export type SchoolUpdateWithoutTeachersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -805,6 +1437,21 @@ export type SchoolUncheckedUpdateWithoutTeachersInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -820,6 +1467,21 @@ export type SchoolCreateWithoutClassesInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -835,6 +1497,21 @@ export type SchoolUncheckedCreateWithoutClassesInput = {
   email?: string | null
   phone?: string | null
   address?: string | null
+  logo?: string | null
+  shortCode?: string | null
+  schoolType?: $Enums.SchoolType | null
+  educationSystem?: $Enums.EducationSystem | null
+  establishedYear?: number | null
+  description?: string | null
+  principalName?: string | null
+  vicePrincipalName?: string | null
+  adminContact?: string | null
+  ownerName?: string | null
+  dateFormat?: string | null
+  feeDueDate?: number | null
+  workingDays?: Prisma.SchoolCreateworkingDaysInput | string[]
+  openingTime?: string | null
+  closingTime?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -866,6 +1543,21 @@ export type SchoolUpdateWithoutClassesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -881,6 +1573,21 @@ export type SchoolUncheckedUpdateWithoutClassesInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schoolType?: Prisma.NullableEnumSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolType | null
+  educationSystem?: Prisma.NullableEnumEducationSystemFieldUpdateOperationsInput | $Enums.EducationSystem | null
+  establishedYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  principalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vicePrincipalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminContact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeDueDate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  workingDays?: Prisma.SchoolUpdateworkingDaysInput | string[]
+  openingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  closingTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -963,6 +1670,21 @@ export type SchoolSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   email?: boolean
   phone?: boolean
   address?: boolean
+  logo?: boolean
+  shortCode?: boolean
+  schoolType?: boolean
+  educationSystem?: boolean
+  establishedYear?: boolean
+  description?: boolean
+  principalName?: boolean
+  vicePrincipalName?: boolean
+  adminContact?: boolean
+  ownerName?: boolean
+  dateFormat?: boolean
+  feeDueDate?: boolean
+  workingDays?: boolean
+  openingTime?: boolean
+  closingTime?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -980,6 +1702,21 @@ export type SchoolSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   email?: boolean
   phone?: boolean
   address?: boolean
+  logo?: boolean
+  shortCode?: boolean
+  schoolType?: boolean
+  educationSystem?: boolean
+  establishedYear?: boolean
+  description?: boolean
+  principalName?: boolean
+  vicePrincipalName?: boolean
+  adminContact?: boolean
+  ownerName?: boolean
+  dateFormat?: boolean
+  feeDueDate?: boolean
+  workingDays?: boolean
+  openingTime?: boolean
+  closingTime?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -991,6 +1728,21 @@ export type SchoolSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   email?: boolean
   phone?: boolean
   address?: boolean
+  logo?: boolean
+  shortCode?: boolean
+  schoolType?: boolean
+  educationSystem?: boolean
+  establishedYear?: boolean
+  description?: boolean
+  principalName?: boolean
+  vicePrincipalName?: boolean
+  adminContact?: boolean
+  ownerName?: boolean
+  dateFormat?: boolean
+  feeDueDate?: boolean
+  workingDays?: boolean
+  openingTime?: boolean
+  closingTime?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1002,12 +1754,27 @@ export type SchoolSelectScalar = {
   email?: boolean
   phone?: boolean
   address?: boolean
+  logo?: boolean
+  shortCode?: boolean
+  schoolType?: boolean
+  educationSystem?: boolean
+  establishedYear?: boolean
+  description?: boolean
+  principalName?: boolean
+  vicePrincipalName?: boolean
+  adminContact?: boolean
+  ownerName?: boolean
+  dateFormat?: boolean
+  feeDueDate?: boolean
+  workingDays?: boolean
+  openingTime?: boolean
+  closingTime?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SchoolOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "address" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["school"]>
+export type SchoolOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "address" | "logo" | "shortCode" | "schoolType" | "educationSystem" | "establishedYear" | "description" | "principalName" | "vicePrincipalName" | "adminContact" | "ownerName" | "dateFormat" | "feeDueDate" | "workingDays" | "openingTime" | "closingTime" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["school"]>
 export type SchoolInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.School$usersArgs<ExtArgs>
   roles?: boolean | Prisma.School$rolesArgs<ExtArgs>
@@ -1034,6 +1801,21 @@ export type $SchoolPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     email: string | null
     phone: string | null
     address: string | null
+    logo: string | null
+    shortCode: string | null
+    schoolType: $Enums.SchoolType | null
+    educationSystem: $Enums.EducationSystem | null
+    establishedYear: number | null
+    description: string | null
+    principalName: string | null
+    vicePrincipalName: string | null
+    adminContact: string | null
+    ownerName: string | null
+    dateFormat: string | null
+    feeDueDate: number | null
+    workingDays: string[]
+    openingTime: string | null
+    closingTime: string | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1470,6 +2252,21 @@ export interface SchoolFieldRefs {
   readonly email: Prisma.FieldRef<"School", 'String'>
   readonly phone: Prisma.FieldRef<"School", 'String'>
   readonly address: Prisma.FieldRef<"School", 'String'>
+  readonly logo: Prisma.FieldRef<"School", 'String'>
+  readonly shortCode: Prisma.FieldRef<"School", 'String'>
+  readonly schoolType: Prisma.FieldRef<"School", 'SchoolType'>
+  readonly educationSystem: Prisma.FieldRef<"School", 'EducationSystem'>
+  readonly establishedYear: Prisma.FieldRef<"School", 'Int'>
+  readonly description: Prisma.FieldRef<"School", 'String'>
+  readonly principalName: Prisma.FieldRef<"School", 'String'>
+  readonly vicePrincipalName: Prisma.FieldRef<"School", 'String'>
+  readonly adminContact: Prisma.FieldRef<"School", 'String'>
+  readonly ownerName: Prisma.FieldRef<"School", 'String'>
+  readonly dateFormat: Prisma.FieldRef<"School", 'String'>
+  readonly feeDueDate: Prisma.FieldRef<"School", 'Int'>
+  readonly workingDays: Prisma.FieldRef<"School", 'String[]'>
+  readonly openingTime: Prisma.FieldRef<"School", 'String'>
+  readonly closingTime: Prisma.FieldRef<"School", 'String'>
   readonly isActive: Prisma.FieldRef<"School", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"School", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"School", 'DateTime'>

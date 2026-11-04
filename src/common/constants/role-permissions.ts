@@ -17,7 +17,6 @@ export const rolePermissions: Record<string, string[]> = {
     'dashboard.view',
 
     // Schools
-    'schools.view',
     'schools.edit',
     'schools.lookup',
 
