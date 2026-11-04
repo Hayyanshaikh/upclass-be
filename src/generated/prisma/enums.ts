@@ -72,6 +72,24 @@ export const SubjectStatus = {
 export type SubjectStatus = (typeof SubjectStatus)[keyof typeof SubjectStatus]
 
 
+export const SchoolType = {
+  PRIVATE: 'PRIVATE',
+  GOVERNMENT: 'GOVERNMENT'
+} as const
+
+export type SchoolType = (typeof SchoolType)[keyof typeof SchoolType]
+
+
+export const EducationSystem = {
+  MATRIC: 'MATRIC',
+  CAMBRIDGE: 'CAMBRIDGE',
+  FEDERAL: 'FEDERAL',
+  OTHER: 'OTHER'
+} as const
+
+export type EducationSystem = (typeof EducationSystem)[keyof typeof EducationSystem]
+
+
 export const ClassStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'

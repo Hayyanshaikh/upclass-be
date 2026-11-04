@@ -50,19 +50,34 @@ enum TeacherStatus {
 }
 
 model School {
-  id        String    @id @default(cuid())
-  name      String
-  email     String?
-  phone     String?
-  address   String?
-  isActive  Boolean   @default(true)
-  users     User[]
-  roles     Role[]
-  teachers  Teacher[]
-  subjects  Subject[]
-  classes   Class[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id                String           @id @default(cuid())
+  name              String
+  email             String?
+  phone             String?
+  address           String?
+  logo              String?
+  shortCode         String?
+  schoolType        SchoolType?
+  educationSystem   EducationSystem?
+  establishedYear   Int?
+  description       String?
+  principalName     String?
+  vicePrincipalName String?
+  adminContact      String?
+  ownerName         String?
+  dateFormat        String?
+  feeDueDate        Int?
+  workingDays       String[]         @default([])
+  openingTime       String?
+  closingTime       String?
+  isActive          Boolean          @default(true)
+  users             User[]
+  roles             Role[]
+  teachers          Teacher[]
+  subjects          Subject[]
+  classes           Class[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model User {
@@ -128,6 +143,18 @@ enum SubjectType {
 enum SubjectStatus {
   ACTIVE
   INACTIVE
+}
+
+enum SchoolType {
+  PRIVATE
+  GOVERNMENT
+}
+
+enum EducationSystem {
+  MATRIC
+  CAMBRIDGE
+  FEDERAL
+  OTHER
 }
 
 model Subject {

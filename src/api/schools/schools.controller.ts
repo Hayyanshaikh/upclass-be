@@ -64,7 +64,7 @@ export class SchoolsController {
     return this.schoolsService.findAll(query);
   }
 
-  @Permissions(SCHOOL_PERMISSIONS.VIEW)
+  @Permissions(SCHOOL_PERMISSIONS.LOOKUP)
   @Get(':id')
   @ApiOperation({ summary: 'Get a school by ID' })
   @ApiOkResponse({

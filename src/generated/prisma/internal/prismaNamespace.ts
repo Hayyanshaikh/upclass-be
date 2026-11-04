@@ -1211,6 +1211,21 @@ export const SchoolScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   address: 'address',
+  logo: 'logo',
+  shortCode: 'shortCode',
+  schoolType: 'schoolType',
+  educationSystem: 'educationSystem',
+  establishedYear: 'establishedYear',
+  description: 'description',
+  principalName: 'principalName',
+  vicePrincipalName: 'vicePrincipalName',
+  adminContact: 'adminContact',
+  ownerName: 'ownerName',
+  dateFormat: 'dateFormat',
+  feeDueDate: 'feeDueDate',
+  workingDays: 'workingDays',
+  openingTime: 'openingTime',
+  closingTime: 'closingTime',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1405,6 +1420,48 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'SchoolType'
+ */
+export type EnumSchoolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolType'>
+    
+
+
+/**
+ * Reference to a field of type 'SchoolType[]'
+ */
+export type ListEnumSchoolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EducationSystem'
+ */
+export type EnumEducationSystemFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationSystem'>
+    
+
+
+/**
+ * Reference to a field of type 'EducationSystem[]'
+ */
+export type ListEnumEducationSystemFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationSystem[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -1436,20 +1493,6 @@ export type EnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'RoleType[]'
  */
 export type ListEnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 

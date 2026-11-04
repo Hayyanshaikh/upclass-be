@@ -19,6 +19,7 @@ import {
 } from './dto/schools-response.dto.ts';
 import * as bcrypt from 'bcrypt';
 import { SchoolDefaultsService } from './school-defaults.service.ts';
+import { CloudinaryService } from '../cloudinary/cloudinary.service.ts';
 
 @Injectable()
 export class SchoolsService {
@@ -27,6 +28,7 @@ export class SchoolsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly schoolDefaultsService: SchoolDefaultsService,
+    private readonly cloudinary: CloudinaryService,
   ) {}
 
   async create(dto: CreateSchoolDto): Promise<SchoolFindOneResponseDto> {
@@ -194,7 +196,36 @@ export class SchoolsService {
     id: string,
     dto: UpdateSchoolDto,
   ): Promise<SchoolFindOneResponseDto> {
-    const { name, email, phone, address, isActive } = dto;
+    const {
+      name,
+      email,
+      phone,
+      address,
+      isActive,
+
+      // School Profile
+      logo,
+      shortCode,
+      schoolType,
+      educationSystem,
+      establishedYear,
+      description,
+
+      // Administration Details
+      principalName,
+      vicePrincipalName,
+      adminContact,
+      ownerName,
+
+      // School Settings
+      dateFormat,
+      feeDueDate,
+      workingDays,
+
+      // School Timings
+      openingTime,
+      closingTime,
+    } = dto;
 
     try {
       const school = await this.prisma.school.findUnique({
@@ -204,6 +235,11 @@ export class SchoolsService {
       if (!school) {
         throw new NotFoundException(`School with ID "${id}" was not found.`);
       }
+
+      // Get existing Cloudinary logo public ID
+      const currentLogoPublicId = this.cloudinary.extractPublicIdFromImageUrl(
+        school.logo,
+      );
 
       if (name !== undefined && !name?.trim()) {
         throw new BadRequestException('School name cannot be empty.');
@@ -218,12 +254,74 @@ export class SchoolsService {
       }
 
       const updateData: Prisma.SchoolUpdateInput = {};
+
+      // Existing Fields
       if (name !== undefined) updateData.name = name.trim();
-      if (email !== undefined) updateData.email = email.trim() ?? null;
+      if (email !== undefined) updateData.email = email.trim();
       if (phone !== undefined) updateData.phone = phone?.trim() ?? null;
       if (address !== undefined) updateData.address = address?.trim() ?? null;
-      if (isActive != null) updateData.isActive = isActive;
 
+      if (isActive !== undefined && isActive !== null) {
+        updateData.isActive = isActive;
+      }
+
+      // School Profile
+      if (logo !== undefined) updateData.logo = logo;
+      if (shortCode !== undefined) updateData.shortCode = shortCode;
+      if (schoolType !== undefined) updateData.schoolType = schoolType;
+
+      if (educationSystem !== undefined) {
+        updateData.educationSystem = educationSystem;
+      }
+
+      if (establishedYear !== undefined) {
+        updateData.establishedYear = establishedYear;
+      }
+
+      if (description !== undefined) {
+        updateData.description = description;
+      }
+
+      // Administration Details
+      if (principalName !== undefined) {
+        updateData.principalName = principalName;
+      }
+
+      if (vicePrincipalName !== undefined) {
+        updateData.vicePrincipalName = vicePrincipalName;
+      }
+
+      if (adminContact !== undefined) {
+        updateData.adminContact = adminContact;
+      }
+
+      if (ownerName !== undefined) {
+        updateData.ownerName = ownerName;
+      }
+
+      // School Settings
+      if (dateFormat !== undefined) {
+        updateData.dateFormat = dateFormat;
+      }
+
+      if (feeDueDate !== undefined) {
+        updateData.feeDueDate = feeDueDate;
+      }
+
+      if (workingDays !== undefined) {
+        updateData.workingDays = workingDays;
+      }
+
+      // School Timings
+      if (openingTime !== undefined) {
+        updateData.openingTime = openingTime;
+      }
+
+      if (closingTime !== undefined) {
+        updateData.closingTime = closingTime;
+      }
+
+      // Update School
       const updated = await this.prisma.school.update({
         where: { id },
         data: updateData,
@@ -236,6 +334,24 @@ export class SchoolsService {
         },
       });
 
+      // Delete old Cloudinary logo after successful database update
+      if (logo !== undefined && currentLogoPublicId) {
+        const newLogoPublicId =
+          this.cloudinary.extractPublicIdFromImageUrl(logo);
+
+        if (currentLogoPublicId !== newLogoPublicId) {
+          await this.cloudinary.deleteImageSafely(currentLogoPublicId);
+        }
+      }
+
+      console.log('Old Logo URL:', school.logo);
+      console.log('Old Public ID:', currentLogoPublicId);
+      console.log('New Logo URL:', logo);
+      console.log(
+        'New Public ID:',
+        this.cloudinary.extractPublicIdFromImageUrl(logo),
+      );
+
       return {
         statusCode: HttpStatus.OK,
         message: 'School updated successfully.',
@@ -246,12 +362,14 @@ export class SchoolsService {
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;
+
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
         throw new ConflictException('School with this email already exists.');
       }
+
       this.handlePrismaError(error, id);
     }
   }
