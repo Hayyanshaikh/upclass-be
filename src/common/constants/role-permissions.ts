@@ -7,10 +7,19 @@ export const rolePermissions: Record<string, string[]> = {
     'schools.create',
     'schools.edit',
     'schools.delete',
+    'schools.lookup',
+
+    // Users
+    'users.lookup',
   ],
 
   school_admin: [
     'dashboard.view',
+
+    // Schools
+    'schools.view',
+    'schools.edit',
+    'schools.lookup',
 
     // Students
     'students.view',
