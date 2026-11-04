@@ -33,6 +33,7 @@ import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-requ
 import { Permissions } from '../auth/decorators/permissions.decorator.ts';
 import { SUBJECT_PERMISSIONS } from './entities/subject.permission.ts';
 import { FindSubjectsQueryDto } from './dto/find-subjects-query.dto.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 @ApiTags('Subjects')
 @ApiBearerAuth()
@@ -72,6 +73,16 @@ export class SubjectsController {
   ): Promise<SubjectsResponseDto> {
     const schoolId = req.headers['schoolid'] as string;
     return this.subjectsService.findAll(query, schoolId);
+  }
+
+  @Get('lookup')
+  @Permissions(SUBJECT_PERMISSIONS.LOOKUP)
+  @ApiOperation({ summary: 'Get subjects for dropdown' })
+  @ApiOkResponse({ type: LookupResponseDto })
+  lookup(@Req() req: AuthenticatedRequest) {
+    const schoolId = req.headers['schoolid'] as string;
+
+    return this.subjectsService.lookup(schoolId);
   }
 
   @Permissions(SUBJECT_PERMISSIONS.EDIT)

@@ -21,6 +21,7 @@ import {
   TeacherResponseDto,
 } from './dto/teachers-response.dto.ts';
 import { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 @Injectable()
 export class TeachersService {
@@ -238,6 +239,34 @@ export class TeachersService {
     } catch {
       throw new InternalServerErrorException('Failed to retrieve teachers.');
     }
+  }
+
+  async lookup(schoolId: string): Promise<LookupResponseDto> {
+    const teacherData = await this.prisma.teacher.findMany({
+      where: {
+        schoolId,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+      },
+      orderBy: {
+        firstName: 'asc',
+      },
+    });
+
+    const teachers = teacherData?.map((t) => ({
+      id: t.id,
+      name: `${t.firstName} ${t.lastName}`,
+    }));
+
+    return {
+      data: teachers,
+      total: teachers.length,
+      message: 'Teachers options retrieved successfully.',
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findOne(

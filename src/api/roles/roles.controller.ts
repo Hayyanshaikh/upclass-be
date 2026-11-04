@@ -26,6 +26,8 @@ import { FindRolesQueryDto } from './dto/find-roles-query.dto.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
 import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
+import { ROLE_PERMISSIONS } from './entities/role.permission.ts';
+import { Permissions } from '../auth/decorators/permissions.decorator.ts';
 
 @ApiTags('Roles')
 @ApiBearerAuth()
@@ -35,6 +37,7 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
+  @Permissions(ROLE_PERMISSIONS.CREATE)
   @ApiOperation({ summary: 'Create a role' })
   @ApiCreatedResponse({
     description: 'Role created successfully',
@@ -51,6 +54,7 @@ export class RolesController {
   }
 
   @Get()
+  @Permissions(ROLE_PERMISSIONS.VIEW)
   @ApiOperation({ summary: 'Get all roles' })
   @ApiOkResponse({
     description: 'Roles retrieved successfully',
@@ -66,6 +70,7 @@ export class RolesController {
   }
 
   @Get(':id')
+  @Permissions(ROLE_PERMISSIONS.VIEW)
   @ApiOperation({ summary: 'Get a role by ID' })
   @ApiOkResponse({
     description: 'Role retrieved successfully',
@@ -77,6 +82,7 @@ export class RolesController {
   }
 
   @Patch(':id')
+  @Permissions(ROLE_PERMISSIONS.EDIT)
   @ApiOperation({ summary: 'Update a role' })
   @ApiOkResponse({
     description: 'Role updated successfully',
@@ -94,6 +100,7 @@ export class RolesController {
   }
 
   @Delete(':id')
+  @Permissions(ROLE_PERMISSIONS.DELETE)
   @ApiOperation({ summary: 'Delete a role' })
   @ApiOkResponse({
     description: 'Role deleted successfully',

@@ -31,6 +31,7 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 import { Permissions } from '../auth/decorators/permissions.decorator.ts';
 import { CLASS_PERMISSIONS } from './entities/class.permission.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 @ApiTags('Classes')
 @ApiBearerAuth()
@@ -68,6 +69,15 @@ export class ClassesController {
   ): Promise<ClassesListResponse> {
     const schoolId = req.headers['schoolid'] as string;
     return this.classesService.findAll(query, schoolId);
+  }
+
+  @Get('lookup')
+  @Permissions(CLASS_PERMISSIONS.LOOKUP)
+  @ApiOperation({ summary: 'Get classes for dropdown' })
+  @ApiOkResponse({ type: LookupResponseDto })
+  lookup(@Req() req: AuthenticatedRequest) {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.classesService.lookup(schoolId);
   }
 
   @Permissions(CLASS_PERMISSIONS.VIEW)

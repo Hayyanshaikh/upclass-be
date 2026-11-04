@@ -29,6 +29,8 @@ import {
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
 import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
+import { Permissions } from '../auth/decorators/permissions.decorator.ts';
+import { USER_PERMISSIONS } from './entities/user.permission.ts';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -38,6 +40,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Permissions(USER_PERMISSIONS.CREATE)
   @ApiOperation({ summary: 'Create a user' })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
@@ -51,6 +54,7 @@ export class UserController {
   }
 
   @Get()
+  @Permissions(USER_PERMISSIONS.VIEW)
   @ApiOperation({ summary: 'Get all users' })
   @ApiOkResponse({
     description: 'Users retrieved successfully',
@@ -65,6 +69,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @Permissions(USER_PERMISSIONS.LOOKUP)
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiOkResponse({
     description: 'User retrieved successfully',
@@ -76,6 +81,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @Permissions(USER_PERMISSIONS.EDIT)
   @ApiOperation({ summary: 'Update a user' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
@@ -85,6 +91,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @Permissions(USER_PERMISSIONS.DELETE)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
