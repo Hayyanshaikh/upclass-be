@@ -3,4 +3,5 @@ export const CLASS_PERMISSIONS = {
   VIEW: 'classes.view',
   EDIT: 'classes.edit',
   DELETE: 'classes.delete',
+  LOOKUP: 'classes.lookup',
 } as const;

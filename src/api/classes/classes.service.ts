@@ -20,6 +20,7 @@ import {
   ClassDto,
   ClassFindOneResponseDto,
 } from './dto/classes-response.dto.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 export interface ClassesListResponse {
   statusCode: number;
@@ -213,6 +214,27 @@ export class ClassesService {
     }
   }
 
+  async lookup(schoolId: string): Promise<LookupResponseDto> {
+    const classes = await this.prisma.class.findMany({
+      where: {
+        schoolId,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+    return {
+      data: classes,
+      total: classes.length,
+      message: 'Classes retrieved successfully.',
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async findOne(
     id: string,
     schoolId: string,
@@ -333,9 +355,7 @@ export class ClassesService {
           'Select an available teacher for each subject.',
         );
       }
-      if (
-        subjectRows?.some((row) => !availableSubjectIds.has(row.subjectId))
-      ) {
+      if (subjectRows?.some((row) => !availableSubjectIds.has(row.subjectId))) {
         throw new BadRequestException(
           'Select an available subject for each row.',
         );

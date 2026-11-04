@@ -32,6 +32,7 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
 import { Permissions } from '../auth/decorators/permissions.decorator.ts';
 import { TEACHER_PERMISSIONS } from './entities/teacher.permission.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 @ApiTags('Teachers')
 @ApiBearerAuth()
@@ -70,6 +71,15 @@ export class TeachersController {
   ): Promise<TeacherResponseDto> {
     const schoolId = req.headers['schoolid'] as string;
     return this.teachersService.findAll(query, schoolId);
+  }
+
+  @Get('lookup')
+  @Permissions(TEACHER_PERMISSIONS.LOOKUP)
+  @ApiOperation({ summary: 'Get teachers for dropdown' })
+  @ApiOkResponse({ type: LookupResponseDto })
+  lookup(@Req() req: AuthenticatedRequest) {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.teachersService.lookup(schoolId);
   }
 
   @Permissions(TEACHER_PERMISSIONS.VIEW)
