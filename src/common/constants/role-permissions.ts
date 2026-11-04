@@ -111,6 +111,7 @@ export const rolePermissions: Record<string, string[]> = {
     'users.create',
     'users.edit',
     'users.delete',
+    'users.lookup',
 
     // Roles
     'roles.view',
@@ -236,9 +237,12 @@ export const rolePermissions: Record<string, string[]> = {
 
     'teacher_leaves.view',
     'teacher_leaves.create',
+
+    'users.lookup',
   ],
 
   parent: [
+    'users.lookup',
     'dashboard.view',
 
     'students.view',
@@ -270,5 +274,6 @@ export const rolePermissions: Record<string, string[]> = {
     'exams_results.view',
     'fees.view',
     'notices.view',
+    'users.lookup',
   ],
 };
