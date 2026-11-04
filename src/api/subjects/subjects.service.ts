@@ -17,6 +17,7 @@ import {
   SubjectsResponseDto,
 } from './dto/subjects-response.dto.ts';
 import { FindSchoolsQueryDto } from '../schools/dto/find-schools-query.dto.ts';
+import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 
 @Injectable()
 export class SubjectsService {
@@ -131,6 +132,29 @@ export class SubjectsService {
     } catch {
       throw new InternalServerErrorException('Failed to retrieve subjects.');
     }
+  }
+
+  async lookup(schoolId: string): Promise<LookupResponseDto> {
+    const subjects = await this.prisma.subject.findMany({
+      where: {
+        schoolId,
+      },
+      select: {
+        id: true,
+        name: true,
+        code: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return {
+      data: subjects,
+      total: subjects.length,
+      message: 'Subject options retrieved successfully.',
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findOne(id: string): Promise<SubjectFindOneResponseDto> {

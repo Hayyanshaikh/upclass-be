@@ -1,6 +1,6 @@
 import { prisma } from '../prisma-client.ts';
 
-const actions = ['View', 'Create', 'Edit', 'Delete'] as const;
+const actions = ['View', 'Create', 'Edit', 'Delete', 'Lookup'] as const;
 
 const groups = [
   {
