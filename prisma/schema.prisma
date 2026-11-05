@@ -50,36 +50,38 @@ enum TeacherStatus {
 }
 
 model School {
-  id                String           @id @default(cuid())
-  name              String
-  email             String?
-  phone             String?
-  address           String?
-  logo              String?
-  shortCode         String?
-  schoolType        SchoolType?
-  educationSystem   EducationSystem?
-  establishedYear   Int?
-  description       String?
-  principalName     String?
-  vicePrincipalName String?
-  adminContact      String?
-  ownerName         String?
-  dateFormat        String?
-  feeDueDate        Int?
-  workingDays       String[]         @default([])
-  openingTime       String?
-  closingTime       String?
-  isActive          Boolean          @default(true)
-  users             User[]
-  roles             Role[]
-  teachers          Teacher[]
-  subjects          Subject[]
-  classes           Class[]
-  academicYears     AcademicYear[]
-  academicTerms     AcademicTerm[]
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  id                 String           @id @default(cuid())
+  name               String
+  email              String?
+  phone              String?
+  address            String?
+  logo               String?
+  shortCode          String?
+  schoolType         SchoolType?
+  educationSystem    EducationSystem?
+  establishedYear    Int?
+  description        String?
+  principalName      String?
+  vicePrincipalName  String?
+  adminContact       String?
+  ownerName          String?
+  dateFormat         String?
+  feeDueDate         Int?
+  workingDays        String[]         @default([])
+  openingTime        String?
+  closingTime        String?
+  isActive           Boolean          @default(true)
+  users              User[]
+  roles              Role[]
+  teachers           Teacher[]
+  subjects           Subject[]
+  classes            Class[]
+  academicYears      AcademicYear[]
+  academicTerms      AcademicTerm[]
+  leavePolicies      LeavePolicy[]
+  leavePolicySetting LeavePolicySetting?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
 }
 
 model User {
@@ -305,4 +307,26 @@ model AcademicYearTerm {
   updatedAt      DateTime     @updatedAt
 
   @@unique([academicYearId, academicTermId])
+}
+
+model LeavePolicy {
+  id          String   @id @default(cuid())
+  schoolId    String
+  school      School   @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  name        String
+  daysPerYear Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([schoolId, name])
+}
+
+model LeavePolicySetting {
+  id               String   @id @default(cuid())
+  schoolId         String   @unique
+  school           School   @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  approvalRequired Boolean  @default(true)
+  carryForward     Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

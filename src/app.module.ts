@@ -13,6 +13,7 @@ import { ClassesModule } from './api/classes/classes.module.ts';
 import { AcademicYearsModule } from './api/academic-years/academic-years.module.ts';
 import { AcademicTermsModule } from './api/academic-terms/academic-terms.module.ts';
 import { AcademicYearTermsModule } from './api/academic-year-terms/academic-year-terms.module.ts';
+import { LeavePoliciesModule } from './api/leave-policies/leave-policies.module.ts';
 import { CloudinaryModule } from './api/cloudinary/cloudinary.module.js';
 import { SchoolsModule } from './api/schools/schools.module.js';
 
@@ -32,6 +33,7 @@ import { SchoolsModule } from './api/schools/schools.module.js';
     AcademicYearsModule,
     AcademicTermsModule,
     AcademicYearTermsModule,
+    LeavePoliciesModule,
     CloudinaryModule,
     SchoolsModule,
   ],

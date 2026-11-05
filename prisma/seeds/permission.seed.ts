@@ -109,6 +109,16 @@ const groups = [
     name: 'System',
     modules: [
       {
+        key: 'leave_policies',
+        label: 'Leave Policies',
+        actions: ['View', 'Create', 'Edit', 'Delete'],
+      },
+      {
+        key: 'leave_policy_settings',
+        label: 'Leave Policy Settings',
+        actions: ['View', 'Edit'],
+      },
+      {
         key: 'leave_requests',
         label: 'Leave Requests',
       },
