@@ -96,3 +96,12 @@ export const ClassStatus = {
 } as const
 
 export type ClassStatus = (typeof ClassStatus)[keyof typeof ClassStatus]
+
+
+export const AcademicYearStatus = {
+  UPCOMING: 'UPCOMING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type AcademicYearStatus = (typeof AcademicYearStatus)[keyof typeof AcademicYearStatus]

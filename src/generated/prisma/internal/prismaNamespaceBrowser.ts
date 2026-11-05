@@ -60,7 +60,10 @@ export const ModelName = {
   Documents: 'Documents',
   Teacher: 'Teacher',
   Class: 'Class',
-  ClassSubject: 'ClassSubject'
+  ClassSubject: 'ClassSubject',
+  AcademicYear: 'AcademicYear',
+  AcademicTerm: 'AcademicTerm',
+  AcademicYearTerm: 'AcademicYearTerm'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -247,6 +250,44 @@ export const ClassSubjectScalarFieldEnum = {
 } as const
 
 export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
+
+
+export const AcademicYearScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  year: 'year',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[keyof typeof AcademicYearScalarFieldEnum]
+
+
+export const AcademicTermScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicTermScalarFieldEnum = (typeof AcademicTermScalarFieldEnum)[keyof typeof AcademicTermScalarFieldEnum]
+
+
+export const AcademicYearTermScalarFieldEnum = {
+  id: 'id',
+  academicYearId: 'academicYearId',
+  academicTermId: 'academicTermId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicYearTermScalarFieldEnum = (typeof AcademicYearTermScalarFieldEnum)[keyof typeof AcademicYearTermScalarFieldEnum]
 
 
 export const SortOrder = {

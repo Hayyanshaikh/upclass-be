@@ -395,6 +395,23 @@ export type EnumClassStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumClassStatusFilter<$PrismaModel>
 }
 
+export type EnumAcademicYearStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AcademicYearStatus | Prisma.EnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel> | $Enums.AcademicYearStatus
+}
+
+export type EnumAcademicYearStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AcademicYearStatus | Prisma.EnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAcademicYearStatusWithAggregatesFilter<$PrismaModel> | $Enums.AcademicYearStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -776,6 +793,23 @@ export type NestedEnumClassStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumClassStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumClassStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAcademicYearStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AcademicYearStatus | Prisma.EnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel> | $Enums.AcademicYearStatus
+}
+
+export type NestedEnumAcademicYearStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AcademicYearStatus | Prisma.EnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AcademicYearStatus[] | Prisma.ListEnumAcademicYearStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAcademicYearStatusWithAggregatesFilter<$PrismaModel> | $Enums.AcademicYearStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAcademicYearStatusFilter<$PrismaModel>
 }
 
 

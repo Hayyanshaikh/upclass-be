@@ -10,6 +10,9 @@ import { PermissionsModule } from './api/permissions/permissions.module.ts';
 import { TeachersModule } from './api/teachers/teachers.module.ts';
 import { SubjectsModule } from './api/subjects/subjects.module.ts';
 import { ClassesModule } from './api/classes/classes.module.ts';
+import { AcademicYearsModule } from './api/academic-years/academic-years.module.ts';
+import { AcademicTermsModule } from './api/academic-terms/academic-terms.module.ts';
+import { AcademicYearTermsModule } from './api/academic-year-terms/academic-year-terms.module.ts';
 import { CloudinaryModule } from './api/cloudinary/cloudinary.module.js';
 import { SchoolsModule } from './api/schools/schools.module.js';
 
@@ -26,6 +29,9 @@ import { SchoolsModule } from './api/schools/schools.module.js';
     TeachersModule,
     SubjectsModule,
     ClassesModule,
+    AcademicYearsModule,
+    AcademicTermsModule,
+    AcademicYearTermsModule,
     CloudinaryModule,
     SchoolsModule,
   ],
