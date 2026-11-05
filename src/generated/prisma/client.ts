@@ -91,3 +91,18 @@ export type Class = Prisma.ClassModel
  * 
  */
 export type ClassSubject = Prisma.ClassSubjectModel
+/**
+ * Model AcademicYear
+ * 
+ */
+export type AcademicYear = Prisma.AcademicYearModel
+/**
+ * Model AcademicTerm
+ * 
+ */
+export type AcademicTerm = Prisma.AcademicTermModel
+/**
+ * Model AcademicYearTerm
+ * 
+ */
+export type AcademicYearTerm = Prisma.AcademicYearTermModel

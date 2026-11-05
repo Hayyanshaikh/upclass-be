@@ -406,7 +406,10 @@ export const ModelName = {
   Documents: 'Documents',
   Teacher: 'Teacher',
   Class: 'Class',
-  ClassSubject: 'ClassSubject'
+  ClassSubject: 'ClassSubject',
+  AcademicYear: 'AcademicYear',
+  AcademicTerm: 'AcademicTerm',
+  AcademicYearTerm: 'AcademicYearTerm'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "class" | "classSubject"
+    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "class" | "classSubject" | "academicYear" | "academicTerm" | "academicYearTerm"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1169,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AcademicYear: {
+      payload: Prisma.$AcademicYearPayload<ExtArgs>
+      fields: Prisma.AcademicYearFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AcademicYearFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AcademicYearFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        findFirst: {
+          args: Prisma.AcademicYearFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AcademicYearFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        findMany: {
+          args: Prisma.AcademicYearFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>[]
+        }
+        create: {
+          args: Prisma.AcademicYearCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        createMany: {
+          args: Prisma.AcademicYearCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AcademicYearCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>[]
+        }
+        delete: {
+          args: Prisma.AcademicYearDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        update: {
+          args: Prisma.AcademicYearUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        deleteMany: {
+          args: Prisma.AcademicYearDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AcademicYearUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AcademicYearUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>[]
+        }
+        upsert: {
+          args: Prisma.AcademicYearUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearPayload>
+        }
+        aggregate: {
+          args: Prisma.AcademicYearAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAcademicYear>
+        }
+        groupBy: {
+          args: Prisma.AcademicYearGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicYearGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AcademicYearCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicYearCountAggregateOutputType> | number
+        }
+      }
+    }
+    AcademicTerm: {
+      payload: Prisma.$AcademicTermPayload<ExtArgs>
+      fields: Prisma.AcademicTermFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AcademicTermFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AcademicTermFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        findFirst: {
+          args: Prisma.AcademicTermFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AcademicTermFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        findMany: {
+          args: Prisma.AcademicTermFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>[]
+        }
+        create: {
+          args: Prisma.AcademicTermCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        createMany: {
+          args: Prisma.AcademicTermCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AcademicTermCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>[]
+        }
+        delete: {
+          args: Prisma.AcademicTermDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        update: {
+          args: Prisma.AcademicTermUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        deleteMany: {
+          args: Prisma.AcademicTermDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AcademicTermUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AcademicTermUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>[]
+        }
+        upsert: {
+          args: Prisma.AcademicTermUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicTermPayload>
+        }
+        aggregate: {
+          args: Prisma.AcademicTermAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAcademicTerm>
+        }
+        groupBy: {
+          args: Prisma.AcademicTermGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicTermGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AcademicTermCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicTermCountAggregateOutputType> | number
+        }
+      }
+    }
+    AcademicYearTerm: {
+      payload: Prisma.$AcademicYearTermPayload<ExtArgs>
+      fields: Prisma.AcademicYearTermFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AcademicYearTermFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AcademicYearTermFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        findFirst: {
+          args: Prisma.AcademicYearTermFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AcademicYearTermFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        findMany: {
+          args: Prisma.AcademicYearTermFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>[]
+        }
+        create: {
+          args: Prisma.AcademicYearTermCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        createMany: {
+          args: Prisma.AcademicYearTermCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AcademicYearTermCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>[]
+        }
+        delete: {
+          args: Prisma.AcademicYearTermDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        update: {
+          args: Prisma.AcademicYearTermUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        deleteMany: {
+          args: Prisma.AcademicYearTermDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AcademicYearTermUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AcademicYearTermUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>[]
+        }
+        upsert: {
+          args: Prisma.AcademicYearTermUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AcademicYearTermPayload>
+        }
+        aggregate: {
+          args: Prisma.AcademicYearTermAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAcademicYearTerm>
+        }
+        groupBy: {
+          args: Prisma.AcademicYearTermGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicYearTermGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AcademicYearTermCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AcademicYearTermCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1373,6 +1598,44 @@ export const ClassSubjectScalarFieldEnum = {
 } as const
 
 export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
+
+
+export const AcademicYearScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  year: 'year',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[keyof typeof AcademicYearScalarFieldEnum]
+
+
+export const AcademicTermScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicTermScalarFieldEnum = (typeof AcademicTermScalarFieldEnum)[keyof typeof AcademicTermScalarFieldEnum]
+
+
+export const AcademicYearTermScalarFieldEnum = {
+  id: 'id',
+  academicYearId: 'academicYearId',
+  academicTermId: 'academicTermId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AcademicYearTermScalarFieldEnum = (typeof AcademicYearTermScalarFieldEnum)[keyof typeof AcademicYearTermScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1593,6 +1856,20 @@ export type EnumClassStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumClassStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClassStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'AcademicYearStatus'
+ */
+export type EnumAcademicYearStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicYearStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AcademicYearStatus[]'
+ */
+export type ListEnumAcademicYearStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicYearStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1754,6 +2031,9 @@ export type GlobalOmitConfig = {
   teacher?: Prisma.TeacherOmit
   class?: Prisma.ClassOmit
   classSubject?: Prisma.ClassSubjectOmit
+  academicYear?: Prisma.AcademicYearOmit
+  academicTerm?: Prisma.AcademicTermOmit
+  academicYearTerm?: Prisma.AcademicYearTermOmit
 }
 
 /* Types for Logging */

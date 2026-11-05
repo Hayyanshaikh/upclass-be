@@ -66,6 +66,21 @@ const groups = [
         key: 'exams_results',
         label: 'Exams & Results',
       },
+      {
+        key: 'academic_years',
+        label: 'Academic Years',
+        actions: ['View', 'Create', 'Edit', 'Delete', 'Lookup'],
+      },
+      {
+        key: 'academic_terms',
+        label: 'Academic Terms',
+        actions: ['View', 'Create', 'Delete', 'Lookup'],
+      },
+      {
+        key: 'academic_year_terms',
+        label: 'Academic Year Terms',
+        actions: ['View', 'Create', 'Delete'],
+      },
     ],
   },
   {

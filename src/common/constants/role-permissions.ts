@@ -55,6 +55,24 @@ export const rolePermissions: Record<string, string[]> = {
     'classes.delete',
     'classes.lookup',
 
+    // Academic Years
+    'academic_years.view',
+    'academic_years.create',
+    'academic_years.edit',
+    'academic_years.delete',
+    'academic_years.lookup',
+
+    // Academic Terms
+    'academic_terms.view',
+    'academic_terms.create',
+    'academic_terms.delete',
+    'academic_terms.lookup',
+
+    // Academic Year Terms
+    'academic_year_terms.view',
+    'academic_year_terms.create',
+    'academic_year_terms.delete',
+
     // Student Attendance
     'student_attendance.view',
     'student_attendance.create',
@@ -165,6 +183,21 @@ export const rolePermissions: Record<string, string[]> = {
     'classes.delete',
     'classes.lookup',
 
+    'academic_years.view',
+    'academic_years.create',
+    'academic_years.edit',
+    'academic_years.delete',
+    'academic_years.lookup',
+
+    'academic_terms.view',
+    'academic_terms.create',
+    'academic_terms.delete',
+    'academic_terms.lookup',
+
+    'academic_year_terms.view',
+    'academic_year_terms.create',
+    'academic_year_terms.delete',
+
     'student_attendance.view',
     'student_attendance.create',
     'student_attendance.edit',
@@ -226,6 +259,8 @@ export const rolePermissions: Record<string, string[]> = {
     'parents.lookup',
     'subjects.lookup',
     'classes.lookup',
+    'academic_years.lookup',
+    'academic_terms.lookup',
     'timetable.lookup',
 
     'student_attendance.view',
@@ -259,6 +294,8 @@ export const rolePermissions: Record<string, string[]> = {
     'teachers.lookup',
     'subjects.lookup',
     'classes.lookup',
+    'academic_years.lookup',
+    'academic_terms.lookup',
     'timetable.lookup',
 
     'student_attendance.view',
@@ -275,6 +312,8 @@ export const rolePermissions: Record<string, string[]> = {
     'teachers.lookup',
     'subjects.lookup',
     'classes.lookup',
+    'academic_years.lookup',
+    'academic_terms.lookup',
     'timetable.lookup',
 
     'student_attendance.view',
