@@ -409,7 +409,9 @@ export const ModelName = {
   ClassSubject: 'ClassSubject',
   AcademicYear: 'AcademicYear',
   AcademicTerm: 'AcademicTerm',
-  AcademicYearTerm: 'AcademicYearTerm'
+  AcademicYearTerm: 'AcademicYearTerm',
+  LeavePolicy: 'LeavePolicy',
+  LeavePolicySetting: 'LeavePolicySetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "class" | "classSubject" | "academicYear" | "academicTerm" | "academicYearTerm"
+    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "class" | "classSubject" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1391,6 +1393,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LeavePolicy: {
+      payload: Prisma.$LeavePolicyPayload<ExtArgs>
+      fields: Prisma.LeavePolicyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeavePolicyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeavePolicyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        findFirst: {
+          args: Prisma.LeavePolicyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeavePolicyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        findMany: {
+          args: Prisma.LeavePolicyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>[]
+        }
+        create: {
+          args: Prisma.LeavePolicyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        createMany: {
+          args: Prisma.LeavePolicyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeavePolicyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>[]
+        }
+        delete: {
+          args: Prisma.LeavePolicyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        update: {
+          args: Prisma.LeavePolicyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeavePolicyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeavePolicyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeavePolicyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeavePolicyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicyPayload>
+        }
+        aggregate: {
+          args: Prisma.LeavePolicyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeavePolicy>
+        }
+        groupBy: {
+          args: Prisma.LeavePolicyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeavePolicyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeavePolicyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeavePolicyCountAggregateOutputType> | number
+        }
+      }
+    }
+    LeavePolicySetting: {
+      payload: Prisma.$LeavePolicySettingPayload<ExtArgs>
+      fields: Prisma.LeavePolicySettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeavePolicySettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeavePolicySettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        findFirst: {
+          args: Prisma.LeavePolicySettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeavePolicySettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        findMany: {
+          args: Prisma.LeavePolicySettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>[]
+        }
+        create: {
+          args: Prisma.LeavePolicySettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        createMany: {
+          args: Prisma.LeavePolicySettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeavePolicySettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>[]
+        }
+        delete: {
+          args: Prisma.LeavePolicySettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        update: {
+          args: Prisma.LeavePolicySettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeavePolicySettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeavePolicySettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeavePolicySettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeavePolicySettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeavePolicySettingPayload>
+        }
+        aggregate: {
+          args: Prisma.LeavePolicySettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeavePolicySetting>
+        }
+        groupBy: {
+          args: Prisma.LeavePolicySettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeavePolicySettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeavePolicySettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeavePolicySettingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1636,6 +1786,30 @@ export const AcademicYearTermScalarFieldEnum = {
 } as const
 
 export type AcademicYearTermScalarFieldEnum = (typeof AcademicYearTermScalarFieldEnum)[keyof typeof AcademicYearTermScalarFieldEnum]
+
+
+export const LeavePolicyScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  daysPerYear: 'daysPerYear',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeavePolicyScalarFieldEnum = (typeof LeavePolicyScalarFieldEnum)[keyof typeof LeavePolicyScalarFieldEnum]
+
+
+export const LeavePolicySettingScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  approvalRequired: 'approvalRequired',
+  carryForward: 'carryForward',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeavePolicySettingScalarFieldEnum = (typeof LeavePolicySettingScalarFieldEnum)[keyof typeof LeavePolicySettingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2034,6 +2208,8 @@ export type GlobalOmitConfig = {
   academicYear?: Prisma.AcademicYearOmit
   academicTerm?: Prisma.AcademicTermOmit
   academicYearTerm?: Prisma.AcademicYearTermOmit
+  leavePolicy?: Prisma.LeavePolicyOmit
+  leavePolicySetting?: Prisma.LeavePolicySettingOmit
 }
 
 /* Types for Logging */

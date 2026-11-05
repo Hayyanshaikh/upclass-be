@@ -106,3 +106,13 @@ export type AcademicTerm = Prisma.AcademicTermModel
  * 
  */
 export type AcademicYearTerm = Prisma.AcademicYearTermModel
+/**
+ * Model LeavePolicy
+ * 
+ */
+export type LeavePolicy = Prisma.LeavePolicyModel
+/**
+ * Model LeavePolicySetting
+ * 
+ */
+export type LeavePolicySetting = Prisma.LeavePolicySettingModel

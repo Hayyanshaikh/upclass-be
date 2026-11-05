@@ -132,6 +132,14 @@ export const rolePermissions: Record<string, string[]> = {
     'teacher_leaves.edit',
     'teacher_leaves.delete',
 
+    // Leave Policies
+    'leave_policies.view',
+    'leave_policies.create',
+    'leave_policies.edit',
+    'leave_policies.delete',
+    'leave_policy_settings.view',
+    'leave_policy_settings.edit',
+
     // Users
     'users.view',
     'users.create',
@@ -235,6 +243,13 @@ export const rolePermissions: Record<string, string[]> = {
 
     'teacher_leaves.view',
     'teacher_leaves.edit',
+
+    'leave_policies.view',
+    'leave_policies.create',
+    'leave_policies.edit',
+    'leave_policies.delete',
+    'leave_policy_settings.view',
+    'leave_policy_settings.edit',
 
     'users.view',
     'users.create',

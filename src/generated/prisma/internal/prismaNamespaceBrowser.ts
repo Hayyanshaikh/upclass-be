@@ -63,7 +63,9 @@ export const ModelName = {
   ClassSubject: 'ClassSubject',
   AcademicYear: 'AcademicYear',
   AcademicTerm: 'AcademicTerm',
-  AcademicYearTerm: 'AcademicYearTerm'
+  AcademicYearTerm: 'AcademicYearTerm',
+  LeavePolicy: 'LeavePolicy',
+  LeavePolicySetting: 'LeavePolicySetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -288,6 +290,30 @@ export const AcademicYearTermScalarFieldEnum = {
 } as const
 
 export type AcademicYearTermScalarFieldEnum = (typeof AcademicYearTermScalarFieldEnum)[keyof typeof AcademicYearTermScalarFieldEnum]
+
+
+export const LeavePolicyScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  daysPerYear: 'daysPerYear',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeavePolicyScalarFieldEnum = (typeof LeavePolicyScalarFieldEnum)[keyof typeof LeavePolicyScalarFieldEnum]
+
+
+export const LeavePolicySettingScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  approvalRequired: 'approvalRequired',
+  carryForward: 'carryForward',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeavePolicySettingScalarFieldEnum = (typeof LeavePolicySettingScalarFieldEnum)[keyof typeof LeavePolicySettingScalarFieldEnum]
 
 
 export const SortOrder = {
