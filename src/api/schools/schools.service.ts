@@ -73,7 +73,11 @@ export class SchoolsService {
           },
         });
 
-        await this.schoolDefaultsService.createDefaults(tx, school.id);
+        await this.schoolDefaultsService.createDefaults(
+          tx,
+          school.id,
+          school.name,
+        );
 
         // School Admin role retrieve karein
         const adminRole = await tx.role.findFirstOrThrow({
