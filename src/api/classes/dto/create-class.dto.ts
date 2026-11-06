@@ -56,7 +56,7 @@ export class CreateClassDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  academicYear!: string;
+  academicYearId!: string;
 
   @ApiProperty({ enum: ClassStatus, default: ClassStatus.ACTIVE })
   @IsEnum(ClassStatus)

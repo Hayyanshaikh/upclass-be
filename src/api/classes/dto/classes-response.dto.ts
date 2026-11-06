@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ClassStatus } from '../../../generated/prisma/client.ts';
+import { AcademicYearDto } from '../../academic-years/dto/academic-years-response.dto.ts';
 import { SubjectDto } from '../../subjects/dto/subjects-response.dto.ts';
 
 export class ClassSubjectDto {
@@ -45,7 +46,10 @@ export class ClassDto {
   capacity: number;
 
   @ApiProperty()
-  academicYear: string;
+  academicYearId: string;
+
+  @ApiProperty({ type: AcademicYearDto })
+  academicYear: AcademicYearDto;
 
   @ApiProperty({ enum: ClassStatus })
   status: ClassStatus;

@@ -49,6 +49,11 @@ enum TeacherStatus {
   INACTIVE
 }
 
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model School {
   id                 String           @id @default(cuid())
   name               String
@@ -76,6 +81,7 @@ model School {
   teachers           Teacher[]
   subjects           Subject[]
   classes            Class[]
+  students           Student[]
   academicYears      AcademicYear[]
   academicTerms      AcademicTerm[]
   leavePolicies      LeavePolicy[]
@@ -234,17 +240,48 @@ model Class {
   section            String
   room               String
   capacity           Int
-  academicYear       String
+  academicYearId     String
+  academicYear       AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
   status             ClassStatus    @default(ACTIVE)
   teacherId          String
   teacher            Teacher        @relation("ClassTeacher", fields: [teacherId], references: [id])
   assistantTeacherId String?
   assistantTeacher   Teacher?       @relation("AssistantClassTeacher", fields: [assistantTeacherId], references: [id])
   subjects           ClassSubject[]
+  students           Student[]
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
 
-  @@unique([name, section, academicYear])
+  @@unique([name, section, academicYearId])
+  @@index([academicYearId])
+}
+
+model Student {
+  id             String        @id @default(cuid())
+  schoolId       String
+  school         School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  firstName      String
+  lastName       String
+  dateOfBirth    DateTime?
+  gender         Gender?
+  identityNumber String?
+  bloodGroup     String?
+  classId        String
+  class          Class         @relation(fields: [classId], references: [id], onDelete: Restrict)
+  roll           String
+  admissionDate  DateTime?
+  status         StudentStatus @default(ACTIVE)
+  guardian       String
+  relation       String
+  phone          String
+  email          String?
+  address        String?
+  photo          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([schoolId, roll])
+  @@index([classId])
 }
 
 model ClassSubject {
@@ -277,6 +314,7 @@ model AcademicYear {
   endDate           DateTime
   status            AcademicYearStatus @default(ACTIVE)
   academicYearTerms AcademicYearTerm[]
+  classes           Class[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 

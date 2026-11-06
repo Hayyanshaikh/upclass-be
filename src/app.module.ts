@@ -8,6 +8,7 @@ import { PrismaModule } from './database/prisma.module.ts';
 import { RolesModule } from './api/roles/roles.module.ts';
 import { PermissionsModule } from './api/permissions/permissions.module.ts';
 import { TeachersModule } from './api/teachers/teachers.module.ts';
+import { StudentsModule } from './api/students/students.module.ts';
 import { SubjectsModule } from './api/subjects/subjects.module.ts';
 import { ClassesModule } from './api/classes/classes.module.ts';
 import { AcademicYearsModule } from './api/academic-years/academic-years.module.ts';
@@ -28,6 +29,7 @@ import { SchoolsModule } from './api/schools/schools.module.js';
     RolesModule,
     PermissionsModule,
     TeachersModule,
+    StudentsModule,
     SubjectsModule,
     ClassesModule,
     AcademicYearsModule,
