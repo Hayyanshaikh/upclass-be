@@ -8,10 +8,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  AcademicYearStatus,
-  Prisma,
-} from '../../generated/prisma/client.ts';
+import { AcademicYearStatus, Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { LookupResponseDto } from '../../common/dto/lookup-response.dto.ts';
 import { CreateAcademicYearDto } from './dto/create-academic-year.dto.ts';
@@ -41,9 +38,7 @@ export class AcademicYearsService {
         throw new BadRequestException('Academic year is required.');
       }
       if (endDate.getTime() <= startDate.getTime()) {
-        throw new BadRequestException(
-          'End date must be after the start date.',
-        );
+        throw new BadRequestException('End date must be after the start date.');
       }
 
       const normalizedYear = year.trim();
@@ -139,9 +134,7 @@ export class AcademicYearsService {
       const nextStatus = status ?? current.status;
 
       if (nextEndDate.getTime() <= nextStartDate.getTime()) {
-        throw new BadRequestException(
-          'End date must be after the start date.',
-        );
+        throw new BadRequestException('End date must be after the start date.');
       }
 
       if (nextYear !== current.year) {
@@ -293,11 +286,15 @@ export class AcademicYearsService {
 
       const academicYears = await this.prisma.academicYear.findMany({
         where: { schoolId },
-        select: { id: true, year: true },
+        select: { id: true, year: true, status: true },
         orderBy: [{ startDate: 'desc' }, { id: 'asc' }],
       });
 
-      const data = academicYears.map(({ id, year }) => ({ id, name: year }));
+      const data = academicYears.map(({ id, year, status }) => ({
+        id,
+        name: year,
+        status,
+      }));
 
       return {
         data,
@@ -316,7 +313,8 @@ export class AcademicYearsService {
   async findOne(
     id: string,
     schoolId: string,
-  ): Promise<AcademicYearFindOneResponseDto> {    try {
+  ): Promise<AcademicYearFindOneResponseDto> {
+    try {
       if (!schoolId?.trim()) {
         throw new BadRequestException('School context is required.');
       }

@@ -258,7 +258,7 @@ export class TeachersService {
 
     const teachers = teacherData?.map((t) => ({
       id: t.id,
-      name: `${t.firstName} ${t.lastName}`,
+      name: `${t.firstName} ${t?.lastName ? t?.lastName : ''}`,
     }));
 
     return {

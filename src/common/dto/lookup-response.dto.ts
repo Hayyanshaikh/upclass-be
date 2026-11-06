@@ -9,6 +9,9 @@ export class LookupItemDto {
 
   @ApiPropertyOptional({ description: 'Record code' })
   code?: string;
+
+  @ApiPropertyOptional({ description: 'Record status' })
+  status?: string;
 }
 
 export class LookupResponseDto {

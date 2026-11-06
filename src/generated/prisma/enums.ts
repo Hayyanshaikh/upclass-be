@@ -54,6 +54,14 @@ export const TeacherStatus = {
 export type TeacherStatus = (typeof TeacherStatus)[keyof typeof TeacherStatus]
 
 
+export const StudentStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]
+
+
 export const SubjectType = {
   THEORY: 'THEORY',
   PRACTICAL: 'PRACTICAL',

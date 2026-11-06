@@ -45,7 +45,7 @@ export class ClassesService {
       section,
       room,
       capacity,
-      academicYear,
+      academicYearId,
       status,
       teacherId,
       assistantTeacherId,
@@ -68,7 +68,7 @@ export class ClassesService {
       if (!room?.trim()) {
         throw new BadRequestException('Room is required.');
       }
-      if (!academicYear?.trim()) {
+      if (!academicYearId?.trim()) {
         throw new BadRequestException('Academic year is required.');
       }
       if (!teacherId?.trim()) {
@@ -77,6 +77,16 @@ export class ClassesService {
       if (!Number.isInteger(capacity) || capacity < 1) {
         throw new BadRequestException(
           'Capacity must be a positive whole number.',
+        );
+      }
+
+      const academicYear = await this.prisma.academicYear.findUnique({
+        where: { id: academicYearId.trim(), schoolId },
+        select: { id: true },
+      });
+      if (!academicYear) {
+        throw new BadRequestException(
+          'Select a valid academic year for this school.',
         );
       }
 
@@ -124,7 +134,7 @@ export class ClassesService {
           section: normalizedSection,
           room: room.trim(),
           capacity,
-          academicYear: academicYear.trim(),
+          academicYearId: academicYear.id,
           status,
           teacherId: nextTeacherId,
           assistantTeacherId: nextAssistantTeacherId,
@@ -133,6 +143,7 @@ export class ClassesService {
           },
         },
         include: {
+          academicYear: true,
           subjects: {
             include: {
               subject: true,
@@ -193,6 +204,7 @@ export class ClassesService {
           skip: offset,
           orderBy: [{ name: 'asc' }, { section: 'asc' }, { id: 'asc' }],
           include: {
+            academicYear: true,
             subjects: {
               include: {
                 subject: true,
@@ -243,6 +255,7 @@ export class ClassesService {
       const schoolClass = await this.prisma.class.findUnique({
         where: { id, schoolId },
         include: {
+          academicYear: true,
           subjects: {
             include: {
               subject: true,
@@ -276,7 +289,7 @@ export class ClassesService {
       section,
       room,
       capacity,
-      academicYear,
+      academicYearId,
       status,
       teacherId,
       assistantTeacherId,
@@ -293,7 +306,7 @@ export class ClassesService {
       if (room !== undefined && !room.trim()) {
         throw new BadRequestException('Room is required.');
       }
-      if (academicYear !== undefined && !academicYear.trim()) {
+      if (academicYearId !== undefined && !academicYearId.trim()) {
         throw new BadRequestException('Academic year is required.');
       }
       if (
@@ -306,6 +319,18 @@ export class ClassesService {
       }
       if (teacherId !== undefined && !teacherId.trim()) {
         throw new BadRequestException('Class teacher is required.');
+      }
+
+      if (academicYearId !== undefined) {
+        const academicYear = await this.prisma.academicYear.findUnique({
+          where: { id: academicYearId.trim(), schoolId },
+          select: { id: true },
+        });
+        if (!academicYear) {
+          throw new BadRequestException(
+            'Select a valid academic year for this school.',
+          );
+        }
       }
 
       const current = await this.prisma.class.findUnique({
@@ -368,7 +393,7 @@ export class ClassesService {
           section: section?.trim().toUpperCase(),
           room: room?.trim(),
           capacity,
-          academicYear: academicYear?.trim(),
+          academicYearId: academicYearId?.trim(),
           status,
           teacherId: nextTeacherId,
           assistantTeacherId: nextAssistantTeacherId,
@@ -380,6 +405,7 @@ export class ClassesService {
           }),
         },
         include: {
+          academicYear: true,
           subjects: {
             include: {
               subject: true,
@@ -520,7 +546,7 @@ export class ClassesService {
       }
       if (error.code === 'P2003') {
         throw new BadRequestException(
-          'Invalid school, teacher, or subject ID for class.',
+          'Invalid school, academic year, teacher, or subject ID for class.',
         );
       }
       if (error.code === 'P2025') {
