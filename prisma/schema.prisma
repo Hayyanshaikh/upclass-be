@@ -180,7 +180,6 @@ model Subject {
   defaultPassingMarks Float          @default(33)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
-  classSubjects       ClassSubject[]
 
   @@unique([schoolId, code])
 }
@@ -222,7 +221,6 @@ model Teacher {
   documents        Documents[]
   classes          Class[]         @relation("ClassTeacher")
   assistantClasses Class[]         @relation("AssistantClassTeacher")
-  classSubjects    ClassSubject[]
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 }
@@ -247,7 +245,6 @@ model Class {
   teacher            Teacher        @relation("ClassTeacher", fields: [teacherId], references: [id])
   assistantTeacherId String?
   assistantTeacher   Teacher?       @relation("AssistantClassTeacher", fields: [assistantTeacherId], references: [id])
-  subjects           ClassSubject[]
   students           Student[]
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
@@ -282,21 +279,6 @@ model Student {
 
   @@unique([schoolId, roll])
   @@index([classId])
-}
-
-model ClassSubject {
-  id             String   @id @default(cuid())
-  classId        String
-  schoolClass    Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
-  subjectId      String
-  subject        Subject  @relation(fields: [subjectId], references: [id], onDelete: Restrict)
-  teacherId      String
-  teacher        Teacher  @relation(fields: [teacherId], references: [id])
-  periodsPerWeek Int
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  @@unique([classId, subjectId])
 }
 
 enum AcademicYearStatus {

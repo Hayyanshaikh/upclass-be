@@ -61,7 +61,6 @@ export const ModelName = {
   Teacher: 'Teacher',
   Class: 'Class',
   Student: 'Student',
-  ClassSubject: 'ClassSubject',
   AcademicYear: 'AcademicYear',
   AcademicTerm: 'AcademicTerm',
   AcademicYearTerm: 'AcademicYearTerm',
@@ -266,19 +265,6 @@ export const StudentScalarFieldEnum = {
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
-
-
-export const ClassSubjectScalarFieldEnum = {
-  id: 'id',
-  classId: 'classId',
-  subjectId: 'subjectId',
-  teacherId: 'teacherId',
-  periodsPerWeek: 'periodsPerWeek',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
 
 
 export const AcademicYearScalarFieldEnum = {
