@@ -257,6 +257,7 @@ export type PeriodWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Period"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Period"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  timetableEntries?: Prisma.TimetableEntryListRelationFilter
 }
 
 export type PeriodOrderByWithRelationInput = {
@@ -271,6 +272,7 @@ export type PeriodOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   school?: Prisma.SchoolOrderByWithRelationInput
+  timetableEntries?: Prisma.TimetableEntryOrderByRelationAggregateInput
 }
 
 export type PeriodWhereUniqueInput = Prisma.AtLeast<{
@@ -289,6 +291,7 @@ export type PeriodWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Period"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Period"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  timetableEntries?: Prisma.TimetableEntryListRelationFilter
 }, "id" | "schoolId_name">
 
 export type PeriodOrderByWithAggregationInput = {
@@ -336,6 +339,7 @@ export type PeriodCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutPeriodsInput
+  timetableEntries?: Prisma.TimetableEntryCreateNestedManyWithoutPeriodInput
 }
 
 export type PeriodUncheckedCreateInput = {
@@ -349,6 +353,7 @@ export type PeriodUncheckedCreateInput = {
   status?: $Enums.PeriodStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type PeriodUpdateInput = {
@@ -362,6 +367,7 @@ export type PeriodUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutPeriodsNestedInput
+  timetableEntries?: Prisma.TimetableEntryUpdateManyWithoutPeriodNestedInput
 }
 
 export type PeriodUncheckedUpdateInput = {
@@ -375,6 +381,7 @@ export type PeriodUncheckedUpdateInput = {
   status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 export type PeriodCreateManyInput = {
@@ -477,6 +484,11 @@ export type PeriodSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
 }
 
+export type PeriodScalarRelationFilter = {
+  is?: Prisma.PeriodWhereInput
+  isNot?: Prisma.PeriodWhereInput
+}
+
 export type PeriodCreateNestedManyWithoutSchoolInput = {
   create?: Prisma.XOR<Prisma.PeriodCreateWithoutSchoolInput, Prisma.PeriodUncheckedCreateWithoutSchoolInput> | Prisma.PeriodCreateWithoutSchoolInput[] | Prisma.PeriodUncheckedCreateWithoutSchoolInput[]
   connectOrCreate?: Prisma.PeriodCreateOrConnectWithoutSchoolInput | Prisma.PeriodCreateOrConnectWithoutSchoolInput[]
@@ -527,6 +539,20 @@ export type EnumPeriodStatusFieldUpdateOperationsInput = {
   set?: $Enums.PeriodStatus
 }
 
+export type PeriodCreateNestedOneWithoutTimetableEntriesInput = {
+  create?: Prisma.XOR<Prisma.PeriodCreateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedCreateWithoutTimetableEntriesInput>
+  connectOrCreate?: Prisma.PeriodCreateOrConnectWithoutTimetableEntriesInput
+  connect?: Prisma.PeriodWhereUniqueInput
+}
+
+export type PeriodUpdateOneRequiredWithoutTimetableEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.PeriodCreateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedCreateWithoutTimetableEntriesInput>
+  connectOrCreate?: Prisma.PeriodCreateOrConnectWithoutTimetableEntriesInput
+  upsert?: Prisma.PeriodUpsertWithoutTimetableEntriesInput
+  connect?: Prisma.PeriodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PeriodUpdateToOneWithWhereWithoutTimetableEntriesInput, Prisma.PeriodUpdateWithoutTimetableEntriesInput>, Prisma.PeriodUncheckedUpdateWithoutTimetableEntriesInput>
+}
+
 export type PeriodCreateWithoutSchoolInput = {
   id?: string
   name: string
@@ -537,6 +563,7 @@ export type PeriodCreateWithoutSchoolInput = {
   status?: $Enums.PeriodStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  timetableEntries?: Prisma.TimetableEntryCreateNestedManyWithoutPeriodInput
 }
 
 export type PeriodUncheckedCreateWithoutSchoolInput = {
@@ -549,6 +576,7 @@ export type PeriodUncheckedCreateWithoutSchoolInput = {
   status?: $Enums.PeriodStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type PeriodCreateOrConnectWithoutSchoolInput = {
@@ -593,6 +621,74 @@ export type PeriodScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Period"> | Date | string
 }
 
+export type PeriodCreateWithoutTimetableEntriesInput = {
+  id?: string
+  name: string
+  startTime: string
+  endTime: string
+  type?: $Enums.PeriodType
+  sortOrder: number
+  status?: $Enums.PeriodStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  school: Prisma.SchoolCreateNestedOneWithoutPeriodsInput
+}
+
+export type PeriodUncheckedCreateWithoutTimetableEntriesInput = {
+  id?: string
+  schoolId: string
+  name: string
+  startTime: string
+  endTime: string
+  type?: $Enums.PeriodType
+  sortOrder: number
+  status?: $Enums.PeriodStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PeriodCreateOrConnectWithoutTimetableEntriesInput = {
+  where: Prisma.PeriodWhereUniqueInput
+  create: Prisma.XOR<Prisma.PeriodCreateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedCreateWithoutTimetableEntriesInput>
+}
+
+export type PeriodUpsertWithoutTimetableEntriesInput = {
+  update: Prisma.XOR<Prisma.PeriodUpdateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedUpdateWithoutTimetableEntriesInput>
+  create: Prisma.XOR<Prisma.PeriodCreateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedCreateWithoutTimetableEntriesInput>
+  where?: Prisma.PeriodWhereInput
+}
+
+export type PeriodUpdateToOneWithWhereWithoutTimetableEntriesInput = {
+  where?: Prisma.PeriodWhereInput
+  data: Prisma.XOR<Prisma.PeriodUpdateWithoutTimetableEntriesInput, Prisma.PeriodUncheckedUpdateWithoutTimetableEntriesInput>
+}
+
+export type PeriodUpdateWithoutTimetableEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  school?: Prisma.SchoolUpdateOneRequiredWithoutPeriodsNestedInput
+}
+
+export type PeriodUncheckedUpdateWithoutTimetableEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPeriodTypeFieldUpdateOperationsInput | $Enums.PeriodType
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PeriodCreateManySchoolInput = {
   id?: string
   name: string
@@ -615,6 +711,7 @@ export type PeriodUpdateWithoutSchoolInput = {
   status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timetableEntries?: Prisma.TimetableEntryUpdateManyWithoutPeriodNestedInput
 }
 
 export type PeriodUncheckedUpdateWithoutSchoolInput = {
@@ -627,6 +724,7 @@ export type PeriodUncheckedUpdateWithoutSchoolInput = {
   status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 export type PeriodUncheckedUpdateManyWithoutSchoolInput = {
@@ -642,6 +740,35 @@ export type PeriodUncheckedUpdateManyWithoutSchoolInput = {
 }
 
 
+/**
+ * Count Type PeriodCountOutputType
+ */
+
+export type PeriodCountOutputType = {
+  timetableEntries: number
+}
+
+export type PeriodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  timetableEntries?: boolean | PeriodCountOutputTypeCountTimetableEntriesArgs
+}
+
+/**
+ * PeriodCountOutputType without action
+ */
+export type PeriodCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PeriodCountOutputType
+   */
+  select?: Prisma.PeriodCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PeriodCountOutputType without action
+ */
+export type PeriodCountOutputTypeCountTimetableEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimetableEntryWhereInput
+}
+
 
 export type PeriodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -655,6 +782,8 @@ export type PeriodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  timetableEntries?: boolean | Prisma.Period$timetableEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.PeriodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["period"]>
 
 export type PeriodSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -701,6 +830,8 @@ export type PeriodSelectScalar = {
 export type PeriodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "schoolId" | "name" | "startTime" | "endTime" | "type" | "sortOrder" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["period"]>
 export type PeriodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  timetableEntries?: boolean | Prisma.Period$timetableEntriesArgs<ExtArgs>
+  _count?: boolean | Prisma.PeriodCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PeriodIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
@@ -713,6 +844,7 @@ export type $PeriodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Period"
   objects: {
     school: Prisma.$SchoolPayload<ExtArgs>
+    timetableEntries: Prisma.$TimetableEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1120,6 +1252,7 @@ readonly fields: PeriodFieldRefs;
 export interface Prisma__PeriodClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  timetableEntries<T extends Prisma.Period$timetableEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Period$timetableEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimetableEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1557,6 +1690,30 @@ export type PeriodDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Periods to delete.
    */
   limit?: number
+}
+
+/**
+ * Period.timetableEntries
+ */
+export type Period$timetableEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimetableEntry
+   */
+  select?: Prisma.TimetableEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimetableEntry
+   */
+  omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  where?: Prisma.TimetableEntryWhereInput
+  orderBy?: Prisma.TimetableEntryOrderByWithRelationInput | Prisma.TimetableEntryOrderByWithRelationInput[]
+  cursor?: Prisma.TimetableEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimetableEntryScalarFieldEnum | Prisma.TimetableEntryScalarFieldEnum[]
 }
 
 /**

@@ -184,6 +184,7 @@ export type AcademicTermWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AcademicTerm"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
   academicYearTerms?: Prisma.AcademicYearTermListRelationFilter
+  timetableEntries?: Prisma.TimetableEntryListRelationFilter
 }
 
 export type AcademicTermOrderByWithRelationInput = {
@@ -194,6 +195,7 @@ export type AcademicTermOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   school?: Prisma.SchoolOrderByWithRelationInput
   academicYearTerms?: Prisma.AcademicYearTermOrderByRelationAggregateInput
+  timetableEntries?: Prisma.TimetableEntryOrderByRelationAggregateInput
 }
 
 export type AcademicTermWhereUniqueInput = Prisma.AtLeast<{
@@ -208,6 +210,7 @@ export type AcademicTermWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"AcademicTerm"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
   academicYearTerms?: Prisma.AcademicYearTermListRelationFilter
+  timetableEntries?: Prisma.TimetableEntryListRelationFilter
 }, "id" | "schoolId_name">
 
 export type AcademicTermOrderByWithAggregationInput = {
@@ -239,6 +242,7 @@ export type AcademicTermCreateInput = {
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutAcademicTermsInput
   academicYearTerms?: Prisma.AcademicYearTermCreateNestedManyWithoutAcademicTermInput
+  timetableEntries?: Prisma.TimetableEntryCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermUncheckedCreateInput = {
@@ -248,6 +252,7 @@ export type AcademicTermUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   academicYearTerms?: Prisma.AcademicYearTermUncheckedCreateNestedManyWithoutAcademicTermInput
+  timetableEntries?: Prisma.TimetableEntryUncheckedCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermUpdateInput = {
@@ -257,6 +262,7 @@ export type AcademicTermUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutAcademicTermsNestedInput
   academicYearTerms?: Prisma.AcademicYearTermUpdateManyWithoutAcademicTermNestedInput
+  timetableEntries?: Prisma.TimetableEntryUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermUncheckedUpdateInput = {
@@ -266,6 +272,7 @@ export type AcademicTermUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYearTerms?: Prisma.AcademicYearTermUncheckedUpdateManyWithoutAcademicTermNestedInput
+  timetableEntries?: Prisma.TimetableEntryUncheckedUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermCreateManyInput = {
@@ -391,12 +398,27 @@ export type AcademicTermUpdateOneRequiredWithoutAcademicYearTermsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AcademicTermUpdateToOneWithWhereWithoutAcademicYearTermsInput, Prisma.AcademicTermUpdateWithoutAcademicYearTermsInput>, Prisma.AcademicTermUncheckedUpdateWithoutAcademicYearTermsInput>
 }
 
+export type AcademicTermCreateNestedOneWithoutTimetableEntriesInput = {
+  create?: Prisma.XOR<Prisma.AcademicTermCreateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedCreateWithoutTimetableEntriesInput>
+  connectOrCreate?: Prisma.AcademicTermCreateOrConnectWithoutTimetableEntriesInput
+  connect?: Prisma.AcademicTermWhereUniqueInput
+}
+
+export type AcademicTermUpdateOneRequiredWithoutTimetableEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.AcademicTermCreateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedCreateWithoutTimetableEntriesInput>
+  connectOrCreate?: Prisma.AcademicTermCreateOrConnectWithoutTimetableEntriesInput
+  upsert?: Prisma.AcademicTermUpsertWithoutTimetableEntriesInput
+  connect?: Prisma.AcademicTermWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AcademicTermUpdateToOneWithWhereWithoutTimetableEntriesInput, Prisma.AcademicTermUpdateWithoutTimetableEntriesInput>, Prisma.AcademicTermUncheckedUpdateWithoutTimetableEntriesInput>
+}
+
 export type AcademicTermCreateWithoutSchoolInput = {
   id?: string
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
   academicYearTerms?: Prisma.AcademicYearTermCreateNestedManyWithoutAcademicTermInput
+  timetableEntries?: Prisma.TimetableEntryCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermUncheckedCreateWithoutSchoolInput = {
@@ -405,6 +427,7 @@ export type AcademicTermUncheckedCreateWithoutSchoolInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   academicYearTerms?: Prisma.AcademicYearTermUncheckedCreateNestedManyWithoutAcademicTermInput
+  timetableEntries?: Prisma.TimetableEntryUncheckedCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermCreateOrConnectWithoutSchoolInput = {
@@ -450,6 +473,7 @@ export type AcademicTermCreateWithoutAcademicYearTermsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutAcademicTermsInput
+  timetableEntries?: Prisma.TimetableEntryCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermUncheckedCreateWithoutAcademicYearTermsInput = {
@@ -458,6 +482,7 @@ export type AcademicTermUncheckedCreateWithoutAcademicYearTermsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedCreateNestedManyWithoutAcademicTermInput
 }
 
 export type AcademicTermCreateOrConnectWithoutAcademicYearTermsInput = {
@@ -482,6 +507,7 @@ export type AcademicTermUpdateWithoutAcademicYearTermsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutAcademicTermsNestedInput
+  timetableEntries?: Prisma.TimetableEntryUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermUncheckedUpdateWithoutAcademicYearTermsInput = {
@@ -490,6 +516,59 @@ export type AcademicTermUncheckedUpdateWithoutAcademicYearTermsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timetableEntries?: Prisma.TimetableEntryUncheckedUpdateManyWithoutAcademicTermNestedInput
+}
+
+export type AcademicTermCreateWithoutTimetableEntriesInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  school: Prisma.SchoolCreateNestedOneWithoutAcademicTermsInput
+  academicYearTerms?: Prisma.AcademicYearTermCreateNestedManyWithoutAcademicTermInput
+}
+
+export type AcademicTermUncheckedCreateWithoutTimetableEntriesInput = {
+  id?: string
+  schoolId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  academicYearTerms?: Prisma.AcademicYearTermUncheckedCreateNestedManyWithoutAcademicTermInput
+}
+
+export type AcademicTermCreateOrConnectWithoutTimetableEntriesInput = {
+  where: Prisma.AcademicTermWhereUniqueInput
+  create: Prisma.XOR<Prisma.AcademicTermCreateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedCreateWithoutTimetableEntriesInput>
+}
+
+export type AcademicTermUpsertWithoutTimetableEntriesInput = {
+  update: Prisma.XOR<Prisma.AcademicTermUpdateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedUpdateWithoutTimetableEntriesInput>
+  create: Prisma.XOR<Prisma.AcademicTermCreateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedCreateWithoutTimetableEntriesInput>
+  where?: Prisma.AcademicTermWhereInput
+}
+
+export type AcademicTermUpdateToOneWithWhereWithoutTimetableEntriesInput = {
+  where?: Prisma.AcademicTermWhereInput
+  data: Prisma.XOR<Prisma.AcademicTermUpdateWithoutTimetableEntriesInput, Prisma.AcademicTermUncheckedUpdateWithoutTimetableEntriesInput>
+}
+
+export type AcademicTermUpdateWithoutTimetableEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  school?: Prisma.SchoolUpdateOneRequiredWithoutAcademicTermsNestedInput
+  academicYearTerms?: Prisma.AcademicYearTermUpdateManyWithoutAcademicTermNestedInput
+}
+
+export type AcademicTermUncheckedUpdateWithoutTimetableEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  academicYearTerms?: Prisma.AcademicYearTermUncheckedUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermCreateManySchoolInput = {
@@ -505,6 +584,7 @@ export type AcademicTermUpdateWithoutSchoolInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYearTerms?: Prisma.AcademicYearTermUpdateManyWithoutAcademicTermNestedInput
+  timetableEntries?: Prisma.TimetableEntryUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermUncheckedUpdateWithoutSchoolInput = {
@@ -513,6 +593,7 @@ export type AcademicTermUncheckedUpdateWithoutSchoolInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   academicYearTerms?: Prisma.AcademicYearTermUncheckedUpdateManyWithoutAcademicTermNestedInput
+  timetableEntries?: Prisma.TimetableEntryUncheckedUpdateManyWithoutAcademicTermNestedInput
 }
 
 export type AcademicTermUncheckedUpdateManyWithoutSchoolInput = {
@@ -529,10 +610,12 @@ export type AcademicTermUncheckedUpdateManyWithoutSchoolInput = {
 
 export type AcademicTermCountOutputType = {
   academicYearTerms: number
+  timetableEntries: number
 }
 
 export type AcademicTermCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   academicYearTerms?: boolean | AcademicTermCountOutputTypeCountAcademicYearTermsArgs
+  timetableEntries?: boolean | AcademicTermCountOutputTypeCountTimetableEntriesArgs
 }
 
 /**
@@ -552,6 +635,13 @@ export type AcademicTermCountOutputTypeCountAcademicYearTermsArgs<ExtArgs extend
   where?: Prisma.AcademicYearTermWhereInput
 }
 
+/**
+ * AcademicTermCountOutputType without action
+ */
+export type AcademicTermCountOutputTypeCountTimetableEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimetableEntryWhereInput
+}
+
 
 export type AcademicTermSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -561,6 +651,7 @@ export type AcademicTermSelect<ExtArgs extends runtime.Types.Extensions.Internal
   updatedAt?: boolean
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
   academicYearTerms?: boolean | Prisma.AcademicTerm$academicYearTermsArgs<ExtArgs>
+  timetableEntries?: boolean | Prisma.AcademicTerm$timetableEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.AcademicTermCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["academicTerm"]>
 
@@ -594,6 +685,7 @@ export type AcademicTermOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type AcademicTermInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
   academicYearTerms?: boolean | Prisma.AcademicTerm$academicYearTermsArgs<ExtArgs>
+  timetableEntries?: boolean | Prisma.AcademicTerm$timetableEntriesArgs<ExtArgs>
   _count?: boolean | Prisma.AcademicTermCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AcademicTermIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -608,6 +700,7 @@ export type $AcademicTermPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     school: Prisma.$SchoolPayload<ExtArgs>
     academicYearTerms: Prisma.$AcademicYearTermPayload<ExtArgs>[]
+    timetableEntries: Prisma.$TimetableEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1011,6 +1104,7 @@ export interface Prisma__AcademicTermClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   academicYearTerms<T extends Prisma.AcademicTerm$academicYearTermsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicTerm$academicYearTermsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AcademicYearTermPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  timetableEntries<T extends Prisma.AcademicTerm$timetableEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicTerm$timetableEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimetableEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1467,6 +1561,30 @@ export type AcademicTerm$academicYearTermsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.AcademicYearTermScalarFieldEnum | Prisma.AcademicYearTermScalarFieldEnum[]
+}
+
+/**
+ * AcademicTerm.timetableEntries
+ */
+export type AcademicTerm$timetableEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimetableEntry
+   */
+  select?: Prisma.TimetableEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimetableEntry
+   */
+  omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  where?: Prisma.TimetableEntryWhereInput
+  orderBy?: Prisma.TimetableEntryOrderByWithRelationInput | Prisma.TimetableEntryOrderByWithRelationInput[]
+  cursor?: Prisma.TimetableEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimetableEntryScalarFieldEnum | Prisma.TimetableEntryScalarFieldEnum[]
 }
 
 /**

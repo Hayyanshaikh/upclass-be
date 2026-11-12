@@ -107,3 +107,8 @@ export type LeavePolicy = Prisma.LeavePolicyModel
  * 
  */
 export type LeavePolicySetting = Prisma.LeavePolicySettingModel
+/**
+ * Model TimetableEntry
+ * 
+ */
+export type TimetableEntry = Prisma.TimetableEntryModel
