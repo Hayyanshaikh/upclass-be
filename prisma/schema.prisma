@@ -220,8 +220,7 @@ model Teacher {
   bankName         String?
   accountNumber    String?
   documents        Documents[]
-  classes          Class[]         @relation("ClassTeacher")
-  assistantClasses Class[]         @relation("AssistantClassTeacher")
+  classSections    ClassSection[]  @relation("ClassSectionTeacher")
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 }
@@ -237,38 +236,49 @@ enum SectionStatus {
 }
 
 model Section {
-  id        String        @id @default(cuid())
-  schoolId  String
-  school    School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
-  name      String
-  status    SectionStatus @default(ACTIVE)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id            String         @id @default(cuid())
+  schoolId      String
+  school        School         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  name          String
+  status        SectionStatus  @default(ACTIVE)
+  classSections ClassSection[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   @@unique([schoolId, name])
 }
 
 model Class {
-  id                 String         @id @default(cuid())
-  schoolId           String?
-  school             School?        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
-  name               String
-  section            String
-  room               String
-  capacity           Int
-  academicYearId     String
-  academicYear       AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
-  status             ClassStatus    @default(ACTIVE)
-  teacherId          String
-  teacher            Teacher        @relation("ClassTeacher", fields: [teacherId], references: [id])
-  assistantTeacherId String?
-  assistantTeacher   Teacher?       @relation("AssistantClassTeacher", fields: [assistantTeacherId], references: [id])
-  students           Student[]
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
+  id             String         @id @default(cuid())
+  schoolId       String
+  school         School         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  name           String
+  academicYearId String
+  academicYear   AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+  status         ClassStatus    @default(ACTIVE)
+  students       Student[]
+  sections       ClassSection[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
-  @@unique([name, section, academicYearId])
+  @@unique([schoolId, name, academicYearId])
   @@index([academicYearId])
+}
+
+model ClassSection {
+  id        String   @id @default(cuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  sectionId String
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  teacherId String
+  teacher   Teacher  @relation("ClassSectionTeacher", fields: [teacherId], references: [id])
+  room      String?
+  capacity  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, sectionId])
 }
 
 model Student {

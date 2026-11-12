@@ -44,7 +44,7 @@ export class ClassFiltersDto {
 
   @ApiPropertyOptional({
     type: String,
-    description: 'Filter classes by teacher ID',
+    description: 'Filter classes by section teacher ID',
   })
   @IsOptional()
   @IsString()

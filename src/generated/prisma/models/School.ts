@@ -963,12 +963,10 @@ export type SchoolCreateNestedOneWithoutClassesInput = {
   connect?: Prisma.SchoolWhereUniqueInput
 }
 
-export type SchoolUpdateOneWithoutClassesNestedInput = {
+export type SchoolUpdateOneRequiredWithoutClassesNestedInput = {
   create?: Prisma.XOR<Prisma.SchoolCreateWithoutClassesInput, Prisma.SchoolUncheckedCreateWithoutClassesInput>
   connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutClassesInput
   upsert?: Prisma.SchoolUpsertWithoutClassesInput
-  disconnect?: Prisma.SchoolWhereInput | boolean
-  delete?: Prisma.SchoolWhereInput | boolean
   connect?: Prisma.SchoolWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutClassesInput, Prisma.SchoolUpdateWithoutClassesInput>, Prisma.SchoolUncheckedUpdateWithoutClassesInput>
 }

@@ -191,6 +191,7 @@ export type SectionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  classSections?: Prisma.ClassSectionListRelationFilter
 }
 
 export type SectionOrderByWithRelationInput = {
@@ -201,6 +202,7 @@ export type SectionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   school?: Prisma.SchoolOrderByWithRelationInput
+  classSections?: Prisma.ClassSectionOrderByRelationAggregateInput
 }
 
 export type SectionWhereUniqueInput = Prisma.AtLeast<{
@@ -215,6 +217,7 @@ export type SectionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  classSections?: Prisma.ClassSectionListRelationFilter
 }, "id" | "schoolId_name">
 
 export type SectionOrderByWithAggregationInput = {
@@ -248,6 +251,7 @@ export type SectionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutSectionsInput
+  classSections?: Prisma.ClassSectionCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateInput = {
@@ -257,6 +261,7 @@ export type SectionUncheckedCreateInput = {
   status?: $Enums.SectionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  classSections?: Prisma.ClassSectionUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUpdateInput = {
@@ -266,6 +271,7 @@ export type SectionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutSectionsNestedInput
+  classSections?: Prisma.ClassSectionUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateInput = {
@@ -275,6 +281,7 @@ export type SectionUncheckedUpdateInput = {
   status?: Prisma.EnumSectionStatusFieldUpdateOperationsInput | $Enums.SectionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classSections?: Prisma.ClassSectionUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionCreateManyInput = {
@@ -345,6 +352,11 @@ export type SectionMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type SectionScalarRelationFilter = {
+  is?: Prisma.SectionWhereInput
+  isNot?: Prisma.SectionWhereInput
+}
+
 export type SectionCreateNestedManyWithoutSchoolInput = {
   create?: Prisma.XOR<Prisma.SectionCreateWithoutSchoolInput, Prisma.SectionUncheckedCreateWithoutSchoolInput> | Prisma.SectionCreateWithoutSchoolInput[] | Prisma.SectionUncheckedCreateWithoutSchoolInput[]
   connectOrCreate?: Prisma.SectionCreateOrConnectWithoutSchoolInput | Prisma.SectionCreateOrConnectWithoutSchoolInput[]
@@ -391,12 +403,27 @@ export type EnumSectionStatusFieldUpdateOperationsInput = {
   set?: $Enums.SectionStatus
 }
 
+export type SectionCreateNestedOneWithoutClassSectionsInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutClassSectionsInput, Prisma.SectionUncheckedCreateWithoutClassSectionsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutClassSectionsInput
+  connect?: Prisma.SectionWhereUniqueInput
+}
+
+export type SectionUpdateOneRequiredWithoutClassSectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.SectionCreateWithoutClassSectionsInput, Prisma.SectionUncheckedCreateWithoutClassSectionsInput>
+  connectOrCreate?: Prisma.SectionCreateOrConnectWithoutClassSectionsInput
+  upsert?: Prisma.SectionUpsertWithoutClassSectionsInput
+  connect?: Prisma.SectionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SectionUpdateToOneWithWhereWithoutClassSectionsInput, Prisma.SectionUpdateWithoutClassSectionsInput>, Prisma.SectionUncheckedUpdateWithoutClassSectionsInput>
+}
+
 export type SectionCreateWithoutSchoolInput = {
   id?: string
   name: string
   status?: $Enums.SectionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  classSections?: Prisma.ClassSectionCreateNestedManyWithoutSectionInput
 }
 
 export type SectionUncheckedCreateWithoutSchoolInput = {
@@ -405,6 +432,7 @@ export type SectionUncheckedCreateWithoutSchoolInput = {
   status?: $Enums.SectionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  classSections?: Prisma.ClassSectionUncheckedCreateNestedManyWithoutSectionInput
 }
 
 export type SectionCreateOrConnectWithoutSchoolInput = {
@@ -445,6 +473,58 @@ export type SectionScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Section"> | Date | string
 }
 
+export type SectionCreateWithoutClassSectionsInput = {
+  id?: string
+  name: string
+  status?: $Enums.SectionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  school: Prisma.SchoolCreateNestedOneWithoutSectionsInput
+}
+
+export type SectionUncheckedCreateWithoutClassSectionsInput = {
+  id?: string
+  schoolId: string
+  name: string
+  status?: $Enums.SectionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SectionCreateOrConnectWithoutClassSectionsInput = {
+  where: Prisma.SectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SectionCreateWithoutClassSectionsInput, Prisma.SectionUncheckedCreateWithoutClassSectionsInput>
+}
+
+export type SectionUpsertWithoutClassSectionsInput = {
+  update: Prisma.XOR<Prisma.SectionUpdateWithoutClassSectionsInput, Prisma.SectionUncheckedUpdateWithoutClassSectionsInput>
+  create: Prisma.XOR<Prisma.SectionCreateWithoutClassSectionsInput, Prisma.SectionUncheckedCreateWithoutClassSectionsInput>
+  where?: Prisma.SectionWhereInput
+}
+
+export type SectionUpdateToOneWithWhereWithoutClassSectionsInput = {
+  where?: Prisma.SectionWhereInput
+  data: Prisma.XOR<Prisma.SectionUpdateWithoutClassSectionsInput, Prisma.SectionUncheckedUpdateWithoutClassSectionsInput>
+}
+
+export type SectionUpdateWithoutClassSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSectionStatusFieldUpdateOperationsInput | $Enums.SectionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  school?: Prisma.SchoolUpdateOneRequiredWithoutSectionsNestedInput
+}
+
+export type SectionUncheckedUpdateWithoutClassSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSectionStatusFieldUpdateOperationsInput | $Enums.SectionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type SectionCreateManySchoolInput = {
   id?: string
   name: string
@@ -459,6 +539,7 @@ export type SectionUpdateWithoutSchoolInput = {
   status?: Prisma.EnumSectionStatusFieldUpdateOperationsInput | $Enums.SectionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classSections?: Prisma.ClassSectionUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateWithoutSchoolInput = {
@@ -467,6 +548,7 @@ export type SectionUncheckedUpdateWithoutSchoolInput = {
   status?: Prisma.EnumSectionStatusFieldUpdateOperationsInput | $Enums.SectionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classSections?: Prisma.ClassSectionUncheckedUpdateManyWithoutSectionNestedInput
 }
 
 export type SectionUncheckedUpdateManyWithoutSchoolInput = {
@@ -478,6 +560,35 @@ export type SectionUncheckedUpdateManyWithoutSchoolInput = {
 }
 
 
+/**
+ * Count Type SectionCountOutputType
+ */
+
+export type SectionCountOutputType = {
+  classSections: number
+}
+
+export type SectionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  classSections?: boolean | SectionCountOutputTypeCountClassSectionsArgs
+}
+
+/**
+ * SectionCountOutputType without action
+ */
+export type SectionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SectionCountOutputType
+   */
+  select?: Prisma.SectionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SectionCountOutputType without action
+ */
+export type SectionCountOutputTypeCountClassSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClassSectionWhereInput
+}
+
 
 export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -487,6 +598,8 @@ export type SectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  classSections?: boolean | Prisma.Section$classSectionsArgs<ExtArgs>
+  _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["section"]>
 
 export type SectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -521,6 +634,8 @@ export type SectionSelectScalar = {
 export type SectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "schoolId" | "name" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["section"]>
 export type SectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  classSections?: boolean | Prisma.Section$classSectionsArgs<ExtArgs>
+  _count?: boolean | Prisma.SectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
@@ -533,6 +648,7 @@ export type $SectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Section"
   objects: {
     school: Prisma.$SchoolPayload<ExtArgs>
+    classSections: Prisma.$ClassSectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -936,6 +1052,7 @@ readonly fields: SectionFieldRefs;
 export interface Prisma__SectionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  classSections<T extends Prisma.Section$classSectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Section$classSectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1369,6 +1486,30 @@ export type SectionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Sections to delete.
    */
   limit?: number
+}
+
+/**
+ * Section.classSections
+ */
+export type Section$classSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClassSection
+   */
+  select?: Prisma.ClassSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClassSection
+   */
+  omit?: Prisma.ClassSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClassSectionInclude<ExtArgs> | null
+  where?: Prisma.ClassSectionWhereInput
+  orderBy?: Prisma.ClassSectionOrderByWithRelationInput | Prisma.ClassSectionOrderByWithRelationInput[]
+  cursor?: Prisma.ClassSectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClassSectionScalarFieldEnum | Prisma.ClassSectionScalarFieldEnum[]
 }
 
 /**

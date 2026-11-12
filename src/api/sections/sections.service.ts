@@ -208,6 +208,12 @@ export class SectionsService {
       ) {
         throw new NotFoundException(`Section with ID "${id}" was not found.`);
       }
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2003'
+      ) {
+        throw new ConflictException('Section is linked to classes.');
+      }
       this.handlePrismaError(error, id);
     }
   }

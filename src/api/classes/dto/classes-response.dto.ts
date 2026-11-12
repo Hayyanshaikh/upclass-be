@@ -1,6 +1,27 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ClassStatus } from '../../../generated/prisma/client.ts';
 import { AcademicYearDto } from '../../academic-years/dto/academic-years-response.dto.ts';
+import { SectionDto } from '../../sections/dto/sections-response.dto.ts';
+
+export class ClassSectionDto {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  sectionId: string;
+
+  @ApiProperty({ type: SectionDto })
+  section: SectionDto;
+
+  @ApiProperty()
+  teacherId: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  room: string | null;
+
+  @ApiProperty({ type: Number, nullable: true })
+  capacity: number | null;
+}
 
 export class ClassDto {
   @ApiProperty()
@@ -8,15 +29,6 @@ export class ClassDto {
 
   @ApiProperty()
   name: string;
-
-  @ApiProperty()
-  section: string;
-
-  @ApiProperty()
-  room: string;
-
-  @ApiProperty()
-  capacity: number;
 
   @ApiProperty()
   academicYearId: string;
@@ -27,11 +39,8 @@ export class ClassDto {
   @ApiProperty({ enum: ClassStatus })
   status: ClassStatus;
 
-  @ApiProperty()
-  teacherId: string;
-
-  @ApiProperty({ type: String, nullable: true })
-  assistantTeacherId: string | null;
+  @ApiProperty({ type: [ClassSectionDto] })
+  sections: ClassSectionDto[];
 
   @ApiProperty({ type: Date })
   createdAt: Date;

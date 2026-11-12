@@ -92,6 +92,11 @@ export type Section = Prisma.SectionModel
  */
 export type Class = Prisma.ClassModel
 /**
+ * Model ClassSection
+ * 
+ */
+export type ClassSection = Prisma.ClassSectionModel
+/**
  * Model Student
  * 
  */
