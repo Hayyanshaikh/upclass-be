@@ -114,6 +114,22 @@ export const SectionStatus = {
 export type SectionStatus = (typeof SectionStatus)[keyof typeof SectionStatus]
 
 
+export const PeriodType = {
+  PERIOD: 'PERIOD',
+  BREAK: 'BREAK'
+} as const
+
+export type PeriodType = (typeof PeriodType)[keyof typeof PeriodType]
+
+
+export const PeriodStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type PeriodStatus = (typeof PeriodStatus)[keyof typeof PeriodStatus]
+
+
 export const AcademicYearStatus = {
   UPCOMING: 'UPCOMING',
   ACTIVE: 'ACTIVE',

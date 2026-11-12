@@ -406,6 +406,7 @@ export const ModelName = {
   Documents: 'Documents',
   Teacher: 'Teacher',
   Section: 'Section',
+  Period: 'Period',
   Class: 'Class',
   ClassSection: 'ClassSection',
   Student: 'Student',
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting"
+    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "period" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1096,6 +1097,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SectionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SectionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Period: {
+      payload: Prisma.$PeriodPayload<ExtArgs>
+      fields: Prisma.PeriodFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PeriodFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PeriodFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        findFirst: {
+          args: Prisma.PeriodFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PeriodFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        findMany: {
+          args: Prisma.PeriodFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>[]
+        }
+        create: {
+          args: Prisma.PeriodCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        createMany: {
+          args: Prisma.PeriodCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PeriodCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>[]
+        }
+        delete: {
+          args: Prisma.PeriodDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        update: {
+          args: Prisma.PeriodUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        deleteMany: {
+          args: Prisma.PeriodDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PeriodUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PeriodUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>[]
+        }
+        upsert: {
+          args: Prisma.PeriodUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PeriodPayload>
+        }
+        aggregate: {
+          args: Prisma.PeriodAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePeriod>
+        }
+        groupBy: {
+          args: Prisma.PeriodGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PeriodGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PeriodCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PeriodCountAggregateOutputType> | number
         }
       }
     }
@@ -1881,6 +1956,22 @@ export const SectionScalarFieldEnum = {
 export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
 
 
+export const PeriodScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  type: 'type',
+  sortOrder: 'sortOrder',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PeriodScalarFieldEnum = (typeof PeriodScalarFieldEnum)[keyof typeof PeriodScalarFieldEnum]
+
+
 export const ClassScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
@@ -2216,6 +2307,34 @@ export type ListEnumSectionStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'PeriodType'
+ */
+export type EnumPeriodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodType'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodType[]'
+ */
+export type ListEnumPeriodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodStatus'
+ */
+export type EnumPeriodStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodStatus[]'
+ */
+export type ListEnumPeriodStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ClassStatus'
  */
 export type EnumClassStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClassStatus'>
@@ -2416,6 +2535,7 @@ export type GlobalOmitConfig = {
   documents?: Prisma.DocumentsOmit
   teacher?: Prisma.TeacherOmit
   section?: Prisma.SectionOmit
+  period?: Prisma.PeriodOmit
   class?: Prisma.ClassOmit
   classSection?: Prisma.ClassSectionOmit
   student?: Prisma.StudentOmit

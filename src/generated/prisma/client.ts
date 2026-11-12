@@ -87,6 +87,11 @@ export type Teacher = Prisma.TeacherModel
  */
 export type Section = Prisma.SectionModel
 /**
+ * Model Period
+ * 
+ */
+export type Period = Prisma.PeriodModel
+/**
  * Model Class
  * 
  */

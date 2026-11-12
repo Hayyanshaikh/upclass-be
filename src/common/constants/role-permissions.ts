@@ -91,6 +91,12 @@ export const rolePermissions: Record<string, string[]> = {
     'academic_year_terms.create',
     'academic_year_terms.delete',
 
+    // Period Configuration
+    'periods.view',
+    'periods.create',
+    'periods.edit',
+    'periods.delete',
+
     // Student Attendance
     'student_attendance.view',
     'student_attendance.create',

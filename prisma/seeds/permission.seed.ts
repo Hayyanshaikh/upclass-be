@@ -85,6 +85,11 @@ const groups = [
         label: 'Academic Year Terms',
         actions: ['View', 'Create', 'Delete'],
       },
+      {
+        key: 'periods',
+        label: 'Period Configuration',
+        actions: ['View', 'Create', 'Edit', 'Delete'],
+      },
     ],
   },
   {
