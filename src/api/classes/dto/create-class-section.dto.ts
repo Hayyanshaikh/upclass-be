@@ -20,7 +20,7 @@ export class CreateClassSectionDto {
   @IsNotEmpty()
   teacherId!: string;
 
-  @ApiPropertyOptional({ example: 'Room 12' })
+  @ApiPropertyOptional({ type: String, nullable: true, example: 'Room 12' })
   @IsOptional()
   @IsString()
   @Matches(/\S/, { message: 'Enter classroom.' })

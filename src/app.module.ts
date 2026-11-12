@@ -12,6 +12,7 @@ import { StudentsModule } from './api/students/students.module.ts';
 import { SubjectsModule } from './api/subjects/subjects.module.ts';
 import { ClassesModule } from './api/classes/classes.module.ts';
 import { SectionsModule } from './api/sections/sections.module.ts';
+import { PeriodsModule } from './api/periods/periods.module.ts';
 import { AcademicYearsModule } from './api/academic-years/academic-years.module.ts';
 import { AcademicTermsModule } from './api/academic-terms/academic-terms.module.ts';
 import { AcademicYearTermsModule } from './api/academic-year-terms/academic-year-terms.module.ts';
@@ -34,6 +35,7 @@ import { SchoolsModule } from './api/schools/schools.module.js';
     SubjectsModule,
     ClassesModule,
     SectionsModule,
+    PeriodsModule,
     AcademicYearsModule,
     AcademicTermsModule,
     AcademicYearTermsModule,

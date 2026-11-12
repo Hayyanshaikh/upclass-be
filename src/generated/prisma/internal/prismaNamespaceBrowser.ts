@@ -60,6 +60,7 @@ export const ModelName = {
   Documents: 'Documents',
   Teacher: 'Teacher',
   Section: 'Section',
+  Period: 'Period',
   Class: 'Class',
   ClassSection: 'ClassSection',
   Student: 'Student',
@@ -235,6 +236,22 @@ export const SectionScalarFieldEnum = {
 } as const
 
 export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
+
+
+export const PeriodScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  type: 'type',
+  sortOrder: 'sortOrder',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PeriodScalarFieldEnum = (typeof PeriodScalarFieldEnum)[keyof typeof PeriodScalarFieldEnum]
 
 
 export const ClassScalarFieldEnum = {
