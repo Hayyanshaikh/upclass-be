@@ -66,6 +66,13 @@ export const rolePermissions: Record<string, string[]> = {
     'classes.delete',
     'classes.lookup',
 
+    // Sections
+    'sections.view',
+    'sections.create',
+    'sections.edit',
+    'sections.delete',
+    'sections.lookup',
+
     // Academic Years
     'academic_years.view',
     'academic_years.create',
@@ -285,6 +292,7 @@ export const rolePermissions: Record<string, string[]> = {
     // 'parents.lookup',
     'subjects.lookup',
     'classes.lookup',
+    'sections.lookup',
     'academic_years.lookup',
     'academic_terms.lookup',
     'timetable.lookup',

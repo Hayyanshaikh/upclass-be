@@ -11,6 +11,7 @@ import {
 import { Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
 import { CreateClassDto } from './dto/create-class.dto.ts';
+import { CreateClassSectionDto } from './dto/create-class-section.dto.ts';
 import { UpdateClassDto } from './dto/update-class.dto.ts';
 import { ClassFiltersDto } from './dto/class-filters.dto.ts';
 import {
@@ -33,47 +34,29 @@ export class ClassesService {
 
   constructor(private readonly prisma: PrismaService) {}
 
+  private readonly classInclude = {
+    academicYear: true,
+    sections: {
+      include: { section: true },
+      orderBy: { section: { name: 'asc' } },
+    },
+  } satisfies Prisma.ClassInclude;
+
   async create(
     dto: CreateClassDto,
     schoolId: string,
   ): Promise<ClassFindOneResponseDto> {
-    const {
-      name,
-      section,
-      room,
-      capacity,
-      academicYearId,
-      status,
-      teacherId,
-      assistantTeacherId,
-    } = dto;
+    const { name, academicYearId, status, sections } = dto;
 
     try {
       if (!schoolId?.trim()) {
         throw new BadRequestException('School context is required.');
       }
-
-      const normalizedSection = section?.trim().toUpperCase();
-
       if (!name?.trim()) {
         throw new BadRequestException('Class name is required.');
       }
-      if (!normalizedSection) {
-        throw new BadRequestException('Section is required.');
-      }
-      if (!room?.trim()) {
-        throw new BadRequestException('Room is required.');
-      }
       if (!academicYearId?.trim()) {
         throw new BadRequestException('Academic year is required.');
-      }
-      if (!teacherId?.trim()) {
-        throw new BadRequestException('Class teacher is required.');
-      }
-      if (!Number.isInteger(capacity) || capacity < 1) {
-        throw new BadRequestException(
-          'Capacity must be a positive whole number.',
-        );
       }
 
       const academicYear = await this.prisma.academicYear.findUnique({
@@ -86,42 +69,22 @@ export class ClassesService {
         );
       }
 
-      const nextTeacherId = teacherId.trim();
-      const nextAssistantTeacherId = assistantTeacherId?.trim() || null;
-      if (nextAssistantTeacherId === nextTeacherId) {
-        throw new BadRequestException('Choose a different assistant teacher.');
-      }
-
-      const availableTeacherIds = await this.findAvailableTeacherIds([
-        nextTeacherId,
-        ...(nextAssistantTeacherId ? [nextAssistantTeacherId] : []),
-      ]);
-
-      if (!availableTeacherIds.has(nextTeacherId)) {
-        throw new BadRequestException('Select an available class teacher.');
-      }
-      if (
-        nextAssistantTeacherId &&
-        !availableTeacherIds.has(nextAssistantTeacherId)
-      ) {
-        throw new BadRequestException('Select an available assistant teacher.');
-      }
+      const normalizedSections = await this.validateSections(
+        sections,
+        schoolId,
+      );
 
       const schoolClass = await this.prisma.class.create({
         data: {
           schoolId,
           name: name.trim(),
-          section: normalizedSection,
-          room: room.trim(),
-          capacity,
           academicYearId: academicYear.id,
           status,
-          teacherId: nextTeacherId,
-          assistantTeacherId: nextAssistantTeacherId,
+          sections: {
+            create: normalizedSections,
+          },
         },
-        include: {
-          academicYear: true,
-        },
+        include: this.classInclude,
       });
 
       return {
@@ -135,7 +98,7 @@ export class ClassesService {
         error.code === 'P2002'
       ) {
         throw new ConflictException(
-          'A class with the same name, section and academic year already exists.',
+          'A class with the same name and academic year already exists.',
         );
       }
       this.handlePrismaError(error);
@@ -149,19 +112,33 @@ export class ClassesService {
     const { teacher, status, searchKey, limit = 10, offset = 0 } = query;
     const where: Prisma.ClassWhereInput = {
       schoolId,
-      ...(teacher && { teacherId: teacher }),
+      ...(teacher && { sections: { some: { teacherId: teacher } } }),
       ...(status && { status }),
       ...(searchKey && {
         OR: [
           { name: { contains: searchKey, mode: 'insensitive' } },
-          { section: { contains: searchKey, mode: 'insensitive' } },
-          { room: { contains: searchKey, mode: 'insensitive' } },
           {
-            teacher: {
-              OR: [
-                { firstName: { contains: searchKey, mode: 'insensitive' } },
-                { lastName: { contains: searchKey, mode: 'insensitive' } },
-              ],
+            sections: {
+              some: {
+                OR: [
+                  { room: { contains: searchKey, mode: 'insensitive' } },
+                  {
+                    section: {
+                      name: { contains: searchKey, mode: 'insensitive' },
+                    },
+                  },
+                  {
+                    teacher: {
+                      firstName: { contains: searchKey, mode: 'insensitive' },
+                    },
+                  },
+                  {
+                    teacher: {
+                      lastName: { contains: searchKey, mode: 'insensitive' },
+                    },
+                  },
+                ],
+              },
             },
           },
         ],
@@ -174,10 +151,8 @@ export class ClassesService {
           where,
           take: limit,
           skip: offset,
-          orderBy: [{ name: 'asc' }, { section: 'asc' }, { id: 'asc' }],
-          include: {
-            academicYear: true,
-          },
+          orderBy: [{ name: 'asc' }, { id: 'asc' }],
+          include: this.classInclude,
         }),
         this.prisma.class.count({ where }),
       ]);
@@ -221,9 +196,7 @@ export class ClassesService {
     try {
       const schoolClass = await this.prisma.class.findUnique({
         where: { id, schoolId },
-        include: {
-          academicYear: true,
-        },
+        include: this.classInclude,
       });
 
       if (!schoolClass) {
@@ -246,40 +219,14 @@ export class ClassesService {
     schoolId: string,
     dto: UpdateClassDto,
   ): Promise<ClassFindOneResponseDto> {
-    const {
-      name,
-      section,
-      room,
-      capacity,
-      academicYearId,
-      status,
-      teacherId,
-      assistantTeacherId,
-    } = dto;
+    const { name, academicYearId, status, sections } = dto;
 
     try {
       if (name !== undefined && !name.trim()) {
         throw new BadRequestException('Class name is required.');
       }
-      if (section !== undefined && !section.trim()) {
-        throw new BadRequestException('Section is required.');
-      }
-      if (room !== undefined && !room.trim()) {
-        throw new BadRequestException('Room is required.');
-      }
       if (academicYearId !== undefined && !academicYearId.trim()) {
         throw new BadRequestException('Academic year is required.');
-      }
-      if (
-        capacity !== undefined &&
-        (!Number.isInteger(capacity) || capacity < 1)
-      ) {
-        throw new BadRequestException(
-          'Capacity must be a positive whole number.',
-        );
-      }
-      if (teacherId !== undefined && !teacherId.trim()) {
-        throw new BadRequestException('Class teacher is required.');
       }
 
       if (academicYearId !== undefined) {
@@ -296,52 +243,32 @@ export class ClassesService {
 
       const current = await this.prisma.class.findUnique({
         where: { id, schoolId },
+        select: { id: true },
       });
 
       if (!current) {
         throw new NotFoundException(`Class with ID "${id}" was not found.`);
       }
 
-      const nextTeacherId = teacherId?.trim() ?? current.teacherId;
-      const nextAssistantTeacherId =
-        assistantTeacherId === undefined
-          ? current.assistantTeacherId
-          : assistantTeacherId?.trim() || null;
-
-      if (nextAssistantTeacherId && nextAssistantTeacherId === nextTeacherId) {
-        throw new BadRequestException('Choose a different assistant teacher.');
-      }
-
-      const availableTeacherIds = await this.findAvailableTeacherIds([
-        nextTeacherId,
-        ...(nextAssistantTeacherId ? [nextAssistantTeacherId] : []),
-      ]);
-
-      if (!availableTeacherIds.has(nextTeacherId)) {
-        throw new BadRequestException('Select an available class teacher.');
-      }
-      if (
-        nextAssistantTeacherId &&
-        !availableTeacherIds.has(nextAssistantTeacherId)
-      ) {
-        throw new BadRequestException('Select an available assistant teacher.');
-      }
+      const normalizedSections =
+        sections !== undefined
+          ? await this.validateSections(sections, schoolId)
+          : undefined;
 
       const schoolClass = await this.prisma.class.update({
         where: { id },
         data: {
           name: name?.trim(),
-          section: section?.trim().toUpperCase(),
-          room: room?.trim(),
-          capacity,
           academicYearId: academicYearId?.trim(),
           status,
-          teacherId: nextTeacherId,
-          assistantTeacherId: nextAssistantTeacherId,
+          ...(normalizedSections && {
+            sections: {
+              deleteMany: {},
+              create: normalizedSections,
+            },
+          }),
         },
-        include: {
-          academicYear: true,
-        },
+        include: this.classInclude,
       });
 
       return {
@@ -356,7 +283,7 @@ export class ClassesService {
         error.code === 'P2002'
       ) {
         throw new ConflictException(
-          'A class with the same name, section and academic year already exists.',
+          'A class with the same name and academic year already exists.',
         );
       }
       this.handlePrismaError(error, id);
@@ -395,18 +322,75 @@ export class ClassesService {
     }
   }
 
-  private async findAvailableTeacherIds(
-    teacherIds: string[],
-  ): Promise<Set<string>> {
-    const uniqueIds = [...new Set(teacherIds)];
-    if (!uniqueIds.length) return new Set();
+  private async validateSections(
+    sections: CreateClassSectionDto[],
+    schoolId: string,
+  ): Promise<
+    {
+      sectionId: string;
+      teacherId: string;
+      room: string | null;
+      capacity: number | null;
+    }[]
+  > {
+    if (!sections?.length) {
+      throw new BadRequestException('Add at least one section.');
+    }
+    if (sections.some((section) => !section.sectionId?.trim())) {
+      throw new BadRequestException('Select a section for every row.');
+    }
+    if (sections.some((section) => !section.teacherId?.trim())) {
+      throw new BadRequestException('Select a class teacher for every section.');
+    }
+    if (
+      sections.some(
+        (section) =>
+          section.capacity != null &&
+          (!Number.isInteger(section.capacity) || section.capacity < 1),
+      )
+    ) {
+      throw new BadRequestException('Capacity must be a positive whole number.');
+    }
 
-    const teachers = await this.prisma.teacher.findMany({
-      where: { id: { in: uniqueIds } },
-      select: { id: true },
-    });
+    const sectionIds = sections.map((section) => section.sectionId.trim());
+    if (new Set(sectionIds).size !== sectionIds.length) {
+      throw new BadRequestException('Each section can only be added once.');
+    }
 
-    return new Set(teachers.map((teacher) => teacher.id));
+    const teacherIds = [
+      ...new Set(sections.map((section) => section.teacherId.trim())),
+    ];
+
+    const [availableSections, availableTeachers] = await Promise.all([
+      this.prisma.section.findMany({
+        where: { id: { in: sectionIds }, schoolId },
+        select: { id: true },
+      }),
+      this.prisma.teacher.findMany({
+        where: { id: { in: teacherIds } },
+        select: { id: true },
+      }),
+    ]);
+
+    if (availableSections.length !== sectionIds.length) {
+      throw new BadRequestException(
+        'Select valid sections for this school.',
+      );
+    }
+
+    const availableTeacherIds = new Set(
+      availableTeachers.map((teacher) => teacher.id),
+    );
+    if (teacherIds.some((teacherId) => !availableTeacherIds.has(teacherId))) {
+      throw new BadRequestException('Select an available class teacher.');
+    }
+
+    return sections.map((section) => ({
+      sectionId: section.sectionId.trim(),
+      teacherId: section.teacherId.trim(),
+      room: section.room?.trim() || null,
+      capacity: section.capacity ?? null,
+    }));
   }
 
   private handlePrismaError(error: unknown, id?: string): never {
@@ -414,12 +398,12 @@ export class ClassesService {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         throw new ConflictException(
-          'A class with the same name, section and academic year already exists.',
+          'A class with the same name and academic year already exists.',
         );
       }
       if (error.code === 'P2003') {
         throw new BadRequestException(
-          'Invalid school, academic year, or teacher ID for class.',
+          'Invalid school, academic year, section, or teacher ID for class.',
         );
       }
       if (error.code === 'P2025') {

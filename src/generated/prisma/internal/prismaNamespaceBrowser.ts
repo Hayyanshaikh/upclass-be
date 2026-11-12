@@ -59,7 +59,9 @@ export const ModelName = {
   Subject: 'Subject',
   Documents: 'Documents',
   Teacher: 'Teacher',
+  Section: 'Section',
   Class: 'Class',
+  ClassSection: 'ClassSection',
   Student: 'Student',
   AcademicYear: 'AcademicYear',
   AcademicTerm: 'AcademicTerm',
@@ -223,22 +225,43 @@ export const TeacherScalarFieldEnum = {
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
 
 
+export const SectionScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  name: 'name',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SectionScalarFieldEnum = (typeof SectionScalarFieldEnum)[keyof typeof SectionScalarFieldEnum]
+
+
 export const ClassScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
   name: 'name',
-  section: 'section',
-  room: 'room',
-  capacity: 'capacity',
   academicYearId: 'academicYearId',
   status: 'status',
-  teacherId: 'teacherId',
-  assistantTeacherId: 'assistantTeacherId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
+
+
+export const ClassSectionScalarFieldEnum = {
+  id: 'id',
+  classId: 'classId',
+  sectionId: 'sectionId',
+  teacherId: 'teacherId',
+  room: 'room',
+  capacity: 'capacity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassSectionScalarFieldEnum = (typeof ClassSectionScalarFieldEnum)[keyof typeof ClassSectionScalarFieldEnum]
 
 
 export const StudentScalarFieldEnum = {
