@@ -190,7 +190,6 @@ export class TeachersService {
       searchKey,
       employmentType,
       status,
-      subject,
       role,
     } = query;
     const where: Prisma.TeacherWhereInput = {
@@ -204,11 +203,6 @@ export class TeachersService {
       }),
       ...(employmentType && { employmentType }),
       ...(status && { isActive: status === TeacherStatus.ACTIVE }),
-      ...(subject && {
-        classSubjects: {
-          some: { subjectId: subject },
-        },
-      }),
       ...(role && {
         user: {
           OR: [{ roleId: role }, { role: { slug: role } }],

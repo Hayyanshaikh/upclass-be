@@ -92,11 +92,6 @@ export type Class = Prisma.ClassModel
  */
 export type Student = Prisma.StudentModel
 /**
- * Model ClassSubject
- * 
- */
-export type ClassSubject = Prisma.ClassSubjectModel
-/**
  * Model AcademicYear
  * 
  */

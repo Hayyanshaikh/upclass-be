@@ -10,10 +10,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client.ts';
 import { PrismaService } from '../../database/prisma.service.ts';
-import {
-  CreateClassDto,
-  CreateClassSubjectDto,
-} from './dto/create-class.dto.ts';
+import { CreateClassDto } from './dto/create-class.dto.ts';
 import { UpdateClassDto } from './dto/update-class.dto.ts';
 import { ClassFiltersDto } from './dto/class-filters.dto.ts';
 import {
@@ -49,7 +46,6 @@ export class ClassesService {
       status,
       teacherId,
       assistantTeacherId,
-      subjects,
     } = dto;
 
     try {
@@ -96,16 +92,10 @@ export class ClassesService {
         throw new BadRequestException('Choose a different assistant teacher.');
       }
 
-      const subjectRows = this.normalizeSubjects(subjects);
       const availableTeacherIds = await this.findAvailableTeacherIds([
         nextTeacherId,
         ...(nextAssistantTeacherId ? [nextAssistantTeacherId] : []),
-        ...subjectRows.map((row) => row.teacherId),
       ]);
-      const availableSubjectIds = await this.findAvailableSubjectIds(
-        subjectRows.map((row) => row.subjectId),
-        schoolId,
-      );
 
       if (!availableTeacherIds.has(nextTeacherId)) {
         throw new BadRequestException('Select an available class teacher.');
@@ -115,16 +105,6 @@ export class ClassesService {
         !availableTeacherIds.has(nextAssistantTeacherId)
       ) {
         throw new BadRequestException('Select an available assistant teacher.');
-      }
-      if (subjectRows.some((row) => !availableTeacherIds.has(row.teacherId))) {
-        throw new BadRequestException(
-          'Select an available teacher for each subject.',
-        );
-      }
-      if (subjectRows.some((row) => !availableSubjectIds.has(row.subjectId))) {
-        throw new BadRequestException(
-          'Select an available subject for each row.',
-        );
       }
 
       const schoolClass = await this.prisma.class.create({
@@ -138,17 +118,9 @@ export class ClassesService {
           status,
           teacherId: nextTeacherId,
           assistantTeacherId: nextAssistantTeacherId,
-          subjects: {
-            create: subjectRows,
-          },
         },
         include: {
           academicYear: true,
-          subjects: {
-            include: {
-              subject: true,
-            },
-          },
         },
       });
 
@@ -205,11 +177,6 @@ export class ClassesService {
           orderBy: [{ name: 'asc' }, { section: 'asc' }, { id: 'asc' }],
           include: {
             academicYear: true,
-            subjects: {
-              include: {
-                subject: true,
-              },
-            },
           },
         }),
         this.prisma.class.count({ where }),
@@ -256,11 +223,6 @@ export class ClassesService {
         where: { id, schoolId },
         include: {
           academicYear: true,
-          subjects: {
-            include: {
-              subject: true,
-            },
-          },
         },
       });
 
@@ -293,7 +255,6 @@ export class ClassesService {
       status,
       teacherId,
       assistantTeacherId,
-      subjects,
     } = dto;
 
     try {
@@ -335,9 +296,6 @@ export class ClassesService {
 
       const current = await this.prisma.class.findUnique({
         where: { id, schoolId },
-        include: {
-          subjects: true,
-        },
       });
 
       if (!current) {
@@ -354,17 +312,10 @@ export class ClassesService {
         throw new BadRequestException('Choose a different assistant teacher.');
       }
 
-      const subjectRows =
-        subjects !== undefined ? this.normalizeSubjects(subjects) : undefined;
       const availableTeacherIds = await this.findAvailableTeacherIds([
         nextTeacherId,
         ...(nextAssistantTeacherId ? [nextAssistantTeacherId] : []),
-        ...(subjectRows?.map((row) => row.teacherId) ?? []),
       ]);
-      const availableSubjectIds = await this.findAvailableSubjectIds(
-        subjectRows?.map((row) => row.subjectId) ?? [],
-        schoolId,
-      );
 
       if (!availableTeacherIds.has(nextTeacherId)) {
         throw new BadRequestException('Select an available class teacher.');
@@ -374,16 +325,6 @@ export class ClassesService {
         !availableTeacherIds.has(nextAssistantTeacherId)
       ) {
         throw new BadRequestException('Select an available assistant teacher.');
-      }
-      if (subjectRows?.some((row) => !availableTeacherIds.has(row.teacherId))) {
-        throw new BadRequestException(
-          'Select an available teacher for each subject.',
-        );
-      }
-      if (subjectRows?.some((row) => !availableSubjectIds.has(row.subjectId))) {
-        throw new BadRequestException(
-          'Select an available subject for each row.',
-        );
       }
 
       const schoolClass = await this.prisma.class.update({
@@ -397,20 +338,9 @@ export class ClassesService {
           status,
           teacherId: nextTeacherId,
           assistantTeacherId: nextAssistantTeacherId,
-          ...(subjectRows !== undefined && {
-            subjects: {
-              deleteMany: {},
-              create: subjectRows,
-            },
-          }),
         },
         include: {
           academicYear: true,
-          subjects: {
-            include: {
-              subject: true,
-            },
-          },
         },
       });
 
@@ -465,48 +395,6 @@ export class ClassesService {
     }
   }
 
-  private normalizeSubjects(subjects?: CreateClassSubjectDto[]): {
-    subjectId: string;
-    teacherId: string;
-    periodsPerWeek: number;
-  }[] {
-    const rows: {
-      subjectId: string;
-      teacherId: string;
-      periodsPerWeek: number;
-    }[] = [];
-    const selectedSubjects = new Set<string>();
-
-    (subjects ?? []).forEach((row, index) => {
-      const subjectId = row.subjectId?.trim();
-      const teacherId = row.teacherId?.trim();
-
-      if (!subjectId) {
-        throw new BadRequestException(`Select a subject for row ${index + 1}.`);
-      }
-      if (!teacherId) {
-        throw new BadRequestException(`Select a teacher for row ${index + 1}.`);
-      }
-      if (!Number.isInteger(row.periodsPerWeek) || row.periodsPerWeek < 1) {
-        throw new BadRequestException(
-          `Enter periods per week for row ${index + 1}.`,
-        );
-      }
-      if (selectedSubjects.has(subjectId)) {
-        throw new BadRequestException('This subject is already assigned.');
-      }
-
-      selectedSubjects.add(subjectId);
-      rows.push({
-        subjectId,
-        teacherId,
-        periodsPerWeek: row.periodsPerWeek,
-      });
-    });
-
-    return rows;
-  }
-
   private async findAvailableTeacherIds(
     teacherIds: string[],
   ): Promise<Set<string>> {
@@ -521,21 +409,6 @@ export class ClassesService {
     return new Set(teachers.map((teacher) => teacher.id));
   }
 
-  private async findAvailableSubjectIds(
-    subjectIds: string[],
-    schoolId: string,
-  ): Promise<Set<string>> {
-    const uniqueIds = [...new Set(subjectIds)];
-    if (!uniqueIds.length) return new Set();
-
-    const subjects = await this.prisma.subject.findMany({
-      where: { id: { in: uniqueIds }, schoolId },
-      select: { id: true },
-    });
-
-    return new Set(subjects.map((subject) => subject.id));
-  }
-
   private handlePrismaError(error: unknown, id?: string): never {
     if (error instanceof HttpException) throw error;
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -546,7 +419,7 @@ export class ClassesService {
       }
       if (error.code === 'P2003') {
         throw new BadRequestException(
-          'Invalid school, academic year, teacher, or subject ID for class.',
+          'Invalid school, academic year, or teacher ID for class.',
         );
       }
       if (error.code === 'P2025') {
