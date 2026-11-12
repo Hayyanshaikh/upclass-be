@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
   AcademicYearStatus,
+  PeriodStatus,
+  PeriodType,
   Prisma,
   RoleType,
   SubjectStatus,
@@ -15,6 +17,20 @@ export class SchoolDefaultsService {
     schoolId: string,
     schoolName: string,
   ) {
+    await this.createRoles(tx, schoolId, schoolName);
+    await this.createSubjects(tx, schoolId);
+    const academicYear = await this.createAcademicYear(tx, schoolId);
+    await this.createAcademicTerms(tx, schoolId, academicYear);
+    await this.createLeavePolicies(tx, schoolId);
+    await this.createLeavePolicySettings(tx, schoolId);
+    await this.createPeriods(tx, schoolId);
+  }
+
+  private async createRoles(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+    schoolName: string,
+  ): Promise<void> {
     const defaultRoles = [
       {
         name: 'School Admin',
@@ -64,7 +80,12 @@ export class SchoolDefaultsService {
         skipDuplicates: true,
       });
     }
+  }
 
+  private async createSubjects(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+  ): Promise<void> {
     const defaultSubjects = [
       {
         name: 'English',
@@ -201,8 +222,13 @@ export class SchoolDefaultsService {
       })),
       skipDuplicates: true,
     });
+  }
 
-    const academicYear =
+  private async createAcademicYear(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+  ) {
+    return (
       (await tx.academicYear.findFirst({
         where: { schoolId },
         orderBy: { startDate: 'desc' },
@@ -221,8 +247,15 @@ export class SchoolDefaultsService {
             status: AcademicYearStatus.ACTIVE,
           };
         })(),
-      }));
+      }))
+    );
+  }
 
+  private async createAcademicTerms(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+    academicYear: { id: string; startDate: Date; endDate: Date },
+  ): Promise<void> {
     const termStartYear = academicYear.startDate.getUTCFullYear();
     const termStartMonth = academicYear.startDate.getUTCMonth();
 
@@ -265,7 +298,12 @@ export class SchoolDefaultsService {
         },
       });
     }
+  }
 
+  private async createLeavePolicies(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+  ): Promise<void> {
     const defaultLeavePolicies = [
       { name: 'Casual Leave', daysPerYear: 12 },
       { name: 'Sick Leave', daysPerYear: 10 },
@@ -280,11 +318,89 @@ export class SchoolDefaultsService {
       })),
       skipDuplicates: true,
     });
+  }
 
+  private async createLeavePolicySettings(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+  ): Promise<void> {
     await tx.leavePolicySetting.upsert({
       where: { schoolId },
       update: {},
       create: { schoolId },
+    });
+  }
+
+  private async createPeriods(
+    tx: Prisma.TransactionClient,
+    schoolId: string,
+  ): Promise<void> {
+    const defaultPeriods = [
+      {
+        name: 'Period 1',
+        startTime: '08:00',
+        endTime: '08:40',
+        type: PeriodType.PERIOD,
+        sortOrder: 1,
+      },
+      {
+        name: 'Period 2',
+        startTime: '08:40',
+        endTime: '09:20',
+        type: PeriodType.PERIOD,
+        sortOrder: 2,
+      },
+      {
+        name: 'Period 3',
+        startTime: '09:20',
+        endTime: '10:00',
+        type: PeriodType.PERIOD,
+        sortOrder: 3,
+      },
+      {
+        name: 'Period 4',
+        startTime: '10:00',
+        endTime: '10:40',
+        type: PeriodType.PERIOD,
+        sortOrder: 4,
+      },
+      {
+        name: 'Break',
+        startTime: '10:40',
+        endTime: '11:10',
+        type: PeriodType.BREAK,
+        sortOrder: 5,
+      },
+      {
+        name: 'Period 5',
+        startTime: '11:10',
+        endTime: '11:50',
+        type: PeriodType.PERIOD,
+        sortOrder: 6,
+      },
+      {
+        name: 'Period 6',
+        startTime: '11:50',
+        endTime: '12:30',
+        type: PeriodType.PERIOD,
+        sortOrder: 7,
+      },
+      {
+        name: 'Period 7',
+        startTime: '12:30',
+        endTime: '13:10',
+        type: PeriodType.PERIOD,
+        sortOrder: 8,
+      },
+    ];
+
+    await tx.period.createMany({
+      data: defaultPeriods.map((period) => ({
+        ...period,
+        status: PeriodStatus.ACTIVE,
+        schoolId,
+      })),
+      skipDuplicates: true,
     });
   }
 }
