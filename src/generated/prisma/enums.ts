@@ -106,6 +106,14 @@ export const ClassStatus = {
 export type ClassStatus = (typeof ClassStatus)[keyof typeof ClassStatus]
 
 
+export const SectionStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type SectionStatus = (typeof SectionStatus)[keyof typeof SectionStatus]
+
+
 export const AcademicYearStatus = {
   UPCOMING: 'UPCOMING',
   ACTIVE: 'ACTIVE',

@@ -36,6 +36,10 @@ const groups = [
         key: 'classes',
         label: 'Classes',
       },
+      {
+        key: 'sections',
+        label: 'Sections',
+      },
     ],
   },
   {

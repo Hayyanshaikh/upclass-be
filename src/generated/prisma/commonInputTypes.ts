@@ -378,6 +378,23 @@ export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
+export type EnumSectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SectionStatus | Prisma.EnumSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel> | $Enums.SectionStatus
+}
+
+export type EnumSectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SectionStatus | Prisma.EnumSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel>
+}
+
 export type EnumClassStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ClassStatus | Prisma.EnumClassStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ClassStatus[] | Prisma.ListEnumClassStatusFieldRefInput<$PrismaModel>
@@ -793,6 +810,23 @@ export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumSectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.SectionStatus | Prisma.EnumSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel> | $Enums.SectionStatus
+}
+
+export type NestedEnumSectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SectionStatus | Prisma.EnumSectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SectionStatus[] | Prisma.ListEnumSectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSectionStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumClassStatusFilter<$PrismaModel = never> = {

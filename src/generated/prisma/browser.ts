@@ -58,6 +58,11 @@ export type Documents = Prisma.DocumentsModel
  */
 export type Teacher = Prisma.TeacherModel
 /**
+ * Model Section
+ * 
+ */
+export type Section = Prisma.SectionModel
+/**
  * Model Class
  * 
  */
