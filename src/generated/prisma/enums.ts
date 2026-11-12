@@ -130,6 +130,19 @@ export const PeriodStatus = {
 export type PeriodStatus = (typeof PeriodStatus)[keyof typeof PeriodStatus]
 
 
+export const WeekDay = {
+  MONDAY: 'MONDAY',
+  TUESDAY: 'TUESDAY',
+  WEDNESDAY: 'WEDNESDAY',
+  THURSDAY: 'THURSDAY',
+  FRIDAY: 'FRIDAY',
+  SATURDAY: 'SATURDAY',
+  SUNDAY: 'SUNDAY'
+} as const
+
+export type WeekDay = (typeof WeekDay)[keyof typeof WeekDay]
+
+
 export const AcademicYearStatus = {
   UPCOMING: 'UPCOMING',
   ACTIVE: 'ACTIVE',

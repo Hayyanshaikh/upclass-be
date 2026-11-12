@@ -303,6 +303,8 @@ export const rolePermissions: Record<string, string[]> = {
     'academic_terms.lookup',
     'timetable.lookup',
 
+    'periods.view',
+
     'student_attendance.view',
     'student_attendance.create',
     'student_attendance.edit',
