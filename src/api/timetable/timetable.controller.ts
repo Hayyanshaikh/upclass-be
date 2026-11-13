@@ -29,6 +29,8 @@ import {
   TimetableEntryFindOneResponseDto,
 } from './dto/timetable-response.dto.ts';
 import { TimetableClassSectionsResponseDto } from './dto/class-sections-response.dto.ts';
+import { CheckTeacherAvailabilityQueryDto } from './dto/check-teacher-availability-query.dto.ts';
+import { CheckTeacherAvailabilityResponseDto } from './dto/check-teacher-availability-response.dto.ts';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
 import { PermissionsGuard } from '../auth/guards/permissions.guard.ts';
 import type { AuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.ts';
@@ -72,6 +74,21 @@ export class TimetableController {
   ): Promise<TimetableEntriesResponseDto> {
     const schoolId = req.headers['schoolid'] as string;
     return this.timetableService.findAll(query, schoolId);
+  }
+
+  @Permissions(TIMETABLE_PERMISSIONS.VIEW)
+  @Get('check-teacher')
+  @ApiOperation({ summary: 'Check teacher availability for a timetable slot' })
+  @ApiOkResponse({
+    description: 'Teacher availability check completed',
+    type: CheckTeacherAvailabilityResponseDto,
+  })
+  checkTeacherAvailability(
+    @Query() query: CheckTeacherAvailabilityQueryDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<CheckTeacherAvailabilityResponseDto> {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.timetableService.checkTeacherAvailability(query, schoolId);
   }
 
   @Permissions(TIMETABLE_PERMISSIONS.LOOKUP)
