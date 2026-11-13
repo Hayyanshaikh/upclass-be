@@ -22,6 +22,8 @@ import {
   TimetableEntryFindOneResponseDto,
 } from './dto/timetable-response.dto.ts';
 import { TimetableClassSectionsResponseDto } from './dto/class-sections-response.dto.ts';
+import { CheckTeacherAvailabilityQueryDto } from './dto/check-teacher-availability-query.dto.ts';
+import { CheckTeacherAvailabilityResponseDto } from './dto/check-teacher-availability-response.dto.ts';
 
 @Injectable()
 export class TimetableService {
@@ -105,6 +107,52 @@ export class TimetableService {
         'Failed to retrieve timetable entries.',
       );
     }
+  }
+
+  async checkTeacherAvailability(
+    query: CheckTeacherAvailabilityQueryDto,
+    schoolId: string,
+  ): Promise<CheckTeacherAvailabilityResponseDto> {
+    if (!schoolId?.trim()) {
+      throw new BadRequestException('School context is required.');
+    }
+
+    await this.ensureTeacher(query.teacherId, schoolId);
+
+    const entry = await this.prisma.timetableEntry.findFirst({
+      where: {
+        schoolId,
+        teacherId: query.teacherId.trim(),
+        academicTermId: query.academicTermId.trim(),
+        periodId: query.periodId.trim(),
+        day: query.day,
+        ...(query.excludeClassSectionId?.trim() && {
+          classSectionId: { not: query.excludeClassSectionId.trim() },
+        }),
+      },
+      include: {
+        classSection: {
+          include: {
+            class: { select: { name: true } },
+            section: { select: { name: true } },
+          },
+        },
+      },
+    });
+
+    if (!entry) {
+      return {
+        statusCode: HttpStatus.OK,
+        conflict: false,
+        message: 'Teacher is free in this period.',
+      };
+    }
+
+    return {
+      statusCode: HttpStatus.OK,
+      conflict: true,
+      message: `Teacher is already assigned to Class ${entry.classSection.class.name} - ${entry.classSection.section.name} in this period.`,
+    };
   }
 
   async findClassSections(
