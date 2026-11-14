@@ -497,6 +497,40 @@ export type EnumWeekDayWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumWeekDayFilter<$PrismaModel>
 }
 
+export type EnumTeacherAttendanceStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceStatus | Prisma.EnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel> | $Enums.TeacherAttendanceStatus
+}
+
+export type EnumTeacherAttendanceSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceSource | Prisma.EnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel> | $Enums.TeacherAttendanceSource
+}
+
+export type EnumTeacherAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceStatus | Prisma.EnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.TeacherAttendanceStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel>
+}
+
+export type EnumTeacherAttendanceSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceSource | Prisma.EnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceSourceWithAggregatesFilter<$PrismaModel> | $Enums.TeacherAttendanceSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -980,6 +1014,40 @@ export type NestedEnumWeekDayWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumWeekDayFilter<$PrismaModel>
   _max?: Prisma.NestedEnumWeekDayFilter<$PrismaModel>
+}
+
+export type NestedEnumTeacherAttendanceStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceStatus | Prisma.EnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel> | $Enums.TeacherAttendanceStatus
+}
+
+export type NestedEnumTeacherAttendanceSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceSource | Prisma.EnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel> | $Enums.TeacherAttendanceSource
+}
+
+export type NestedEnumTeacherAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceStatus | Prisma.EnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceStatus[] | Prisma.ListEnumTeacherAttendanceStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.TeacherAttendanceStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeacherAttendanceStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTeacherAttendanceSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TeacherAttendanceSource | Prisma.EnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TeacherAttendanceSource[] | Prisma.ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTeacherAttendanceSourceWithAggregatesFilter<$PrismaModel> | $Enums.TeacherAttendanceSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeacherAttendanceSourceFilter<$PrismaModel>
 }
 
 
