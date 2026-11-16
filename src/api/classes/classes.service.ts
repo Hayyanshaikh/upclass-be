@@ -28,6 +28,13 @@ export interface ClassesListResponse {
   warning?: string;
 }
 
+type ClassSectionInput = {
+  sectionId: string;
+  teacherId: string;
+  room: string | null;
+  capacity: number | null;
+};
+
 @Injectable()
 export class ClassesService {
   private readonly logger = new Logger(ClassesService.name);
@@ -255,20 +262,93 @@ export class ClassesService {
           ? await this.validateSections(sections, schoolId)
           : undefined;
 
-      const schoolClass = await this.prisma.class.update({
-        where: { id },
-        data: {
-          name: name?.trim(),
-          academicYearId: academicYearId?.trim(),
-          status,
-          ...(normalizedSections && {
-            sections: {
-              deleteMany: {},
-              create: normalizedSections,
+      const currentSections = normalizedSections
+        ? await this.prisma.classSection.findMany({
+            where: { classId: id },
+            select: { id: true, sectionId: true },
+          })
+        : [];
+
+      const submittedSectionIds = new Set(
+        normalizedSections?.map((section) => section.sectionId) ?? [],
+      );
+      const existingBySectionId = new Map(
+        currentSections.map(
+          (section) => [section.sectionId, section] as const,
+        ),
+      );
+      const sectionsToCreate = (normalizedSections ?? []).filter(
+        (section) => !existingBySectionId.has(section.sectionId),
+      );
+      const sectionsToUpdate = (normalizedSections ?? []).filter((section) =>
+        existingBySectionId.has(section.sectionId),
+      );
+      const sectionsToRemove = currentSections.filter(
+        (section) => !submittedSectionIds.has(section.sectionId),
+      );
+
+      if (sectionsToRemove.length) {
+        const blockedSection = await this.prisma.timetableEntry.findFirst({
+          where: {
+            classSectionId: {
+              in: sectionsToRemove.map((section) => section.id),
             },
-          }),
-        },
-        include: this.classInclude,
+          },
+          select: {
+            classSection: {
+              select: { section: { select: { name: true } } },
+            },
+          },
+        });
+
+        if (blockedSection) {
+          throw new ConflictException(
+            `Section "${blockedSection.classSection.section.name}" is used by the timetable and cannot be removed.`,
+          );
+        }
+      }
+
+      const schoolClass = await this.prisma.$transaction(async (tx) => {
+        for (const section of sectionsToUpdate) {
+          const existingSection = existingBySectionId.get(section.sectionId);
+          if (!existingSection) continue;
+
+          await tx.classSection.update({
+            where: { id: existingSection.id },
+            data: {
+              teacherId: section.teacherId,
+              room: section.room,
+              capacity: section.capacity,
+            },
+          });
+        }
+
+        if (sectionsToCreate.length) {
+          await tx.classSection.createMany({
+            data: sectionsToCreate.map((section) => ({
+              classId: id,
+              ...section,
+            })),
+          });
+        }
+
+        if (sectionsToRemove.length) {
+          await tx.classSection.deleteMany({
+            where: {
+              id: { in: sectionsToRemove.map((section) => section.id) },
+            },
+          });
+        }
+
+        return tx.class.update({
+          where: { id },
+          data: {
+            name: name?.trim(),
+            academicYearId: academicYearId?.trim(),
+            status,
+          },
+          include: this.classInclude,
+        });
       });
 
       return {
@@ -325,14 +405,7 @@ export class ClassesService {
   private async validateSections(
     sections: CreateClassSectionDto[],
     schoolId: string,
-  ): Promise<
-    {
-      sectionId: string;
-      teacherId: string;
-      room: string | null;
-      capacity: number | null;
-    }[]
-  > {
+  ): Promise<ClassSectionInput[]> {
     if (!sections?.length) {
       throw new BadRequestException('Add at least one section.');
     }
