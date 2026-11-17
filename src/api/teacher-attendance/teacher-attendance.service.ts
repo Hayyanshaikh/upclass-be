@@ -147,6 +147,7 @@ export class TeacherAttendanceService {
       ]);
       const now = this.getNowParts();
       this.ensureWorkingDay(now.day, school);
+      this.ensureWithinSchoolHours(now.time, school);
 
       const date = this.toDateOnly(now.date);
       const existing = await this.prisma.teacherAttendance.findUnique({
@@ -567,6 +568,28 @@ export class TeacherAttendanceService {
     if (!isWorkingDay) {
       throw new BadRequestException(
         'Today is not a working day for this school.',
+      );
+    }
+  }
+
+  private ensureWithinSchoolHours(time: string, school: SchoolSchedule): void {
+    if (!school.openingTime || !school.closingTime) {
+      throw new BadRequestException(
+        'School timings are not set. Check-in is unavailable.',
+      );
+    }
+
+    const current = this.toMinutes(time);
+
+    if (current < this.toMinutes(school.openingTime)) {
+      throw new BadRequestException(
+        `Check-in opens at ${school.openingTime}.`,
+      );
+    }
+
+    if (current > this.toMinutes(school.closingTime)) {
+      throw new BadRequestException(
+        'School hours are over. Check-in is closed for today.',
       );
     }
   }

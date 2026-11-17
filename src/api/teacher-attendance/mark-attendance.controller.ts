@@ -74,7 +74,11 @@ export class MarkAttendanceController {
     description: 'Checked in successfully',
     type: TeacherAttendanceFindOneResponseDto,
   })
-  @ApiResponse({ status: 400, description: 'Not a working day' })
+  @ApiResponse({
+    status: 400,
+    description:
+      'Not a working day, school timings are not set, or check-in is outside school hours',
+  })
   @ApiResponse({ status: 409, description: 'Already checked in today' })
   checkIn(
     @Req() req: AuthenticatedRequest,
