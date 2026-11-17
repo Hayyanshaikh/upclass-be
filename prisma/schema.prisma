@@ -212,7 +212,7 @@ model Teacher {
   gender           Gender?
   cnicNo           String?          @unique
   maritalStatus    MaritalStatus?
-  employeeId       String?          @unique
+  employeeId       String?
   qualification    String?
   joiningDate      DateTime?
   employmentType   EmploymentType?  @default(FULL_TIME)
@@ -227,6 +227,8 @@ model Teacher {
   timetableEntries TimetableEntry[]
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
+
+  @@unique([schoolId, employeeId])
 }
 
 enum ClassStatus {
