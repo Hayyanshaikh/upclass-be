@@ -84,6 +84,7 @@ model School {
   sections           Section[]
   periods            Period[]
   timetableEntries   TimetableEntry[]
+  teacherAttendances TeacherAttendance[]
   students           Student[]
   academicYears      AcademicYear[]
   academicTerms      AcademicTerm[]
@@ -199,34 +200,35 @@ model Documents {
 }
 
 model Teacher {
-  id               String           @id @default(cuid())
+  id               String              @id @default(cuid())
   userId           String
-  user             User             @relation(fields: [userId], references: [id])
+  user             User                @relation(fields: [userId], references: [id])
   schoolId         String?
-  school           School?          @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  school           School?             @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   image            String?
   imagePublicId    String?
   firstName        String
   lastName         String?
   dateOfBirth      DateTime?
   gender           Gender?
-  cnicNo           String?          @unique
+  cnicNo           String?             @unique
   maritalStatus    MaritalStatus?
   employeeId       String?
   qualification    String?
   joiningDate      DateTime?
-  employmentType   EmploymentType?  @default(FULL_TIME)
-  isActive         Boolean?         @default(true)
+  employmentType   EmploymentType?     @default(FULL_TIME)
+  isActive         Boolean?            @default(true)
   phone            String?
-  email            String?          @unique
+  email            String?             @unique
   address          String?
   bankName         String?
   accountNumber    String?
   documents        Documents[]
-  classSections    ClassSection[]   @relation("ClassSectionTeacher")
+  classSections    ClassSection[]      @relation("ClassSectionTeacher")
   timetableEntries TimetableEntry[]
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  attendances      TeacherAttendance[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
 
   @@unique([schoolId, employeeId])
 }
@@ -259,6 +261,20 @@ enum WeekDay {
   FRIDAY
   SATURDAY
   SUNDAY
+}
+
+enum TeacherAttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  LEAVE
+}
+
+enum TeacherAttendanceSource {
+  SELF_CHECK_IN
+  LEAVE_REQUEST
+  ADMIN_EDIT
+  AUTO_ABSENT
 }
 
 model Section {
@@ -448,4 +464,24 @@ model TimetableEntry {
   @@index([schoolId])
   @@index([classSectionId])
   @@index([teacherId])
+}
+
+model TeacherAttendance {
+  id          String                  @id @default(cuid())
+  schoolId    String
+  school      School                  @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  teacherId   String
+  teacher     Teacher                 @relation(fields: [teacherId], references: [id], onDelete: Restrict)
+  date        DateTime                @db.Date
+  status      TeacherAttendanceStatus
+  source      TeacherAttendanceSource @default(SELF_CHECK_IN)
+  checkIn     String?
+  checkOut    String?
+  lateMinutes Int?
+  remarks     String?
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  @@unique([teacherId, date])
+  @@index([schoolId, date])
 }

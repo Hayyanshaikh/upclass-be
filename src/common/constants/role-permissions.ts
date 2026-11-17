@@ -110,10 +110,10 @@ export const rolePermissions: Record<string, string[]> = {
     'teacher_attendance.delete',
 
     // Mark Attendance
-    'mark_attendance.view',
-    'mark_attendance.create',
-    'mark_attendance.edit',
-    'mark_attendance.delete',
+    // 'mark_attendance.view',
+    // 'mark_attendance.create',
+    // 'mark_attendance.edit',
+    // 'mark_attendance.delete',
 
     // Timetable
     'timetable.view',

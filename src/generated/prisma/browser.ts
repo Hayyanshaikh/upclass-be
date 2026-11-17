@@ -112,3 +112,8 @@ export type LeavePolicySetting = Prisma.LeavePolicySettingModel
  * 
  */
 export type TimetableEntry = Prisma.TimetableEntryModel
+/**
+ * Model TeacherAttendance
+ * 
+ */
+export type TeacherAttendance = Prisma.TeacherAttendanceModel

@@ -143,6 +143,26 @@ export const WeekDay = {
 export type WeekDay = (typeof WeekDay)[keyof typeof WeekDay]
 
 
+export const TeacherAttendanceStatus = {
+  PRESENT: 'PRESENT',
+  ABSENT: 'ABSENT',
+  LATE: 'LATE',
+  LEAVE: 'LEAVE'
+} as const
+
+export type TeacherAttendanceStatus = (typeof TeacherAttendanceStatus)[keyof typeof TeacherAttendanceStatus]
+
+
+export const TeacherAttendanceSource = {
+  SELF_CHECK_IN: 'SELF_CHECK_IN',
+  LEAVE_REQUEST: 'LEAVE_REQUEST',
+  ADMIN_EDIT: 'ADMIN_EDIT',
+  AUTO_ABSENT: 'AUTO_ABSENT'
+} as const
+
+export type TeacherAttendanceSource = (typeof TeacherAttendanceSource)[keyof typeof TeacherAttendanceSource]
+
+
 export const AcademicYearStatus = {
   UPCOMING: 'UPCOMING',
   ACTIVE: 'ACTIVE',
