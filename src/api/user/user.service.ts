@@ -79,7 +79,7 @@ export class UserService {
       }
 
       const hashedPassword = await bcrypt.hash(dto.password, 12);
-      const employeeId = await this.teachersService.generateTeacherEmployeeId();
+      const employeeId = await this.teachersService.generateTeacherEmployeeId(schoolId);
 
       const user = await this.prisma.$transaction(async (tx) => {
         const newUser = await tx.user.create({

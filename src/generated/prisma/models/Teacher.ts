@@ -369,8 +369,8 @@ export type TeacherOrderByWithRelationInput = {
 export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   cnicNo?: string
-  employeeId?: string
   email?: string
+  schoolId_employeeId?: Prisma.TeacherSchoolIdEmployeeIdCompoundUniqueInput
   AND?: Prisma.TeacherWhereInput | Prisma.TeacherWhereInput[]
   OR?: Prisma.TeacherWhereInput[]
   NOT?: Prisma.TeacherWhereInput | Prisma.TeacherWhereInput[]
@@ -383,6 +383,7 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   dateOfBirth?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   gender?: Prisma.EnumGenderNullableFilter<"Teacher"> | $Enums.Gender | null
   maritalStatus?: Prisma.EnumMaritalStatusNullableFilter<"Teacher"> | $Enums.MaritalStatus | null
+  employeeId?: Prisma.StringNullableFilter<"Teacher"> | string | null
   qualification?: Prisma.StringNullableFilter<"Teacher"> | string | null
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   employmentType?: Prisma.EnumEmploymentTypeNullableFilter<"Teacher"> | $Enums.EmploymentType | null
@@ -399,7 +400,7 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   classSections?: Prisma.ClassSectionListRelationFilter
   timetableEntries?: Prisma.TimetableEntryListRelationFilter
   attendances?: Prisma.TeacherAttendanceListRelationFilter
-}, "id" | "cnicNo" | "employeeId" | "email">
+}, "id" | "cnicNo" | "email" | "schoolId_employeeId">
 
 export type TeacherOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -668,6 +669,11 @@ export type TeacherOrderByRelationAggregateInput = {
 export type TeacherScalarRelationFilter = {
   is?: Prisma.TeacherWhereInput
   isNot?: Prisma.TeacherWhereInput
+}
+
+export type TeacherSchoolIdEmployeeIdCompoundUniqueInput = {
+  schoolId: string
+  employeeId: string
 }
 
 export type TeacherCountOrderByAggregateInput = {

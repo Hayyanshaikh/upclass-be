@@ -95,7 +95,7 @@ export class TeachersService {
 
       const temporaryPassword = randomBytes(18).toString('base64url');
       const hashedPassword = await bcrypt.hash(temporaryPassword, 12);
-      const employeeId = await this.generateTeacherEmployeeId();
+      const employeeId = await this.generateTeacherEmployeeId(schoolId);
       const teacher = await this.prisma.$transaction(async (tx) => {
         const existingUser = await tx.user.findUnique({
           where: { email: userEmail },
@@ -702,9 +702,17 @@ export class TeachersService {
     }
   }
 
-  async generateTeacherEmployeeId(): Promise<string> {
-    const count = await this.prisma.teacher.count();
+  async generateTeacherEmployeeId(schoolId: string): Promise<string> {
+    const existing = await this.prisma.teacher.findMany({
+      where: { schoolId },
+      select: { employeeId: true },
+    });
 
-    return `T-${String(count + 1).padStart(3, '0')}`;
+    const highest = existing.reduce((max, { employeeId }) => {
+      const sequence = Number(employeeId?.replace(/^T-/, ''));
+      return Number.isFinite(sequence) ? Math.max(max, sequence) : max;
+    }, 0);
+
+    return `T-${String(highest + 1).padStart(3, '0')}`;
   }
 }
