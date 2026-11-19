@@ -416,7 +416,8 @@ export const ModelName = {
   LeavePolicy: 'LeavePolicy',
   LeavePolicySetting: 'LeavePolicySetting',
   TimetableEntry: 'TimetableEntry',
-  TeacherAttendance: 'TeacherAttendance'
+  TeacherAttendance: 'TeacherAttendance',
+  StudentAttendance: 'StudentAttendance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "period" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting" | "timetableEntry" | "teacherAttendance"
+    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "period" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting" | "timetableEntry" | "teacherAttendance" | "studentAttendance"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1916,6 +1917,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    StudentAttendance: {
+      payload: Prisma.$StudentAttendancePayload<ExtArgs>
+      fields: Prisma.StudentAttendanceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentAttendanceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentAttendanceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        findFirst: {
+          args: Prisma.StudentAttendanceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentAttendanceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        findMany: {
+          args: Prisma.StudentAttendanceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+        }
+        create: {
+          args: Prisma.StudentAttendanceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        createMany: {
+          args: Prisma.StudentAttendanceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentAttendanceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+        }
+        delete: {
+          args: Prisma.StudentAttendanceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        update: {
+          args: Prisma.StudentAttendanceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentAttendanceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentAttendanceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentAttendanceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentAttendanceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+        }
+        aggregate: {
+          args: Prisma.StudentAttendanceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentAttendance>
+        }
+        groupBy: {
+          args: Prisma.StudentAttendanceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentAttendanceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentAttendanceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentAttendanceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2159,6 +2234,7 @@ export const StudentScalarFieldEnum = {
   identityNumber: 'identityNumber',
   bloodGroup: 'bloodGroup',
   classId: 'classId',
+  classSectionId: 'classSectionId',
   roll: 'roll',
   admissionDate: 'admissionDate',
   status: 'status',
@@ -2269,6 +2345,21 @@ export const TeacherAttendanceScalarFieldEnum = {
 } as const
 
 export type TeacherAttendanceScalarFieldEnum = (typeof TeacherAttendanceScalarFieldEnum)[keyof typeof TeacherAttendanceScalarFieldEnum]
+
+
+export const StudentAttendanceScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  studentId: 'studentId',
+  classId: 'classId',
+  date: 'date',
+  status: 'status',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentAttendanceScalarFieldEnum = (typeof StudentAttendanceScalarFieldEnum)[keyof typeof StudentAttendanceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2601,6 +2692,20 @@ export type EnumTeacherAttendanceSourceFieldRefInput<$PrismaModel> = FieldRefInp
 export type ListEnumTeacherAttendanceSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeacherAttendanceSource[]'>
     
 
+
+/**
+ * Reference to a field of type 'StudentAttendanceStatus'
+ */
+export type EnumStudentAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentAttendanceStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'StudentAttendanceStatus[]'
+ */
+export type ListEnumStudentAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentAttendanceStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2772,6 +2877,7 @@ export type GlobalOmitConfig = {
   leavePolicySetting?: Prisma.LeavePolicySettingOmit
   timetableEntry?: Prisma.TimetableEntryOmit
   teacherAttendance?: Prisma.TeacherAttendanceOmit
+  studentAttendance?: Prisma.StudentAttendanceOmit
 }
 
 /* Types for Logging */

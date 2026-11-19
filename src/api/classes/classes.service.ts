@@ -196,6 +196,45 @@ export class ClassesService {
     };
   }
 
+  async findClassSections(
+    classId: string,
+    schoolId: string,
+  ): Promise<LookupResponseDto> {
+    if (!schoolId?.trim()) {
+      throw new BadRequestException('School context is required.');
+    }
+    if (!classId?.trim()) {
+      throw new BadRequestException('Class is required.');
+    }
+
+    const schoolClass = await this.prisma.class.findUnique({
+      where: { id: classId.trim(), schoolId },
+      select: { id: true },
+    });
+    if (!schoolClass) {
+      throw new BadRequestException('Select a valid class for this school.');
+    }
+
+    const sections = await this.prisma.classSection.findMany({
+      where: { classId: schoolClass.id },
+      select: {
+        id: true,
+        section: { select: { name: true } },
+      },
+      orderBy: { section: { name: 'asc' } },
+    });
+
+    return {
+      data: sections.map((section) => ({
+        id: section.id,
+        name: section.section.name,
+      })),
+      total: sections.length,
+      message: 'Class sections retrieved successfully.',
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async findOne(
     id: string,
     schoolId: string,

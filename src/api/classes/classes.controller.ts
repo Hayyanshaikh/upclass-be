@@ -16,6 +16,7 @@ import {
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -78,6 +79,19 @@ export class ClassesController {
   lookup(@Req() req: AuthenticatedRequest) {
     const schoolId = req.headers['schoolid'] as string;
     return this.classesService.lookup(schoolId);
+  }
+
+  @Get('class-sections')
+  @Permissions(CLASS_PERMISSIONS.LOOKUP)
+  @ApiOperation({ summary: 'Get sections of a class for dropdown' })
+  @ApiQuery({ name: 'classId', required: true })
+  @ApiOkResponse({ type: LookupResponseDto })
+  findClassSections(
+    @Query('classId') classId: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const schoolId = req.headers['schoolid'] as string;
+    return this.classesService.findClassSections(classId, schoolId);
   }
 
   @Permissions(CLASS_PERMISSIONS.VIEW)
