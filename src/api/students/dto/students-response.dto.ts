@@ -29,6 +29,12 @@ export class StudentDto {
   @ApiProperty()
   classId: string;
 
+  @ApiProperty({ type: String, nullable: true })
+  classSectionId: string | null;
+
+  @ApiProperty({ type: String, nullable: true })
+  sectionName: string | null;
+
   @ApiProperty()
   roll: string;
 

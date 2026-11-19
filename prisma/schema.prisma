@@ -54,6 +54,13 @@ enum StudentStatus {
   INACTIVE
 }
 
+enum StudentAttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  LEAVE
+}
+
 model School {
   id                 String              @id @default(cuid())
   name               String
@@ -85,6 +92,7 @@ model School {
   periods            Period[]
   timetableEntries   TimetableEntry[]
   teacherAttendances TeacherAttendance[]
+  studentAttendances StudentAttendance[]
   students           Student[]
   academicYears      AcademicYear[]
   academicTerms      AcademicTerm[]
@@ -309,17 +317,18 @@ model Period {
 }
 
 model Class {
-  id             String         @id @default(cuid())
-  schoolId       String
-  school         School         @relation(fields: [schoolId], references: [id], onDelete: Restrict)
-  name           String
-  academicYearId String
-  academicYear   AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
-  status         ClassStatus    @default(ACTIVE)
-  students       Student[]
-  sections       ClassSection[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                 String              @id @default(cuid())
+  schoolId           String
+  school             School              @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  name               String
+  academicYearId     String
+  academicYear       AcademicYear        @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+  status             ClassStatus         @default(ACTIVE)
+  students           Student[]
+  sections           ClassSection[]
+  studentAttendances StudentAttendance[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
 
   @@unique([schoolId, name, academicYearId])
   @@index([academicYearId])
@@ -335,6 +344,7 @@ model ClassSection {
   teacher          Teacher          @relation("ClassSectionTeacher", fields: [teacherId], references: [id])
   room             String?
   capacity         Int?
+  students         Student[]
   timetableEntries TimetableEntry[]
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
@@ -343,9 +353,9 @@ model ClassSection {
 }
 
 model Student {
-  id             String        @id @default(cuid())
+  id             String              @id @default(cuid())
   schoolId       String
-  school         School        @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  school         School              @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   firstName      String
   lastName       String
   dateOfBirth    DateTime?
@@ -353,21 +363,25 @@ model Student {
   identityNumber String?
   bloodGroup     String?
   classId        String
-  class          Class         @relation(fields: [classId], references: [id], onDelete: Restrict)
+  class          Class               @relation(fields: [classId], references: [id], onDelete: Restrict)
+  classSectionId String?
+  classSection   ClassSection?       @relation(fields: [classSectionId], references: [id], onDelete: SetNull)
   roll           String
   admissionDate  DateTime?
-  status         StudentStatus @default(ACTIVE)
+  status         StudentStatus       @default(ACTIVE)
   guardian       String
   relation       String
   phone          String
   email          String?
   address        String?
   photo          String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  attendances    StudentAttendance[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
 
   @@unique([schoolId, roll])
   @@index([classId])
+  @@index([classSectionId])
 }
 
 enum AcademicYearStatus {
@@ -484,4 +498,23 @@ model TeacherAttendance {
 
   @@unique([teacherId, date])
   @@index([schoolId, date])
+}
+
+model StudentAttendance {
+  id        String                  @id @default(cuid())
+  schoolId  String
+  school    School                  @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  studentId String
+  student   Student                 @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  classId   String
+  class     Class                   @relation(fields: [classId], references: [id], onDelete: Restrict)
+  date      DateTime                @db.Date
+  status    StudentAttendanceStatus
+  remarks   String?
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+
+  @@unique([studentId, date])
+  @@index([schoolId, date])
+  @@index([classId, date])
 }

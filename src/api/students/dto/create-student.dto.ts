@@ -59,6 +59,11 @@ export class CreateStudentDto {
   @IsNotEmpty()
   classId!: string;
 
+  @ApiProperty({ description: 'Class section ID' })
+  @IsString()
+  @IsNotEmpty()
+  classSectionId!: string;
+
   @ApiProperty()
   @IsString()
   @IsNotEmpty()

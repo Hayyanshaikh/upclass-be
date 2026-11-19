@@ -70,7 +70,8 @@ export const ModelName = {
   LeavePolicy: 'LeavePolicy',
   LeavePolicySetting: 'LeavePolicySetting',
   TimetableEntry: 'TimetableEntry',
-  TeacherAttendance: 'TeacherAttendance'
+  TeacherAttendance: 'TeacherAttendance',
+  StudentAttendance: 'StudentAttendance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -293,6 +294,7 @@ export const StudentScalarFieldEnum = {
   identityNumber: 'identityNumber',
   bloodGroup: 'bloodGroup',
   classId: 'classId',
+  classSectionId: 'classSectionId',
   roll: 'roll',
   admissionDate: 'admissionDate',
   status: 'status',
@@ -403,6 +405,21 @@ export const TeacherAttendanceScalarFieldEnum = {
 } as const
 
 export type TeacherAttendanceScalarFieldEnum = (typeof TeacherAttendanceScalarFieldEnum)[keyof typeof TeacherAttendanceScalarFieldEnum]
+
+
+export const StudentAttendanceScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  studentId: 'studentId',
+  classId: 'classId',
+  date: 'date',
+  status: 'status',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentAttendanceScalarFieldEnum = (typeof StudentAttendanceScalarFieldEnum)[keyof typeof StudentAttendanceScalarFieldEnum]
 
 
 export const SortOrder = {

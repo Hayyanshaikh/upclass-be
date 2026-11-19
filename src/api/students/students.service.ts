@@ -26,6 +26,26 @@ export class StudentsService {
     private readonly cloudinary: CloudinaryService,
   ) {}
 
+  private readonly studentInclude = {
+    classSection: {
+      select: {
+        id: true,
+        section: { select: { name: true } },
+      },
+    },
+  } satisfies Prisma.StudentInclude;
+
+  private toStudentDto<
+    T extends { classSection: { section: { name: string } } | null },
+  >(student: T) {
+    const { classSection, ...rest } = student;
+
+    return {
+      ...rest,
+      sectionName: classSection?.section.name ?? null,
+    };
+  }
+
   async create(
     dto: CreateStudentDto,
     schoolId: string,
@@ -42,6 +62,7 @@ export class StudentsService {
       const relation = dto.relation?.trim();
       const phone = dto.phone?.trim();
       const classId = dto.classId?.trim();
+      const classSectionId = dto.classSectionId?.trim();
 
       if (!firstName) {
         throw new BadRequestException('First name is required.');
@@ -51,6 +72,9 @@ export class StudentsService {
       }
       if (!classId) {
         throw new BadRequestException('Class is required.');
+      }
+      if (!classSectionId) {
+        throw new BadRequestException('Section is required.');
       }
       if (!roll) {
         throw new BadRequestException('Roll number is required.');
@@ -73,6 +97,16 @@ export class StudentsService {
         throw new BadRequestException('Select a valid class for this school.');
       }
 
+      const classSection = await this.prisma.classSection.findFirst({
+        where: { id: classSectionId, classId: classroom.id },
+        select: { id: true },
+      });
+      if (!classSection) {
+        throw new BadRequestException(
+          'Select a valid section for this class.',
+        );
+      }
+
       const student = await this.prisma.student.create({
         data: {
           schoolId,
@@ -83,6 +117,7 @@ export class StudentsService {
           identityNumber: dto.identityNumber,
           bloodGroup: dto.bloodGroup,
           classId: classroom.id,
+          classSectionId: classSection.id,
           roll,
           admissionDate: dto.admissionDate,
           status: dto.status,
@@ -93,12 +128,13 @@ export class StudentsService {
           address: dto.address,
           photo: dto.photo,
         },
+        include: this.studentInclude,
       });
 
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Student created successfully.',
-        data: student,
+        data: this.toStudentDto(student),
       };
     } catch (error) {
       if (dto.photo) {
@@ -141,12 +177,13 @@ export class StudentsService {
           take: limit,
           skip: offset,
           orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+          include: this.studentInclude,
         }),
         this.prisma.student.count({ where }),
       ]);
 
       return {
-        data,
+        data: data.map((student) => this.toStudentDto(student)),
         total,
         message: 'Students retrieved successfully.',
         statusCode: HttpStatus.OK,
@@ -199,13 +236,14 @@ export class StudentsService {
 
       const student = await this.prisma.student.findUnique({
         where: { id, schoolId },
+        include: this.studentInclude,
       });
       if (!student) throw new NotFoundException('Student not found.');
 
       return {
         statusCode: HttpStatus.OK,
         message: 'Student retrieved successfully.',
-        data: student,
+        data: this.toStudentDto(student),
       };
     } catch (error) {
       if (error instanceof HttpException) throw error;
@@ -234,6 +272,9 @@ export class StudentsService {
       if (dto.classId !== undefined && !dto.classId?.trim()) {
         throw new BadRequestException('Class is required.');
       }
+      if (dto.classSectionId !== undefined && !dto.classSectionId?.trim()) {
+        throw new BadRequestException('Section is required.');
+      }
       if (dto.roll !== undefined && !dto.roll?.trim()) {
         throw new BadRequestException('Roll number is required.');
       }
@@ -249,16 +290,18 @@ export class StudentsService {
 
       const existing = await this.prisma.student.findUnique({
         where: { id, schoolId },
-        select: { id: true, photo: true },
+        select: { id: true, photo: true, classId: true },
       });
       if (!existing) {
         throw new NotFoundException(`Student with ID "${id}" was not found.`);
       }
       currentPhoto = existing.photo;
 
+      const nextClassId = dto.classId?.trim() ?? existing.classId;
+
       if (dto.classId !== undefined) {
         const classroom = await this.prisma.class.findUnique({
-          where: { id: dto.classId.trim(), schoolId },
+          where: { id: nextClassId, schoolId },
           select: { id: true },
         });
         if (!classroom) {
@@ -266,6 +309,22 @@ export class StudentsService {
             'Select a valid class for this school.',
           );
         }
+      }
+
+      if (dto.classSectionId !== undefined) {
+        const classSection = await this.prisma.classSection.findFirst({
+          where: { id: dto.classSectionId.trim(), classId: nextClassId },
+          select: { id: true },
+        });
+        if (!classSection) {
+          throw new BadRequestException(
+            'Select a valid section for this class.',
+          );
+        }
+      } else if (nextClassId !== existing.classId) {
+        throw new BadRequestException(
+          'Select a section for the selected class.',
+        );
       }
 
       const student = await this.prisma.student.update({
@@ -290,6 +349,9 @@ export class StudentsService {
           ...(dto.classId !== undefined && {
             classId: dto.classId.trim(),
           }),
+          ...(dto.classSectionId !== undefined && {
+            classSectionId: dto.classSectionId.trim(),
+          }),
           ...(dto.roll !== undefined && { roll: dto.roll.trim() }),
           ...(dto.admissionDate !== undefined && {
             admissionDate: dto.admissionDate,
@@ -306,6 +368,7 @@ export class StudentsService {
           ...(dto.address !== undefined && { address: dto.address }),
           ...(dto.photo !== undefined && { photo: dto.photo }),
         },
+        include: this.studentInclude,
       });
 
       if (dto.photo !== undefined && dto.photo !== existing.photo) {
@@ -317,7 +380,7 @@ export class StudentsService {
       return {
         statusCode: HttpStatus.OK,
         message: 'Student updated successfully.',
-        data: student,
+        data: this.toStudentDto(student),
       };
     } catch (error) {
       if (dto.photo !== undefined && dto.photo !== currentPhoto) {
@@ -340,6 +403,7 @@ export class StudentsService {
 
       const student = await this.prisma.student.findUnique({
         where: { id, schoolId },
+        include: this.studentInclude,
       });
       if (!student) {
         throw new NotFoundException(`Student with ID "${id}" was not found.`);
@@ -356,7 +420,7 @@ export class StudentsService {
       return {
         statusCode: HttpStatus.OK,
         message: 'Student deleted successfully.',
-        data: student,
+        data: this.toStudentDto(student),
       };
     } catch (error) {
       if (error instanceof NotFoundException) throw error;

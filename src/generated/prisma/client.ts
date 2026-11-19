@@ -141,3 +141,8 @@ export type TimetableEntry = Prisma.TimetableEntryModel
  * 
  */
 export type TeacherAttendance = Prisma.TeacherAttendanceModel
+/**
+ * Model StudentAttendance
+ * 
+ */
+export type StudentAttendance = Prisma.StudentAttendanceModel
