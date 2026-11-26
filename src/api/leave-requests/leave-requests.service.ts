@@ -66,7 +66,7 @@ export class LeaveRequestsService {
       const teacher = await this.resolveTeacher(userId, schoolId);
       const leavePolicy = await this.prisma.leavePolicy.findFirst({
         where: { id: dto.leavePolicyId, schoolId },
-        select: { id: true },
+        select: { id: true, name: true, daysPerYear: true },
       });
 
       if (!leavePolicy) {
@@ -115,6 +115,38 @@ export class LeaveRequestsService {
       if (totalDays > MAX_REQUEST_DAYS) {
         throw new BadRequestException(
           `Leave request cannot exceed ${MAX_REQUEST_DAYS} days.`,
+        );
+      }
+
+      const { start: yearStart, end: yearEnd } = this.yearRange(
+        fromDate.getUTCFullYear(),
+      );
+      const consumed = await this.prisma.leaveRequest.aggregate({
+        where: {
+          schoolId,
+          teacherId: teacher.id,
+          leavePolicyId: leavePolicy.id,
+          status: {
+            in: [LeaveRequestStatus.APPROVED, LeaveRequestStatus.PENDING],
+          },
+          fromDate: { gte: yearStart, lt: yearEnd },
+        },
+        _sum: { totalDays: true },
+      });
+      const remainingDays = Math.max(
+        0,
+        leavePolicy.daysPerYear - (consumed._sum.totalDays ?? 0),
+      );
+
+      if (remainingDays <= 0) {
+        throw new BadRequestException(
+          `No ${leavePolicy.name} balance is left for this year.`,
+        );
+      }
+
+      if (totalDays > remainingDays) {
+        throw new BadRequestException(
+          `Insufficient ${leavePolicy.name} balance: ${remainingDays} day(s) left, but this request needs ${totalDays} day(s).`,
         );
       }
 
@@ -454,7 +486,7 @@ export class LeaveRequestsService {
       const teacher = await this.resolveTeacher(userId, schoolId);
       const { start, end } = this.yearRange(new Date().getUTCFullYear());
 
-      const [policies, approved] = await Promise.all([
+      const [policies, committed] = await Promise.all([
         this.prisma.leavePolicy.findMany({
           where: { schoolId },
           orderBy: { name: 'asc' },
@@ -466,7 +498,9 @@ export class LeaveRequestsService {
             schoolId,
             teacherId: teacher.id,
             leavePolicyId: { not: null },
-            status: LeaveRequestStatus.APPROVED,
+            status: {
+              in: [LeaveRequestStatus.APPROVED, LeaveRequestStatus.PENDING],
+            },
             fromDate: { gte: start, lt: end },
           },
           _sum: { totalDays: true },
@@ -475,7 +509,7 @@ export class LeaveRequestsService {
 
       const usedByPolicy = new Map<string, number>();
 
-      for (const row of approved) {
+      for (const row of committed) {
         if (row.leavePolicyId) {
           usedByPolicy.set(row.leavePolicyId, row._sum.totalDays ?? 0);
         }
@@ -538,8 +572,6 @@ export class LeaveRequestsService {
   private async balanceAfterApproval(request: {
     teacherId: string;
     leavePolicyId: string | null;
-    totalDays: number;
-    status: LeaveRequestStatus;
     fromDate: Date;
     leavePolicy: { daysPerYear: number } | null;
   }): Promise<number | null> {
@@ -553,19 +585,16 @@ export class LeaveRequestsService {
       where: {
         teacherId: request.teacherId,
         leavePolicyId: request.leavePolicyId,
-        status: LeaveRequestStatus.APPROVED,
+        status: {
+          in: [LeaveRequestStatus.APPROVED, LeaveRequestStatus.PENDING],
+        },
         fromDate: { gte: start, lt: end },
       },
       _sum: { totalDays: true },
     });
-    const usedDays = aggregate._sum.totalDays ?? 0;
-    const pendingDays =
-      request.status === LeaveRequestStatus.PENDING ? request.totalDays : 0;
+    const consumedDays = aggregate._sum.totalDays ?? 0;
 
-    return Math.max(
-      0,
-      request.leavePolicy.daysPerYear - usedDays - pendingDays,
-    );
+    return Math.max(0, request.leavePolicy.daysPerYear - consumedDays);
   }
 
   private ensureSchoolContext(schoolId: string): void {
