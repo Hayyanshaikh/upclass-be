@@ -98,6 +98,7 @@ model School {
   academicTerms      AcademicTerm[]
   leavePolicies      LeavePolicy[]
   leavePolicySetting LeavePolicySetting?
+  leaveRequests      LeaveRequest[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
@@ -111,8 +112,9 @@ model User {
   isSystem  Boolean   @default(false)
   roleId    String
   role      Role      @relation(fields: [roleId], references: [id])
-  teachers  Teacher[]
-  createdAt DateTime  @default(now())
+  teachers             Teacher[]
+  reviewedLeaveRequests LeaveRequest[] @relation("LeaveRequestReviewer")
+  createdAt            DateTime      @default(now())
   updatedAt DateTime  @updatedAt
   school    School?   @relation(fields: [schoolId], references: [id])
   schoolId  String?
@@ -235,6 +237,8 @@ model Teacher {
   classSections    ClassSection[]      @relation("ClassSectionTeacher")
   timetableEntries TimetableEntry[]
   attendances      TeacherAttendance[]
+  leaveRequests    LeaveRequest[]      @relation("LeaveRequestTeacher")
+  leaveSubstitutions LeaveRequest[]    @relation("LeaveRequestSubstitute")
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
 
@@ -438,9 +442,10 @@ model LeavePolicy {
   schoolId    String
   school      School   @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   name        String
-  daysPerYear Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  daysPerYear   Int
+  leaveRequests LeaveRequest[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([schoolId, name])
 }
@@ -453,6 +458,53 @@ model LeavePolicySetting {
   carryForward     Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+enum LeaveRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model LeaveRequest {
+  id                  String              @id @default(cuid())
+  schoolId            String
+  school              School              @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  teacherId           String
+  teacher             Teacher             @relation("LeaveRequestTeacher", fields: [teacherId], references: [id], onDelete: Restrict)
+  leavePolicyId       String?
+  leavePolicy         LeavePolicy?        @relation(fields: [leavePolicyId], references: [id], onDelete: SetNull)
+  substituteTeacherId String?
+  substituteTeacher   Teacher?            @relation("LeaveRequestSubstitute", fields: [substituteTeacherId], references: [id], onDelete: SetNull)
+  fromDate            DateTime            @db.Date
+  toDate              DateTime            @db.Date
+  totalDays           Float
+  isHalfDay           Boolean             @default(false)
+  reason              String
+  contactDuringLeave  String?
+  status              LeaveRequestStatus  @default(PENDING)
+  rejectionReason     String?
+  reviewComment       String?
+  reviewedByUserId    String?
+  reviewedByUser      User?               @relation("LeaveRequestReviewer", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  reviewedAt          DateTime?
+  attachments         LeaveRequestAttachment[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([schoolId, status])
+  @@index([schoolId, fromDate])
+  @@index([teacherId, status])
+}
+
+model LeaveRequestAttachment {
+  id             String       @id @default(cuid())
+  leaveRequestId String
+  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
+  name           String
+  url            String
+  createdAt      DateTime     @default(now())
 }
 
 model TimetableEntry {

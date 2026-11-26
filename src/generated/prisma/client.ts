@@ -132,6 +132,16 @@ export type LeavePolicy = Prisma.LeavePolicyModel
  */
 export type LeavePolicySetting = Prisma.LeavePolicySettingModel
 /**
+ * Model LeaveRequest
+ * 
+ */
+export type LeaveRequest = Prisma.LeaveRequestModel
+/**
+ * Model LeaveRequestAttachment
+ * 
+ */
+export type LeaveRequestAttachment = Prisma.LeaveRequestAttachmentModel
+/**
  * Model TimetableEntry
  * 
  */

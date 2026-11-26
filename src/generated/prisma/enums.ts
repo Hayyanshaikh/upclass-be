@@ -180,3 +180,13 @@ export const AcademicYearStatus = {
 } as const
 
 export type AcademicYearStatus = (typeof AcademicYearStatus)[keyof typeof AcademicYearStatus]
+
+
+export const LeaveRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type LeaveRequestStatus = (typeof LeaveRequestStatus)[keyof typeof LeaveRequestStatus]
