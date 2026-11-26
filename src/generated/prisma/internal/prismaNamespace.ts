@@ -415,6 +415,8 @@ export const ModelName = {
   AcademicYearTerm: 'AcademicYearTerm',
   LeavePolicy: 'LeavePolicy',
   LeavePolicySetting: 'LeavePolicySetting',
+  LeaveRequest: 'LeaveRequest',
+  LeaveRequestAttachment: 'LeaveRequestAttachment',
   TimetableEntry: 'TimetableEntry',
   TeacherAttendance: 'TeacherAttendance',
   StudentAttendance: 'StudentAttendance'
@@ -433,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "period" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting" | "timetableEntry" | "teacherAttendance" | "studentAttendance"
+    modelProps: "school" | "user" | "role" | "permission" | "rolePermission" | "subject" | "documents" | "teacher" | "section" | "period" | "class" | "classSection" | "student" | "academicYear" | "academicTerm" | "academicYearTerm" | "leavePolicy" | "leavePolicySetting" | "leaveRequest" | "leaveRequestAttachment" | "timetableEntry" | "teacherAttendance" | "studentAttendance"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1769,6 +1771,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LeaveRequest: {
+      payload: Prisma.$LeaveRequestPayload<ExtArgs>
+      fields: Prisma.LeaveRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeaveRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeaveRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.LeaveRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeaveRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        findMany: {
+          args: Prisma.LeaveRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>[]
+        }
+        create: {
+          args: Prisma.LeaveRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        createMany: {
+          args: Prisma.LeaveRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeaveRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.LeaveRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        update: {
+          args: Prisma.LeaveRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeaveRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeaveRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeaveRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeaveRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.LeaveRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeaveRequest>
+        }
+        groupBy: {
+          args: Prisma.LeaveRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeaveRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeaveRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeaveRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    LeaveRequestAttachment: {
+      payload: Prisma.$LeaveRequestAttachmentPayload<ExtArgs>
+      fields: Prisma.LeaveRequestAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LeaveRequestAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LeaveRequestAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.LeaveRequestAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LeaveRequestAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.LeaveRequestAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.LeaveRequestAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.LeaveRequestAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LeaveRequestAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.LeaveRequestAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        update: {
+          args: Prisma.LeaveRequestAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.LeaveRequestAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LeaveRequestAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LeaveRequestAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.LeaveRequestAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LeaveRequestAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.LeaveRequestAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLeaveRequestAttachment>
+        }
+        groupBy: {
+          args: Prisma.LeaveRequestAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeaveRequestAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LeaveRequestAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LeaveRequestAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
     TimetableEntry: {
       payload: Prisma.$TimetableEntryPayload<ExtArgs>
       fields: Prisma.TimetableEntryFieldRefs
@@ -2313,6 +2463,41 @@ export const LeavePolicySettingScalarFieldEnum = {
 export type LeavePolicySettingScalarFieldEnum = (typeof LeavePolicySettingScalarFieldEnum)[keyof typeof LeavePolicySettingScalarFieldEnum]
 
 
+export const LeaveRequestScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  teacherId: 'teacherId',
+  leavePolicyId: 'leavePolicyId',
+  substituteTeacherId: 'substituteTeacherId',
+  fromDate: 'fromDate',
+  toDate: 'toDate',
+  totalDays: 'totalDays',
+  isHalfDay: 'isHalfDay',
+  reason: 'reason',
+  contactDuringLeave: 'contactDuringLeave',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  reviewComment: 'reviewComment',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeaveRequestScalarFieldEnum = (typeof LeaveRequestScalarFieldEnum)[keyof typeof LeaveRequestScalarFieldEnum]
+
+
+export const LeaveRequestAttachmentScalarFieldEnum = {
+  id: 'id',
+  leaveRequestId: 'leaveRequestId',
+  name: 'name',
+  url: 'url',
+  createdAt: 'createdAt'
+} as const
+
+export type LeaveRequestAttachmentScalarFieldEnum = (typeof LeaveRequestAttachmentScalarFieldEnum)[keyof typeof LeaveRequestAttachmentScalarFieldEnum]
+
+
 export const TimetableEntryScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
@@ -2652,6 +2837,20 @@ export type ListEnumAcademicYearStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
+ * Reference to a field of type 'LeaveRequestStatus'
+ */
+export type EnumLeaveRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaveRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LeaveRequestStatus[]'
+ */
+export type ListEnumLeaveRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaveRequestStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'WeekDay'
  */
 export type EnumWeekDayFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WeekDay'>
@@ -2875,6 +3074,8 @@ export type GlobalOmitConfig = {
   academicYearTerm?: Prisma.AcademicYearTermOmit
   leavePolicy?: Prisma.LeavePolicyOmit
   leavePolicySetting?: Prisma.LeavePolicySettingOmit
+  leaveRequest?: Prisma.LeaveRequestOmit
+  leaveRequestAttachment?: Prisma.LeaveRequestAttachmentOmit
   timetableEntry?: Prisma.TimetableEntryOmit
   teacherAttendance?: Prisma.TeacherAttendanceOmit
   studentAttendance?: Prisma.StudentAttendanceOmit

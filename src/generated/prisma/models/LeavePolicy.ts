@@ -225,6 +225,7 @@ export type LeavePolicyWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"LeavePolicy"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LeavePolicy"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  leaveRequests?: Prisma.LeaveRequestListRelationFilter
 }
 
 export type LeavePolicyOrderByWithRelationInput = {
@@ -235,6 +236,7 @@ export type LeavePolicyOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   school?: Prisma.SchoolOrderByWithRelationInput
+  leaveRequests?: Prisma.LeaveRequestOrderByRelationAggregateInput
 }
 
 export type LeavePolicyWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +251,7 @@ export type LeavePolicyWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"LeavePolicy"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LeavePolicy"> | Date | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
+  leaveRequests?: Prisma.LeaveRequestListRelationFilter
 }, "id" | "schoolId_name">
 
 export type LeavePolicyOrderByWithAggregationInput = {
@@ -284,6 +287,7 @@ export type LeavePolicyCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutLeavePoliciesInput
+  leaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutLeavePolicyInput
 }
 
 export type LeavePolicyUncheckedCreateInput = {
@@ -293,6 +297,7 @@ export type LeavePolicyUncheckedCreateInput = {
   daysPerYear: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  leaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutLeavePolicyInput
 }
 
 export type LeavePolicyUpdateInput = {
@@ -302,6 +307,7 @@ export type LeavePolicyUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutLeavePoliciesNestedInput
+  leaveRequests?: Prisma.LeaveRequestUpdateManyWithoutLeavePolicyNestedInput
 }
 
 export type LeavePolicyUncheckedUpdateInput = {
@@ -311,6 +317,7 @@ export type LeavePolicyUncheckedUpdateInput = {
   daysPerYear?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutLeavePolicyNestedInput
 }
 
 export type LeavePolicyCreateManyInput = {
@@ -389,6 +396,11 @@ export type LeavePolicySumOrderByAggregateInput = {
   daysPerYear?: Prisma.SortOrder
 }
 
+export type LeavePolicyNullableScalarRelationFilter = {
+  is?: Prisma.LeavePolicyWhereInput | null
+  isNot?: Prisma.LeavePolicyWhereInput | null
+}
+
 export type LeavePolicyCreateNestedManyWithoutSchoolInput = {
   create?: Prisma.XOR<Prisma.LeavePolicyCreateWithoutSchoolInput, Prisma.LeavePolicyUncheckedCreateWithoutSchoolInput> | Prisma.LeavePolicyCreateWithoutSchoolInput[] | Prisma.LeavePolicyUncheckedCreateWithoutSchoolInput[]
   connectOrCreate?: Prisma.LeavePolicyCreateOrConnectWithoutSchoolInput | Prisma.LeavePolicyCreateOrConnectWithoutSchoolInput[]
@@ -431,12 +443,29 @@ export type LeavePolicyUncheckedUpdateManyWithoutSchoolNestedInput = {
   deleteMany?: Prisma.LeavePolicyScalarWhereInput | Prisma.LeavePolicyScalarWhereInput[]
 }
 
+export type LeavePolicyCreateNestedOneWithoutLeaveRequestsInput = {
+  create?: Prisma.XOR<Prisma.LeavePolicyCreateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedCreateWithoutLeaveRequestsInput>
+  connectOrCreate?: Prisma.LeavePolicyCreateOrConnectWithoutLeaveRequestsInput
+  connect?: Prisma.LeavePolicyWhereUniqueInput
+}
+
+export type LeavePolicyUpdateOneWithoutLeaveRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.LeavePolicyCreateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedCreateWithoutLeaveRequestsInput>
+  connectOrCreate?: Prisma.LeavePolicyCreateOrConnectWithoutLeaveRequestsInput
+  upsert?: Prisma.LeavePolicyUpsertWithoutLeaveRequestsInput
+  disconnect?: Prisma.LeavePolicyWhereInput | boolean
+  delete?: Prisma.LeavePolicyWhereInput | boolean
+  connect?: Prisma.LeavePolicyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeavePolicyUpdateToOneWithWhereWithoutLeaveRequestsInput, Prisma.LeavePolicyUpdateWithoutLeaveRequestsInput>, Prisma.LeavePolicyUncheckedUpdateWithoutLeaveRequestsInput>
+}
+
 export type LeavePolicyCreateWithoutSchoolInput = {
   id?: string
   name: string
   daysPerYear: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  leaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutLeavePolicyInput
 }
 
 export type LeavePolicyUncheckedCreateWithoutSchoolInput = {
@@ -445,6 +474,7 @@ export type LeavePolicyUncheckedCreateWithoutSchoolInput = {
   daysPerYear: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  leaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutLeavePolicyInput
 }
 
 export type LeavePolicyCreateOrConnectWithoutSchoolInput = {
@@ -485,6 +515,58 @@ export type LeavePolicyScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"LeavePolicy"> | Date | string
 }
 
+export type LeavePolicyCreateWithoutLeaveRequestsInput = {
+  id?: string
+  name: string
+  daysPerYear: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  school: Prisma.SchoolCreateNestedOneWithoutLeavePoliciesInput
+}
+
+export type LeavePolicyUncheckedCreateWithoutLeaveRequestsInput = {
+  id?: string
+  schoolId: string
+  name: string
+  daysPerYear: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type LeavePolicyCreateOrConnectWithoutLeaveRequestsInput = {
+  where: Prisma.LeavePolicyWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeavePolicyCreateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedCreateWithoutLeaveRequestsInput>
+}
+
+export type LeavePolicyUpsertWithoutLeaveRequestsInput = {
+  update: Prisma.XOR<Prisma.LeavePolicyUpdateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedUpdateWithoutLeaveRequestsInput>
+  create: Prisma.XOR<Prisma.LeavePolicyCreateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedCreateWithoutLeaveRequestsInput>
+  where?: Prisma.LeavePolicyWhereInput
+}
+
+export type LeavePolicyUpdateToOneWithWhereWithoutLeaveRequestsInput = {
+  where?: Prisma.LeavePolicyWhereInput
+  data: Prisma.XOR<Prisma.LeavePolicyUpdateWithoutLeaveRequestsInput, Prisma.LeavePolicyUncheckedUpdateWithoutLeaveRequestsInput>
+}
+
+export type LeavePolicyUpdateWithoutLeaveRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  daysPerYear?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  school?: Prisma.SchoolUpdateOneRequiredWithoutLeavePoliciesNestedInput
+}
+
+export type LeavePolicyUncheckedUpdateWithoutLeaveRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  daysPerYear?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type LeavePolicyCreateManySchoolInput = {
   id?: string
   name: string
@@ -499,6 +581,7 @@ export type LeavePolicyUpdateWithoutSchoolInput = {
   daysPerYear?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leaveRequests?: Prisma.LeaveRequestUpdateManyWithoutLeavePolicyNestedInput
 }
 
 export type LeavePolicyUncheckedUpdateWithoutSchoolInput = {
@@ -507,6 +590,7 @@ export type LeavePolicyUncheckedUpdateWithoutSchoolInput = {
   daysPerYear?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  leaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutLeavePolicyNestedInput
 }
 
 export type LeavePolicyUncheckedUpdateManyWithoutSchoolInput = {
@@ -518,6 +602,35 @@ export type LeavePolicyUncheckedUpdateManyWithoutSchoolInput = {
 }
 
 
+/**
+ * Count Type LeavePolicyCountOutputType
+ */
+
+export type LeavePolicyCountOutputType = {
+  leaveRequests: number
+}
+
+export type LeavePolicyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  leaveRequests?: boolean | LeavePolicyCountOutputTypeCountLeaveRequestsArgs
+}
+
+/**
+ * LeavePolicyCountOutputType without action
+ */
+export type LeavePolicyCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeavePolicyCountOutputType
+   */
+  select?: Prisma.LeavePolicyCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LeavePolicyCountOutputType without action
+ */
+export type LeavePolicyCountOutputTypeCountLeaveRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaveRequestWhereInput
+}
+
 
 export type LeavePolicySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -527,6 +640,8 @@ export type LeavePolicySelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  leaveRequests?: boolean | Prisma.LeavePolicy$leaveRequestsArgs<ExtArgs>
+  _count?: boolean | Prisma.LeavePolicyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["leavePolicy"]>
 
 export type LeavePolicySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -561,6 +676,8 @@ export type LeavePolicySelectScalar = {
 export type LeavePolicyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "schoolId" | "name" | "daysPerYear" | "createdAt" | "updatedAt", ExtArgs["result"]["leavePolicy"]>
 export type LeavePolicyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
+  leaveRequests?: boolean | Prisma.LeavePolicy$leaveRequestsArgs<ExtArgs>
+  _count?: boolean | Prisma.LeavePolicyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LeavePolicyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
@@ -573,6 +690,7 @@ export type $LeavePolicyPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "LeavePolicy"
   objects: {
     school: Prisma.$SchoolPayload<ExtArgs>
+    leaveRequests: Prisma.$LeaveRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -976,6 +1094,7 @@ readonly fields: LeavePolicyFieldRefs;
 export interface Prisma__LeavePolicyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  leaveRequests<T extends Prisma.LeavePolicy$leaveRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LeavePolicy$leaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1409,6 +1528,30 @@ export type LeavePolicyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many LeavePolicies to delete.
    */
   limit?: number
+}
+
+/**
+ * LeavePolicy.leaveRequests
+ */
+export type LeavePolicy$leaveRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeaveRequest
+   */
+  select?: Prisma.LeaveRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeaveRequest
+   */
+  omit?: Prisma.LeaveRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaveRequestInclude<ExtArgs> | null
+  where?: Prisma.LeaveRequestWhereInput
+  orderBy?: Prisma.LeaveRequestOrderByWithRelationInput | Prisma.LeaveRequestOrderByWithRelationInput[]
+  cursor?: Prisma.LeaveRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaveRequestScalarFieldEnum | Prisma.LeaveRequestScalarFieldEnum[]
 }
 
 /**

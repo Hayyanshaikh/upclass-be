@@ -224,6 +224,7 @@ export type UserWhereInput = {
   schoolId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   teachers?: Prisma.TeacherListRelationFilter
+  reviewedLeaveRequests?: Prisma.LeaveRequestListRelationFilter
   school?: Prisma.XOR<Prisma.SchoolNullableScalarRelationFilter, Prisma.SchoolWhereInput> | null
 }
 
@@ -240,6 +241,7 @@ export type UserOrderByWithRelationInput = {
   schoolId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.RoleOrderByWithRelationInput
   teachers?: Prisma.TeacherOrderByRelationAggregateInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestOrderByRelationAggregateInput
   school?: Prisma.SchoolOrderByWithRelationInput
 }
 
@@ -259,6 +261,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   schoolId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   teachers?: Prisma.TeacherListRelationFilter
+  reviewedLeaveRequests?: Prisma.LeaveRequestListRelationFilter
   school?: Prisma.XOR<Prisma.SchoolNullableScalarRelationFilter, Prisma.SchoolWhereInput> | null
 }, "id" | "email">
 
@@ -305,6 +308,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutReviewedByUserInput
   school?: Prisma.SchoolCreateNestedOneWithoutUsersInput
 }
 
@@ -320,6 +324,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   schoolId?: string | null
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
 }
 
 export type UserUpdateInput = {
@@ -333,6 +338,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUpdateManyWithoutReviewedByUserNestedInput
   school?: Prisma.SchoolUpdateOneWithoutUsersNestedInput
 }
 
@@ -348,6 +354,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   schoolId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -439,6 +446,11 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCreateNestedManyWithoutSchoolInput = {
@@ -539,6 +551,22 @@ export type UserUpdateOneRequiredWithoutTeachersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTeachersInput, Prisma.UserUpdateWithoutTeachersInput>, Prisma.UserUncheckedUpdateWithoutTeachersInput>
 }
 
+export type UserCreateNestedOneWithoutReviewedLeaveRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedLeaveRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedLeaveRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutReviewedLeaveRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedLeaveRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedLeaveRequestsInput
+  upsert?: Prisma.UserUpsertWithoutReviewedLeaveRequestsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedLeaveRequestsInput, Prisma.UserUpdateWithoutReviewedLeaveRequestsInput>, Prisma.UserUncheckedUpdateWithoutReviewedLeaveRequestsInput>
+}
+
 export type UserCreateWithoutSchoolInput = {
   id?: string
   name: string
@@ -550,6 +578,7 @@ export type UserCreateWithoutSchoolInput = {
   updatedAt?: Date | string
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutReviewedByUserInput
 }
 
 export type UserUncheckedCreateWithoutSchoolInput = {
@@ -563,6 +592,7 @@ export type UserUncheckedCreateWithoutSchoolInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
 }
 
 export type UserCreateOrConnectWithoutSchoolInput = {
@@ -617,6 +647,7 @@ export type UserCreateWithoutRoleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   teachers?: Prisma.TeacherCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutReviewedByUserInput
   school?: Prisma.SchoolCreateNestedOneWithoutUsersInput
 }
 
@@ -631,6 +662,7 @@ export type UserUncheckedCreateWithoutRoleInput = {
   updatedAt?: Date | string
   schoolId?: string | null
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutUserInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
 }
 
 export type UserCreateOrConnectWithoutRoleInput = {
@@ -669,6 +701,7 @@ export type UserCreateWithoutTeachersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestCreateNestedManyWithoutReviewedByUserInput
   school?: Prisma.SchoolCreateNestedOneWithoutUsersInput
 }
 
@@ -683,6 +716,7 @@ export type UserUncheckedCreateWithoutTeachersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   schoolId?: string | null
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedCreateNestedManyWithoutReviewedByUserInput
 }
 
 export type UserCreateOrConnectWithoutTeachersInput = {
@@ -711,6 +745,7 @@ export type UserUpdateWithoutTeachersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUpdateManyWithoutReviewedByUserNestedInput
   school?: Prisma.SchoolUpdateOneWithoutUsersNestedInput
 }
 
@@ -725,6 +760,79 @@ export type UserUncheckedUpdateWithoutTeachersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   schoolId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
+}
+
+export type UserCreateWithoutReviewedLeaveRequestsInput = {
+  id?: string
+  name: string
+  password: string
+  email: string
+  isActive?: boolean
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  teachers?: Prisma.TeacherCreateNestedManyWithoutUserInput
+  school?: Prisma.SchoolCreateNestedOneWithoutUsersInput
+}
+
+export type UserUncheckedCreateWithoutReviewedLeaveRequestsInput = {
+  id?: string
+  name: string
+  password: string
+  email: string
+  isActive?: boolean
+  isSystem?: boolean
+  roleId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  schoolId?: string | null
+  teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutReviewedLeaveRequestsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedLeaveRequestsInput>
+}
+
+export type UserUpsertWithoutReviewedLeaveRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedLeaveRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedLeaveRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedLeaveRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedLeaveRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedLeaveRequestsInput>
+}
+
+export type UserUpdateWithoutReviewedLeaveRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  teachers?: Prisma.TeacherUpdateManyWithoutUserNestedInput
+  school?: Prisma.SchoolUpdateOneWithoutUsersNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedLeaveRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  schoolId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teachers?: Prisma.TeacherUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManySchoolInput = {
@@ -750,6 +858,7 @@ export type UserUpdateWithoutSchoolInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUpdateManyWithoutReviewedByUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSchoolInput = {
@@ -763,6 +872,7 @@ export type UserUncheckedUpdateWithoutSchoolInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutSchoolInput = {
@@ -799,6 +909,7 @@ export type UserUpdateWithoutRoleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teachers?: Prisma.TeacherUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUpdateManyWithoutReviewedByUserNestedInput
   school?: Prisma.SchoolUpdateOneWithoutUsersNestedInput
 }
 
@@ -813,6 +924,7 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   schoolId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutUserNestedInput
+  reviewedLeaveRequests?: Prisma.LeaveRequestUncheckedUpdateManyWithoutReviewedByUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -834,10 +946,12 @@ export type UserUncheckedUpdateManyWithoutRoleInput = {
 
 export type UserCountOutputType = {
   teachers: number
+  reviewedLeaveRequests: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachers?: boolean | UserCountOutputTypeCountTeachersArgs
+  reviewedLeaveRequests?: boolean | UserCountOutputTypeCountReviewedLeaveRequestsArgs
 }
 
 /**
@@ -857,6 +971,13 @@ export type UserCountOutputTypeCountTeachersArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.TeacherWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewedLeaveRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeaveRequestWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -871,6 +992,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   schoolId?: boolean
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   teachers?: boolean | Prisma.User$teachersArgs<ExtArgs>
+  reviewedLeaveRequests?: boolean | Prisma.User$reviewedLeaveRequestsArgs<ExtArgs>
   school?: boolean | Prisma.User$schoolArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -922,6 +1044,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   teachers?: boolean | Prisma.User$teachersArgs<ExtArgs>
+  reviewedLeaveRequests?: boolean | Prisma.User$reviewedLeaveRequestsArgs<ExtArgs>
   school?: boolean | Prisma.User$schoolArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -939,6 +1062,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     role: Prisma.$RolePayload<ExtArgs>
     teachers: Prisma.$TeacherPayload<ExtArgs>[]
+    reviewedLeaveRequests: Prisma.$LeaveRequestPayload<ExtArgs>[]
     school: Prisma.$SchoolPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1348,6 +1472,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   role<T extends Prisma.RoleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RoleDefaultArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   teachers<T extends Prisma.User$teachersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$teachersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedLeaveRequests<T extends Prisma.User$reviewedLeaveRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   school<T extends Prisma.User$schoolArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schoolArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1810,6 +1935,30 @@ export type User$teachersArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.TeacherScalarFieldEnum | Prisma.TeacherScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedLeaveRequests
+ */
+export type User$reviewedLeaveRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeaveRequest
+   */
+  select?: Prisma.LeaveRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeaveRequest
+   */
+  omit?: Prisma.LeaveRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeaveRequestInclude<ExtArgs> | null
+  where?: Prisma.LeaveRequestWhereInput
+  orderBy?: Prisma.LeaveRequestOrderByWithRelationInput | Prisma.LeaveRequestOrderByWithRelationInput[]
+  cursor?: Prisma.LeaveRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeaveRequestScalarFieldEnum | Prisma.LeaveRequestScalarFieldEnum[]
 }
 
 /**

@@ -69,6 +69,8 @@ export const ModelName = {
   AcademicYearTerm: 'AcademicYearTerm',
   LeavePolicy: 'LeavePolicy',
   LeavePolicySetting: 'LeavePolicySetting',
+  LeaveRequest: 'LeaveRequest',
+  LeaveRequestAttachment: 'LeaveRequestAttachment',
   TimetableEntry: 'TimetableEntry',
   TeacherAttendance: 'TeacherAttendance',
   StudentAttendance: 'StudentAttendance'
@@ -371,6 +373,41 @@ export const LeavePolicySettingScalarFieldEnum = {
 } as const
 
 export type LeavePolicySettingScalarFieldEnum = (typeof LeavePolicySettingScalarFieldEnum)[keyof typeof LeavePolicySettingScalarFieldEnum]
+
+
+export const LeaveRequestScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  teacherId: 'teacherId',
+  leavePolicyId: 'leavePolicyId',
+  substituteTeacherId: 'substituteTeacherId',
+  fromDate: 'fromDate',
+  toDate: 'toDate',
+  totalDays: 'totalDays',
+  isHalfDay: 'isHalfDay',
+  reason: 'reason',
+  contactDuringLeave: 'contactDuringLeave',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  reviewComment: 'reviewComment',
+  reviewedByUserId: 'reviewedByUserId',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LeaveRequestScalarFieldEnum = (typeof LeaveRequestScalarFieldEnum)[keyof typeof LeaveRequestScalarFieldEnum]
+
+
+export const LeaveRequestAttachmentScalarFieldEnum = {
+  id: 'id',
+  leaveRequestId: 'leaveRequestId',
+  name: 'name',
+  url: 'url',
+  createdAt: 'createdAt'
+} as const
+
+export type LeaveRequestAttachmentScalarFieldEnum = (typeof LeaveRequestAttachmentScalarFieldEnum)[keyof typeof LeaveRequestAttachmentScalarFieldEnum]
 
 
 export const TimetableEntryScalarFieldEnum = {
