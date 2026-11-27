@@ -29,6 +29,9 @@ export class LoginResponseUserDto {
   @ApiProperty()
   email: string;
 
+  @ApiPropertyOptional({ type: String, nullable: true })
+  phone?: string | null;
+
   @ApiPropertyOptional()
   roleId?: string;
 

@@ -141,17 +141,21 @@ export class TimetableService {
     });
 
     if (!entry) {
+      const message = 'Teacher is free in this period.';
+
       return {
         statusCode: HttpStatus.OK,
-        conflict: false,
-        message: 'Teacher is free in this period.',
+        message,
+        data: { conflict: false, message },
       };
     }
 
+    const message = `Teacher is already assigned to ${entry.classSection.class.name} - ${entry.classSection.section.name} in this period.`;
+
     return {
       statusCode: HttpStatus.OK,
-      conflict: true,
-      message: `Teacher is already assigned to Class ${entry.classSection.class.name} - ${entry.classSection.section.name} in this period.`,
+      message,
+      data: { conflict: true, message },
     };
   }
 
@@ -434,7 +438,7 @@ export class TimetableService {
 
     if (conflict) {
       throw new ConflictException(
-        `Teacher is already assigned to Class ${conflict.classSection.class.name}-${conflict.classSection.section.name} in this period.`,
+        `Teacher is already assigned to ${conflict.classSection.class.name} - ${conflict.classSection.section.name} in this period.`,
       );
     }
   }

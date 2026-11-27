@@ -108,6 +108,7 @@ model User {
   name      String
   password  String
   email     String    @unique()
+  phone     String?   @unique
   isActive  Boolean   @default(true)
   isSystem  Boolean   @default(false)
   roleId    String

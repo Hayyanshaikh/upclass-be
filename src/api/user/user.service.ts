@@ -70,6 +70,19 @@ export class UserService {
         throw new ConflictException('Email already exists.');
       }
 
+      const userPhone = dto.phone?.trim() || null;
+
+      if (userPhone) {
+        const existingPhone = await this.prisma.user.findUnique({
+          where: { phone: userPhone },
+          select: { id: true },
+        });
+
+        if (existingPhone) {
+          throw new ConflictException('Phone number already exists.');
+        }
+      }
+
       const role = await this.prisma.role.findUnique({
         where: { id: dto.roleId },
       });
@@ -86,6 +99,7 @@ export class UserService {
           data: {
             name: dto.name.trim(),
             email: dto.email.trim(),
+            phone: userPhone,
             password: hashedPassword,
             roleId: dto.roleId,
             isActive: dto.isActive,
@@ -102,6 +116,7 @@ export class UserService {
               userId: newUser.id,
               employeeId: employeeId,
               email: dto.email.trim(),
+              phone: userPhone,
               firstName: dto.name.trim(),
               schoolId: schoolId,
             },
@@ -125,6 +140,13 @@ export class UserService {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
+        if (
+          Array.isArray(error.meta?.target) &&
+          error.meta.target.includes('phone')
+        ) {
+          throw new ConflictException('Phone number already exists.');
+        }
+
         throw new ConflictException('Email already exists.');
       }
 
@@ -212,6 +234,7 @@ export class UserService {
           id: true,
           name: true,
           email: true,
+          phone: true,
           roleId: true,
           school: {
             select: {
@@ -251,6 +274,7 @@ export class UserService {
         id: user.id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         roleId: user.roleId,
         isActive: user.isActive,
         isSystem: user.isSystem,
@@ -321,11 +345,59 @@ export class UserService {
         });
       }
 
+      const current = await this.prisma.user.findUnique({
+        where: { id },
+        select: { email: true, phone: true },
+      });
+
+      if (!current) {
+        throw new NotFoundException({
+          message: 'User not found.',
+          errors: [`User with ID ${id} was not found.`],
+        });
+      }
+
+      if (dto.email !== undefined && dto.email.trim() !== current.email) {
+        throw new BadRequestException({
+          message: 'Email cannot be changed once set.',
+          errors: ['Email addresses cannot be changed once set.'],
+        });
+      }
+
+      let nextPhone: string | null | undefined;
+
+      if (dto.phone !== undefined) {
+        const incomingPhone = dto.phone?.trim() || null;
+
+        if (current.phone && incomingPhone !== current.phone) {
+          throw new BadRequestException({
+            message: 'Phone number cannot be changed once set.',
+            errors: ['Phone numbers cannot be changed once set.'],
+          });
+        }
+
+        if (!current.phone && incomingPhone) {
+          const existingPhone = await this.prisma.user.findUnique({
+            where: { phone: incomingPhone },
+            select: { id: true },
+          });
+
+          if (existingPhone) {
+            throw new ConflictException('Phone number already exists.');
+          }
+        }
+
+        nextPhone = current.phone ?? incomingPhone;
+      }
+
       const { password, ...changes } = dto;
+      delete changes.email;
+      delete changes.phone;
       const user = await this.prisma.user.update({
         where: { id },
         data: {
           ...changes,
+          phone: nextPhone,
           ...(password !== undefined
             ? { password: await bcrypt.hash(password, 12) }
             : {}),
@@ -334,6 +406,7 @@ export class UserService {
           id: true,
           name: true,
           email: true,
+          phone: true,
           roleId: true,
           role: {
             select: {
@@ -366,6 +439,16 @@ export class UserService {
         }
 
         if (error.code === 'P2002') {
+          if (
+            Array.isArray(error.meta?.target) &&
+            error.meta.target.includes('phone')
+          ) {
+            throw new ConflictException({
+              message: 'Phone number already exists.',
+              errors: ['Phone number already exists.'],
+            });
+          }
+
           throw new ConflictException({
             message: 'User already exists.',
             errors: ['Email already exists.'],

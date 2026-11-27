@@ -78,6 +78,7 @@ export class TeachersService {
         .filter(Boolean)
         .join(' ');
       const userEmail = email.trim();
+      const userPhone = phone?.trim() || null;
       const role = await this.prisma.role.findUnique({
         where: {
           schoolId_slug: {
@@ -105,6 +106,16 @@ export class TeachersService {
           throw new ConflictException('Email already exists.');
         }
 
+        if (userPhone) {
+          const existingPhone = await tx.user.findUnique({
+            where: { phone: userPhone },
+            select: { id: true },
+          });
+          if (existingPhone) {
+            throw new ConflictException('Phone number already exists.');
+          }
+        }
+
         const existingName = await tx.user.findFirst({
           where: { name: { equals: userName, mode: 'insensitive' } },
           select: { id: true },
@@ -117,6 +128,7 @@ export class TeachersService {
           data: {
             name: userName,
             email: userEmail,
+            phone: userPhone,
             password: hashedPassword,
             roleId: role.id,
             isActive: isActive ?? true,
@@ -141,7 +153,7 @@ export class TeachersService {
             joiningDate,
             employmentType,
             isActive,
-            phone,
+            phone: userPhone,
             email: userEmail,
             address,
             bankName,
@@ -171,10 +183,14 @@ export class TeachersService {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002' &&
-        Array.isArray(error.meta?.target) &&
-        error.meta.target.includes('email')
+        Array.isArray(error.meta?.target)
       ) {
-        throw new ConflictException('Email already exists.');
+        if (error.meta.target.includes('phone')) {
+          throw new ConflictException('Phone number already exists.');
+        }
+        if (error.meta.target.includes('email')) {
+          throw new ConflictException('Email already exists.');
+        }
       }
       this.handlePrismaError(error);
     }
@@ -336,7 +352,7 @@ export class TeachersService {
         const current = await tx.teacher.findUnique({
           where: { id, schoolId },
           include: {
-            user: { select: { name: true, email: true } },
+            user: { select: { name: true, email: true, phone: true } },
             documents: true,
           },
         });
@@ -359,20 +375,40 @@ export class TeachersService {
           .filter(Boolean)
           .join(' ');
 
-        const nextEmail = email?.trim() ?? current.user.email;
+        const nextEmail = current.user.email;
 
-        if (nextEmail !== current.user.email) {
-          const existingEmail = await tx.user.findFirst({
-            where: {
-              email: nextEmail,
-              id: { not: current.userId },
-            },
-            select: { id: true },
-          });
+        if (email !== undefined && email.trim() !== nextEmail) {
+          throw new BadRequestException(
+            'Email cannot be changed once set.',
+          );
+        }
 
-          if (existingEmail) {
-            throw new ConflictException('Email already exists.');
+        const currentPhone =
+          current.phone?.trim() || current.user.phone?.trim() || null;
+
+        let nextPhone: string | null | undefined = currentPhone ?? undefined;
+
+        if (phone !== undefined) {
+          const incomingPhone = phone?.trim() || null;
+
+          if (currentPhone && incomingPhone !== currentPhone) {
+            throw new BadRequestException(
+              'Phone number cannot be changed once set.',
+            );
           }
+
+          if (!currentPhone && incomingPhone) {
+            const existingPhone = await tx.user.findFirst({
+              where: { phone: incomingPhone, id: { not: current.userId } },
+              select: { id: true },
+            });
+
+            if (existingPhone) {
+              throw new ConflictException('Phone number already exists.');
+            }
+          }
+
+          nextPhone = currentPhone ?? incomingPhone;
         }
 
         if (nextName !== current.user.name) {
@@ -425,6 +461,7 @@ export class TeachersService {
             data: {
               name: nextName,
               email: nextEmail,
+              phone: nextPhone,
               isActive: isActive ?? undefined,
             },
           });
@@ -445,7 +482,7 @@ export class TeachersService {
               joiningDate,
               employmentType,
               isActive,
-              phone,
+              phone: nextPhone,
               email: email?.trim() ?? email,
               address,
               accountNumber,
@@ -476,6 +513,7 @@ export class TeachersService {
           data: {
             name: nextName,
             email: nextEmail,
+            phone: nextPhone,
             isActive: isActive ?? undefined,
           },
         });
@@ -496,7 +534,7 @@ export class TeachersService {
             joiningDate,
             employmentType,
             isActive,
-            phone,
+            phone: nextPhone,
             email: email?.trim() ?? email,
             address,
             accountNumber,
@@ -547,10 +585,14 @@ export class TeachersService {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002' &&
-        Array.isArray(error.meta?.target) &&
-        error.meta.target.includes('email')
+        Array.isArray(error.meta?.target)
       ) {
-        throw new ConflictException('Email already exists.');
+        if (error.meta.target.includes('phone')) {
+          throw new ConflictException('Phone number already exists.');
+        }
+        if (error.meta.target.includes('email')) {
+          throw new ConflictException('Email already exists.');
+        }
       }
 
       this.handlePrismaError(error, id);
