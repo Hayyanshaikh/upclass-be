@@ -18,12 +18,12 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<LoginResponseDto> {
     try {
-      const { email, password } = loginDto;
+      const { identifier, password } = loginDto;
       const errors: string[] = [];
 
       // Validate input
-      if (!email?.trim()) {
-        errors.push('Email is required.');
+      if (!identifier?.trim()) {
+        errors.push('Email or phone number is required.');
       }
 
       if (!password?.trim()) {
@@ -35,9 +35,16 @@ export class AuthService {
         throw new HttpException({ errors }, HttpStatus.BAD_REQUEST);
       }
 
+      const loginIdentifier = identifier.trim();
+
       // Find user
-      const user = await this.prisma.user.findUnique({
-        where: { email },
+      const user = await this.prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: { equals: loginIdentifier, mode: 'insensitive' } },
+            { phone: loginIdentifier },
+          ],
+        },
         select: {
           password: true,
           name: true,
@@ -73,7 +80,10 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new HttpException('Invalid email', HttpStatus.UNAUTHORIZED);
+        throw new HttpException(
+          'Invalid email or phone number.',
+          HttpStatus.UNAUTHORIZED,
+        );
       }
 
       // Verify password

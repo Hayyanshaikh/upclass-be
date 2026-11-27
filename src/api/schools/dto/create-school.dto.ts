@@ -15,18 +15,18 @@ export class CreateSchoolDto {
   @IsNotEmpty()
   name!: string;
 
-  @ApiPropertyOptional({ type: String, nullable: true })
-  @IsOptional()
+  @ApiProperty({ example: 'school@example.com' })
   @IsEmail()
-  email?: string | null;
+  @IsNotEmpty({ message: 'Email is required.' })
+  email!: string;
 
-  @ApiPropertyOptional({ type: String, nullable: true })
-  @IsOptional()
+  @ApiProperty({ example: '0300-1234567' })
   @IsString()
-  @Matches(/^[\d\s\-+()]{7,20}$/, {
+  @IsNotEmpty({ message: 'Phone number is required.' })
+  @Matches(/^\+?[\d\s\-()]{7,20}$/, {
     message: 'Phone number must be a valid format.',
   })
-  phone?: string | null;
+  phone!: string;
 
   @ApiPropertyOptional({ type: String, nullable: true })
   @IsOptional()
@@ -39,16 +39,6 @@ export class CreateSchoolDto {
   isActive?: boolean | null;
 
   // School Admin Details
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  adminName!: string;
-
-  @ApiProperty()
-  @IsEmail()
-  @IsNotEmpty()
-  adminEmail!: string;
 
   @ApiProperty()
   @IsString()

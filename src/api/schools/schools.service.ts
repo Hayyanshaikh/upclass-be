@@ -38,8 +38,6 @@ export class SchoolsService {
       phone,
       address,
       isActive,
-      adminName,
-      adminEmail,
       adminPassword,
     } = dto;
 
@@ -48,16 +46,30 @@ export class SchoolsService {
         throw new BadRequestException('School name is required.');
       }
 
-      if (!adminName?.trim() || !adminEmail?.trim() || !adminPassword) {
-        throw new BadRequestException('School admin details are required.');
+      if (!adminPassword) {
+        throw new BadRequestException('Admin password is required.');
       }
 
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        throw new BadRequestException('Please enter a valid school email.');
+      const schoolEmail = email?.trim() ?? '';
+
+      if (!schoolEmail) {
+        throw new BadRequestException('Email is required.');
       }
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) {
-        throw new BadRequestException('Please enter a valid admin email.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(schoolEmail)) {
+        throw new BadRequestException('Please enter a valid email address.');
+      }
+
+      const schoolPhone = phone?.trim() ?? '';
+
+      if (!schoolPhone) {
+        throw new BadRequestException('Phone number is required.');
+      }
+
+      if (!/^\+?[\d\s\-()]{7,20}$/.test(schoolPhone)) {
+        throw new BadRequestException(
+          'Please enter a valid phone number.',
+        );
       }
 
       const hashedPassword = await bcrypt.hash(adminPassword, 12);
@@ -66,8 +78,8 @@ export class SchoolsService {
         const school = await tx.school.create({
           data: {
             name: name.trim(),
-            email: email?.trim() ?? null,
-            phone: phone?.trim() ?? null,
+            email: schoolEmail,
+            phone: schoolPhone,
             address: address?.trim() ?? null,
             isActive: isActive ?? true,
           },
@@ -87,10 +99,29 @@ export class SchoolsService {
           },
         });
 
+        const existingEmail = await tx.user.findUnique({
+          where: { email: schoolEmail },
+          select: { id: true },
+        });
+
+        if (existingEmail) {
+          throw new ConflictException('Email already exists.');
+        }
+
+        const existingPhone = await tx.user.findUnique({
+          where: { phone: schoolPhone },
+          select: { id: true },
+        });
+
+        if (existingPhone) {
+          throw new ConflictException('Phone number already exists.');
+        }
+
         await tx.user.create({
           data: {
-            name: adminName.trim(),
-            email: adminEmail.trim(),
+            name: name.trim(),
+            email: schoolEmail,
+            phone: schoolPhone,
             password: hashedPassword,
             roleId: adminRole.id,
             schoolId: school.id,
@@ -112,6 +143,13 @@ export class SchoolsService {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
+        if (
+          Array.isArray(error.meta?.target) &&
+          error.meta.target.includes('phone')
+        ) {
+          throw new ConflictException('Phone number already exists.');
+        }
+
         throw new ConflictException('Email already exists.');
       }
 

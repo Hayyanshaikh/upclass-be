@@ -3,11 +3,9 @@ import {
   IsString,
   IsEmail,
   IsOptional,
-  IsInt,
-  Min,
-  IsEnum,
   IsBoolean,
   IsNotEmpty,
+  Matches,
   MinLength,
 } from 'class-validator';
 
@@ -19,6 +17,14 @@ export class CreateUserDto {
   @ApiProperty()
   @IsEmail()
   email: string;
+
+  @ApiPropertyOptional({ type: String, nullable: true, example: '0300-1234567' })
+  @IsOptional()
+  @IsString()
+  @Matches(/^\+?[\d\s\-()]{7,20}$/, {
+    message: 'Phone number must be a valid format.',
+  })
+  phone?: string | null;
 
   @ApiProperty({ example: 'StrongPass123!' })
   @IsString()
